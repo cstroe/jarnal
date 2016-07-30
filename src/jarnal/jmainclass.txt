@@ -1,0 +1,7 @@
+Main-Class: jarnal/Jarnal
+Class-Path: lib/bcprov-jdk14-119.jar 
+            lib/jai_core.jar 
+            lib/jai_codec.jar 
+            lib/jpedalt.jar 
+            lib/cid.jar
+            lib/itext-1.2.jar

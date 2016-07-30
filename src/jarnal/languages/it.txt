@@ -1,0 +1,198 @@
+# Jarnal version 941
+# Jarnal English-Italian
+
+# MAIN MENU BAR
+File===File===
+Edit===Modifica===
+View===Visualizza===
+Insert===Inserisci===
+Format===Formato===
+Tools===Strumenti===
+Collaborate===Collabora===
+Help===Aiuto===
+
+# File submenu
+New===Nuovo===
+Open===Apri...===
+OpenURL===Apri URL...===
+New On Background===Nuovo con sfondo...===
+Open Background===Apri come sfondo...===
+Open Text===Apri come testo...===
+Save===Salva===
+Save With Options===Salva (con più opzioni)...===
+Export===Esporta===
+
+# Export submenu
+Save Text As===Salva testo come...===
+Save Html As===Salva HTML come...===
+Snapshot===Istantanea...===
+Export to PDF===Esporta in PDF...===
+Export to TIFF===Esporta in TIFF...===
+
+Network Save===Salvataggio attraverso la rete...===
+Show Server Message===Visualizza messaggio del server...===
+Options===Opzioni===
+
+# Options submenu
+Network Save Options===Del salvataggio attraverso la rete...===
+Bookmark Options===Dei segnalibri===
+
+# Bookmark Options submenu
+Autoupdate Bookmarks===Aggiorna automaticamente i segnalibri===
+Delete Bookmarks===Cancella segnalibro===
+
+# Delete Bookmarks submenu not implemented
+
+Toolbars===Barre degli strumenti===
+
+# Toolbars submenu
+Restore Default Toolbars===Ripristina barre predefinite===
+Load Top Toolbar===Carica la barra superiore...===
+Load Bottom Toolbar===Carica la barra inferiore...===
+Load Presentation Toolbar===Carica la barra per la presentazione...===
+
+Restore Default Configuration===Ripristina configurazione predefinita===
+Edit Current Template===Modifica template corrente===
+Adjust Time Zone===Modifica fuso orario...===
+
+Pencentric===Pencentrico===
+Manage Internal Files===Gestisci file interni...===
+
+Print With Options===Stampa (con opzioni)...===
+
+Bookmarks===Segnalibri===
+
+# Bookmarks submenu not implemented
+
+Exit===Esci===
+
+# Edit submenu
+Undo===Annulla===
+Undo All===Annnulla tutto===
+Redo===Rifai===
+Redo All===Rifai tutto===
+Undo/Redo List===Lista delle cose annullate/rifatte...===
+Record===Registra===
+Playback===Riproduci===
+Find===Trova...===
+Cut===Taglia===
+Copy===Copia===
+Paste===Incolla===
+Clear===Pulisci pagina===
+Delete===Elimina gli oggetti selezionati===
+Select All Text===Seleziona tutto il testo===
+Copy All Text===Copia tutto il testo===
+Copy Paper===Copia carta===
+
+# View submenu
+Thumbs===Anteprima===
+Continuous===Continuo===
+Overlay Pages===Intestazioni delle pagine===
+Fit Width===Adatta alla larghezza della pagina===
+Zoom In===Zoom avanti===
+Zoom Out===Zoom indietro===
+Zoom===Imposta zoom...===
+Full Screen===Modalità a tutto schermo===
+Full Screen Options===Opzioni modalità a tutto schermo===
+
+# Full Screen Options submenu
+Shift Right===Margine sinistro===
+Shift Down===Margine superiore===
+
+Trap Colors===Mascheramento colori...===
+Quality===Qualità===
+
+# Quality submenu
+High Quality===Alta===
+Normal Quality===Normale===
+Low Quality===Bassa===
+
+Background Quality===Qualità dello sfondo===
+
+# Background Quality submenu
+Default Quality===Predefinita===
+Good Quality===Buona===
+Highest Quality===Alta===
+Use External Renderer===Usa programma esterno per il render===
+Silent External Renderer===Nascondi i messaggi del programma esterno===
+
+Page Overlay===Intestazione pagina...===
+Outline===Sommario===
+Thumbnail Bar===Barra dell'anteprima===
+Update Thumbnail Bar===Aggiorna barra dell'anteprima===
+First Page===Prima pagina===
+Previous Page===Pagina precedente===
+Next Page===Pagina successiva===
+Last Page===Ultima pagina===
+Go To Page===Vai alla pagina...===
+Next Frame===Frame successivo===
+Previous Frame===Frame precedente===
+Highlight Lines===Evidenzia le linee===
+Redraw Page===Aggiorna pagina===
+
+# Insert Submenu
+Insert Page Before===Pagina prima di questa===
+Insert Page After===Pagina dopo questa===
+Insert Jarnal Before===File Jarnal prima di questa pagina...===
+Insert Jarnal After===File Jarnal dopo questa pagina...===
+Insert Background Before===Sfondo prima di questa pagina...===
+Insert Background After===Sfondo dopo questa pagina...===
+Insert Background Text===Testo di sfondo===
+Insert Link===Collegamento===
+Insert Screenshot===Schermata...===
+Insert Overlay===Riquadro semi-trasparente===
+Insert Image===Immagine...===
+
+# Format submenu
+Text Style===Carattere...===
+Paper and Background===Carta e sfondo...===
+Graph Paper===Carta a quadretti===
+Set Size===Imposta dimensione===
+Background Screenshot===Usa istantanea come sfondo...===
+Modify Selection===Modifica selezione...===
+Overlay Style===Stile del riquadro semi-trasparente...===
+
+# Tools submenu
+Choose Pen===Scegli penna...===
+Smooth Strokes===Regolarizza tratto===
+Eraser===Gomma===
+Razor===Allarga pagina in basso===
+Top Razor===Allarga pagina in alto===
+Sticky Ruler===Righello persistente===
+Arrow===Freccia===
+Ruler===Righello===
+Select Rectangle===Selezione rettangolare===
+Select===Selezione===
+Middle Button===Pulsante centrale===
+
+# Middle Button Submenu
+No Action===Nessuna azione===
+Last Action===Ripeti ultima azione===
+Button Pen===Penna===
+
+mini Jarnal===Mini Jarnal...===
+Internal Mini Jarnal===Mini Jarnal interno===
+Recognize===Riconoscimento del testo===
+
+# Recognize submenu
+Recognize Page===Riconoscimento del testo sulla pagina===
+Undo Recognition===Annulla riconoscimento del testo===
+Edit Dictionaries===Modifica dizionari...===
+
+Stamp Date===Inserisci data===
+
+# Collaborate submenu
+Start Server===Avvia server...===
+Connect to Server===Connetti al server...===
+Delete Servers===Elimina server===
+
+# Delete Servers submanu
+Disconnect===Disconnetti===
+Disconnect Active Client===Disconnetti il client attivo===
+
+# Help submenu
+Check for Updates===Controlla aggiornamenti...===
+Documentation===Documentazione...===
+Memory Errors===Errori della memoria...===
+Hot Keys===Scorciatoie...===
+About===Informazioni su Jarnal===
