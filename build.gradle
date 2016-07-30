@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'jarnal.Jarnal'
+
+repositories {
+    mavenCentral();
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    compile name: 'jpedalt'  // jPedal is commercial-nonfree, and maven only contains branch projects
+    compile name: 'itext-1.2'// iText maven doesn'ct support this low of a version
+}
+
+apply plugin: 'idea'; apply plugin: 'eclipse'
