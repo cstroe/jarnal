@@ -1,0 +1,370 @@
+# Jarnal version 941
+# Jarnal English-Dutch
+
+# MAIN MENU BAR
+File===Datei===
+Edit===Bearbeiten===
+View===Ansicht===
+Insert===Einfügen===
+Format===Format===
+Tools===Werkzeuge===
+Collaborate===Zusammenarbeiten===
+Help===Hilfe===
+
+# File submenu
+New===Neu===
+Open===Öffnen===
+OpenURL===Öffne URL===
+New On Background===Neu auf Hintergrund===
+Open Background===Öffne Hintergrund===
+Open Text===Öffne Text===
+Save===Speichern===
+Save With Options===Speichern mit Optionen===
+Export===Exportieren===
+
+# Export submenu
+Save Text As===Speichere Text als===
+Save Html As===Speichere HTML als===
+Snapshot===Bildabzug===
+Export to PDF===Exportiere als PDF===
+Export to TIFF===Exportiere als TIFF===
+
+Network Save===Netzwerk Speicherung===
+Show Server Message===Zeige Server-Nachricht===
+Options===Optionen===
+
+# Options submenu
+Network Save Options===Netzwerk Speicher-Optionen===
+Bookmark Options===Lesezeichen-Optionen===
+
+# Bookmark Options submenu
+Autoupdate Bookmarks===Lesezeichen automatisch aktualisieren===
+Delete Bookmarks===Lesezeichen löschen===
+
+# Delete Bookmarks submenu not implemented
+
+Toolbars===Werkzeugleisten===
+
+# Toolbars submenu
+Restore Default Toolbars===Standard-Werkzeugleisten wiederherstellen===
+Load Top Toolbar===Obere Werkzeugleiste laden===
+Load Bottom Toolbar===Untere Werkzeugleiste laden===
+Load Presentation Toolbar===Präsentations-Werkzeugleiste laden===
+
+Restore Default Configuration===Standard Konfiguration wiederherstellen===
+Edit Current Template===Momentane Vorlage bearbeiten===
+Adjust Time Zone===Zeitzone anpassen===
+
+Pencentric===Penzentrisch===
+Manage Internal Files===Interne Dateien verwalten===
+
+Print With Options===Drucken mit Optionen===
+
+Bookmarks===Lesezeichen===
+
+# Bookmarks submenu not implemented
+
+Exit===Beenden===
+
+# Edit submenu
+Undo===Rückgängig===
+Undo All===Alles rückgängig===
+Redo===Wiederherstellen===
+Redo All===Alles wiederherstellen===
+Undo/Redo List===Rückgängig/Wiederherstellen Liste===
+Record===Aufnahme===
+Playback===Abspielen===
+Find===Suche===
+Cut===Ausschneiden===
+Copy===Kopieren===
+Paste===Einfügen===
+Clear===Säubern===
+Delete===Löschen===
+Select All Text===Allen Text markieren===
+Copy All Text===Allen Text kopieren===
+Copy Paper===Papier kopieren===
+
+# View submenu
+Thumbs===Miniaturansicht===
+Continuous===Fortlaufend===
+Overlay Pages===Überlappende Seiten===
+Fit Width===Breite einpassen===
+Zoom In===Vergößern===
+Zoom Out===Verkleinern===
+Zoom===Zoomfaktor manuell einstellen===
+Full Screen===Vollbild===
+Full Screen Options===Vollbildoptionen===
+
+# Full Screen Options submenu
+Shift Right===Nach rechts verschieben===
+Shift Down===Nach links verschieben===
+
+Trap Colors===Farben festhalten===
+Quality===Qualität===
+
+# Quality submenu
+High Quality===Hohe Qualität===
+Normal Quality===Normale Qualität===
+Low Quality===Schlechte Qualität===
+
+Background Quality===Hintergrund-Qualität===
+
+# Background Quality submenu
+Default Quality===Standard-Qualität===
+Good Quality===Gute Qualität===
+Highest Quality===Höchste Qualität===
+Use External Renderer===Benutze externen Renderer===
+Silent External Renderer===Stiller externer Renderer===
+
+Page Overlay===Seitenüberdeckung===
+Outline===Beschreibung===
+Thumbnail Bar===Miniaturseitenleiste===
+Update Thumbnail Bar===Aktualisiere Miniaturseitenleiste===
+First Page===Erste Seite===
+Previous Page===Vorige Seite===
+Next Page===Nächste Seite===
+Last Page===Letzte Seite===
+Go To Page===Gehe zu Seite===
+Next Frame===Nächster Frame===
+Previous Frame===Voriger Frame===
+Highlight Lines===Markiere Zeilen===
+Redraw Page===Seite neu zeichnen===
+
+# Insert Submenu
+Insert Page Before===Seite davor einfügen===
+Insert Page After===Seite dahinter einfügen===
+Insert Jarnal Before===Jarnal davor einfügen===
+Insert Jarnal After===Jarnal dahinter einfügen===
+Insert Background Before===Hintergrund davor einfügen===
+Insert Background After===Hintergrund dahinter einfügen===
+Insert Background Text===Hintergrundtext einfügen===
+Insert Link===Link einfügen===
+Insert Screenshot===Screenshot einfügen===
+Insert Overlay===Überdeckung einfügen===
+Insert Image===Bild einfügen===
+
+# Format submenu
+Text Style===Textstil===
+Paper and Background===Papier und Hintergrund===
+Graph Paper===Kariertes Papier===
+Set Size===Größe einstellen===
+Background Screenshot===Screenshot als Hintergrund===
+Modify Selection===Stift manuell einstellen===
+Overlay Style===Überdeckungsstil===
+Overplakker
+
+# Tools submenu
+Choose Pen===Wähle Stift aus===
+Smooth Strokes===Weiche Linien===
+Eraser===Radierer===
+Razor===Verschieber===
+Top Razor===Unteres löschen===
+Sticky Ruler===Lineal aktiviert halten===
+Arrow===Pfeil===
+Ruler===Lineal===
+Select Rectangle===Rechteck auswählen===
+Select===Auswählen===
+Middle Button===Mittlerer Button===
+
+# Middle Button Submenu
+No Action===Keine Aktion===
+Last Action===Letzte Aktion===
+Button Pen===Stift-Button===
+
+mini Jarnal===Mini-Jarnal===
+Internal mini Jarnal===Internes Mini-Jarnal===
+Recognize===Handschrifterkennung===
+Recognize===Handschrifterkennung===
+
+# Recognize submenu
+Recognize Page===auf ganzer Seite===
+Undo Recognition===Erkennug rückgängig machen===
+Edit Dictionaries===Wörterbücher editieren===
+
+Stamp Date===Datum stempeln===
+
+# Collaborate submenu
+Start Server===Starte Server===
+Connect to Server===Verbinde mit Server===
+Delete Servers===Lösche Server===
+
+# Delete Servers submanu
+Disconnect===Trenne Verbindung===
+Disconnect Active Client===Trenne Verbindung zum aktiven Client===
+
+# Help submenu
+Check for Updates===Nach Updates überprüfen===
+Documentation===Dokumentation===
+Memory Errors===Speicherfehler===
+Hot Keys===Tastenkürzel===
+About===Über===
+
+
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
+=== ===
