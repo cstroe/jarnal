@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+project.ext.jomlVersion = "1.7.0"
+project.ext.joglVersion = "3.0.0a"
+project.ext.alogVersion = "2.0"
+project.ext.acliVersion = "1.2"
+project.ext.alngVersion = "3.1";
+
+project.ext.junitVersion = "4.12";
+
+repositories {
+    mavenCentral();
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    compile name: 'jpedalt'  // jPedal maven only contains branch projects
+    compile name: 'itext-1.2'// iText maven doesn'ct support this low of a version
+}
+
+apply plugin: 'idea'; apply plugin: 'eclipse'
