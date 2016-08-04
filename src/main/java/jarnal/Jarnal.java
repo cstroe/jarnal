@@ -14,15 +14,15 @@ import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.*;
 
-import jarnal.Jtabbutton;
-import jarnal.Jpages;
-import jarnal.Jtool;
-import jarnal.Jpar;
-import jarnal.Jcom;
-import jarnal.Janalyze;
+import jarnal.TabButtons;
+import jarnal.Pages;
+import jarnal.Tools;
+import jarnal.Parameter;
+import jarnal.Communicator;
+import jarnal.Analyze;
 import jarnal.Jarnbox;
-import jarnal.Jarnout;
-import jarnal.Jsendmail;
+import jarnal.Out;
+import jarnal.SendMail;
 
 public class Jarnal extends JApplet {
 
@@ -30,32 +30,36 @@ public class Jarnal extends JApplet {
 	static Point frameLocation = new Point(0, 0);
 	static int nWins = 0;
 
-	static float guiSize = 15.0f;
+	static float guiSize = 14.0f;
 
 	static JFrame sJrnlFrame = null;
 
 	static String ext = ".jaj";
-	static String openfile = "";
-	static String openbgfile = "";
-	static String openmfile = "";
-	static String opentextfile = "";
-	static String savefile = "";
-	static String pdffile = "";
+	
+	static String openfile = "", openmfile = "", openbgfile = "";
+	static String opentextfile = "", savefile = "", pdffile ="";
+	
 	static String confdir = "";
-	static String meta = "";
-	static String meta2 = "";
+	static String meta = "", meta2 = "";
+	
 	static boolean javagui = false;
 	static boolean multitouch = false;
 	static boolean doneMeta = false;
-	static LinkedList loadFiles = new LinkedList();
+	
 	static boolean setLocation = false;
 	static boolean locationSet = false;
-	static boolean showMenu = true;
+	
+	static boolean showMenu = true, showGUI = false;
+
 	static boolean template = false;
-	static HashSet wins = new HashSet();
 	static boolean isApplet = false;
-	static boolean showGUI = false;
 	static boolean startfs = false;
+	
+	
+	static LinkedList loadFiles = new LinkedList();
+	
+	static HashSet wins = new HashSet();
+	
 	public static String nextScrap = null;
 	public static Transferable internalClipboard;
 	boolean embed = false;
@@ -65,11 +69,16 @@ public class Jarnal extends JApplet {
 
 	static String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
 	static String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	
 	static String firefox;
+	
 	static String ps2pdf;
-	static String gs;
 	static String printpdf;
 	static String pdfconverter;
+	
+	static String gs;
+	
+	
 	static int tzadjust = 0;
 	static boolean printaround = false;
 	static int keepbookmarks = 0;
@@ -89,7 +98,7 @@ public class Jarnal extends JApplet {
 	static boolean botpCf = false;
 
 	JrnlPane jrnlPane;
-	Jarnout outline;
+	Out outline;
 	JScrollPane sp;
 	SLabel statusBar;
 	static final Color slabelgray = new Color(0xf5f5f5);
@@ -125,10 +134,10 @@ public class Jarnal extends JApplet {
 	boolean barjarnal = false;
 	boolean showOutline = false;
 
-	Jtool jt = new Jtool();
-	Jtool jtd = new Jtool();
-	Jtool jth = new Jtool();
-	Jtool jtbu = new Jtool();
+	Tools jt = new Tools();
+	Tools jtd = new Tools();
+	Tools jth = new Tools();
+	Tools jtbu = new Tools();
 	String middleButton = "Eraser";
 	String rightButton = "Context Menu";
 	String old_color = "black";
@@ -234,7 +243,7 @@ public class Jarnal extends JApplet {
 		}
 		String s = null;
 		try {
-			s = new String(Jpages.streamToByteArray(in));
+			s = new String(Pages.streamToByteArray(in));
 		} catch (Exception ex) {
 			System.err.println(ex);
 			s = null;
@@ -243,8 +252,8 @@ public class Jarnal extends JApplet {
 			return;
 		}
 		hlang = new Hashtable();
-		s = Jtool.replaceAll(s, "\r\n", "\n");
-		s = Jtool.replaceAll(s, "\r", "\n");
+		s = Tools.replaceAll(s, "\r\n", "\n");
+		s = Tools.replaceAll(s, "\r", "\n");
 		// s.replace("\r\n", "\n");
 		// s.replace("\r", "\n");
 		boolean done = false;
@@ -405,11 +414,11 @@ public class Jarnal extends JApplet {
 		}
 		if (openfile.equals("-g")) {
 			openfile = oldopenfile;
-			Jbgs.useGS = true;
+			Background.useGS = true;
 		}
 		if (openfile.equals("-sg")) {
 			openfile = oldopenfile;
-			Jbgs.silentGS = true;
+			Background.silentGS = true;
 		}
 		if (openfile.equals("-pen")) {
 			openfile = oldopenfile;
@@ -528,52 +537,52 @@ public class Jarnal extends JApplet {
 		shell = shell + "\n";
 		// String s = shell;
 		String s = "";	
-		z = Jtool.getLine(shell, "tabs");
+		z = Tools.getLine(shell, "tabs");
 		if (z != null) {
 			if (z.equals("true")) 
 				tabs = true;
 			else tabs = false;
 		}
 		s = s + "tabs=" + tabs + "\n";
-		z = Jtool.getLine(shell, "keepbookmarks");
+		z = Tools.getLine(shell, "keepbookmarks");
 		if (z != null) {
 			if (z.equals("true")) 
 				keepbookmarks = defmarks;
 			else keepbookmarks = Integer.parseInt(z);
 		}
 		s = s + "keepbookmarks=" + defmarks + "\n";		
-		z = Jtool.getLine(shell, "printaround");
+		z = Tools.getLine(shell, "printaround");
 		if (z != null) {
 			if (z.equals("true")) {
 				s = s + "printaround=true\n";
 				printaround = true;
 			}
 		}
-		z = Jtool.getLine(shell, "pdfrenderer");
+		z = Tools.getLine(shell, "pdfrenderer");
 		if (z != null)
 			gs = z;
 		s = s + "pdfrenderer=" + gs + "\n";
-		z = Jtool.getLine(shell, "ps2pdf");
+		z = Tools.getLine(shell, "ps2pdf");
 		if (z != null)
 			ps2pdf = z;
 		s = s + "ps2pdf=" + ps2pdf + "\n";
-		z = Jtool.getLine(shell, "firefox");
+		z = Tools.getLine(shell, "firefox");
 		if (z != null)
 			firefox = z;
 		s = s + "firefox=" + firefox + "\n";
-		z = Jtool.getLine(shell, "pdfconverter");
+		z = Tools.getLine(shell, "pdfconverter");
 		if (z != null)
 			pdfconverter = z;
 		s = s + "pdfconverter=" + pdfconverter + "\n";
-		z = Jtool.getLine(shell, "printpdf");
+		z = Tools.getLine(shell, "printpdf");
 		if (z != null)
 			printpdf = z;
 		s = s + "printpdf=" + printpdf + "\n";
-		z = Jtool.getLine(shell, "pdftotext");
+		z = Tools.getLine(shell, "pdftotext");
 		if (z != null)
-			Jpages.pdftotext = z;
-		s = s + "pdftotext=" + Jpages.pdftotext + "\n";
-		z = Jtool.getLine(shell, "tzadjust");
+			Pages.pdftotext = z;
+		s = s + "pdftotext=" + Pages.pdftotext + "\n";
+		z = Tools.getLine(shell, "tzadjust");
 		if (z != null)
 			tzadjust = Integer.parseInt(z);
 		s = s + "tzadjust=" + tzadjust + "\n";
@@ -606,10 +615,10 @@ public class Jarnal extends JApplet {
 
 	private static void loadShell(boolean writeShell) {
 		String shell = jarnalshell;
-		if (Jtool.checkMSWindows()) {
+		if (Tools.checkMSWindows()) {
 			shell = jarnalshellwin;
-			shell = Jtool.replaceAll(shell, "basepathlib", "\""
-					+ Jtool.getBasepath() + "lib/pdftotext\" ");
+			shell = Tools.replaceAll(shell, "basepathlib", "\""
+					+ Tools.getBasepath() + "lib/pdftotext\" ");
 		}
 		String oldshell = "";
 		parseShell(shell);
@@ -788,7 +797,7 @@ public class Jarnal extends JApplet {
 		wins.remove(this);
 		if (!mini)
 			jrnlPane.doDisconnect();
-		jrnlPane.jpages.doExit();
+		jrnlPane.pages.doExit();
 		System.gc();
 		if (nWins == 0)
 			try {
@@ -906,15 +915,15 @@ public class Jarnal extends JApplet {
 		controller.jarn = controller;
 		controller.fitWidth = false;
 		JrnlPane jp = controller.buildMiniUI(rtmenu, jrnlFrame, cp, tk);
-		jp.jpages.setHeight(2.00f);
+		jp.pages.setHeight(2.00f);
 		if (jrnlFrame != null)
-			jp.jpages.setWidth(9.0f);
+			jp.pages.setWidth(9.0f);
 		else
-			jp.jpages.setWidth(6.0f);
-		jp.jpages.setPaper("Plain");
+			jp.pages.setWidth(6.0f);
+		jp.pages.setPaper("Plain");
 		if (jrnlFrame != null)
 			jrnlFrame.setSize(new Dimension(480, 258));
-		jp.jpages.setScale(1.0f);
+		jp.pages.setScale(1.0f);
 		jp.setup();
 		jp.doAction("Recognize");
 		controller.statusBar.setFont(new Font("Sans Serif", Font.PLAIN, 16));
@@ -937,7 +946,7 @@ public class Jarnal extends JApplet {
 		JrnlPane jp = controller.buildBarUI(parent, cp, tk);
 		controller.thumbs = true;
 		controller.threeup = true;
-		controller.activePage = jp.jpages.getPage() - 1;
+		controller.activePage = jp.pages.getPage() - 1;
 		jp.setup();
 		return controller;
 	}
@@ -949,10 +958,10 @@ public class Jarnal extends JApplet {
 		controller.micro = true;
 		controller.fitWidth = false;
 		JrnlPane jp = controller.buildMiniUI(null, cp, tk);
-		jp.jpages.setHeight(2.00f);
-		jp.jpages.setWidth(2.8f);
-		jp.jpages.setPaper("Plain");
-		jp.jpages.setScale(1.0f);
+		jp.pages.setHeight(2.00f);
+		jp.pages.setWidth(2.8f);
+		jp.pages.setPaper("Plain");
+		jp.pages.setScale(1.0f);
 		jp.setup();
 		jp.doAction("Recognize");
 		controller.statusBar.setFont(new Font("Sans Serif", Font.PLAIN, 16));
@@ -1009,7 +1018,7 @@ public class Jarnal extends JApplet {
 		}
 		jmb = null;
 		JrnlPane jp = buildContainer(cp);
-		jp.jpages.setPrint();
+		jp.pages.setPrint();
 		statusBar.setText("Text: ");
 		return jp;
 	}
@@ -1130,47 +1139,47 @@ public class Jarnal extends JApplet {
 		return jrnlPane.getConf();
 	}
 
-	public Jpages jpages() {
-		return jrnlPane.jpages;
+	public Pages pages() {
+		return jrnlPane.pages;
 	}
 
 	public void setMeta() {
 		String s = meta;
 		String z;
 		s = s + "\n";
-		String y = Jtool.getEntry(s, "[Globals]");
-		z = Jtool.getLine(y, "backgroundFile");
+		String y = Tools.getEntry(s, "[Globals]");
+		z = Tools.getLine(y, "backgroundFile");
 		if (z != null) {
 			openbgfile = z;
 		}
-		z = Jtool.getLine(y, "jarnalFile");
+		z = Tools.getLine(y, "jarnalFile");
 		if (z != null) {
 			openfile = z;
 		}
-		z = Jtool.getLine(y, "templateFile");
+		z = Tools.getLine(y, "templateFile");
 		if (z != null) {
 			template = true;
 			openfile = z;
 		}
-		z = Jtool.getLine(y, "setLocation");
+		z = Tools.getLine(y, "setLocation");
 		if (z != null) {
 			if (z.trim().equals("true"))
 				setLocation = true;
 		}
-		z = Jtool.getLine(y, "email");
+		z = Tools.getLine(y, "email");
 		if (z != null) {
 			email = y;
 		}
-		z = Jtool.getLine(y, "showMenu");
+		z = Tools.getLine(y, "showMenu");
 		if (z != null) {
 			if (z.trim().equals("false"))
 				showMenu = false;
 		}
 		int ip = 1;
-		z = Jtool.getLine(y, "loadFile0");
+		z = Tools.getLine(y, "loadFile0");
 		while (z != null) {
 			loadFiles.add(z);
-			z = Jtool.getLine(y, "loadFile" + ip);
+			z = Tools.getLine(y, "loadFile" + ip);
 			ip++;
 		}
 		pipe();
@@ -1732,11 +1741,11 @@ public class Jarnal extends JApplet {
 		backQuality.add(backQuality2);
 		backQuality.add(backUseGS);
 		backQuality.add(backSilentGS);
-		if (Jbgs.silentGS) {
+		if (Background.silentGS) {
 			backSilentGS.setState(true);
-			Jbgs.useGS = true;
+			Background.useGS = true;
 		}
-		if (Jbgs.useGS)
+		if (Background.useGS)
 			backUseGS.setState(true);
 		viewopt.add(genQuality);
 		viewopt.add(backQuality);
@@ -2481,12 +2490,12 @@ public class Jarnal extends JApplet {
 
 	public void newJrnlPane() {
 		jrnlPane = new JrnlPane();
-		outline = new Jarnout(this);
+		outline = new Out(this);
 	}
 
 	public JrnlPane buildContainer(Container container) {
 
-		if(outline == null) outline = new Jarnout(this);
+		if(outline == null) outline = new Out(this);
 
 		Image cursorD = toolkit.getImage(Jarnal.class
 				.getResource("images/dotblk.png"));
@@ -2522,7 +2531,7 @@ public class Jarnal extends JApplet {
 
 		if(jrnlPane == null) jrnlPane = new JrnlPane();
 		defaultConf = jrnlPane.getConf();
-		jrnlPane.jpages.outline = outline;
+		jrnlPane.pages.outline = outline;
 		jrnlPane.setup();
 
 		jrnlPane.dotC = toolkit.createCustomCursor(cursorD, new Point(1, 1),"dot");
@@ -2816,7 +2825,7 @@ public class Jarnal extends JApplet {
 	}
 
 	public void setJrnlTabCloseListener(String tmark){
-		tp.setTabComponentAt(tp.getSelectedIndex(), new Jtabbutton(tp, new JrnlTabCloseListener(tmark), tmark));
+		tp.setTabComponentAt(tp.getSelectedIndex(), new TabButtons(tp, new JrnlTabCloseListener(tmark), tmark));
 	}
 
 	private class JrnlTabCloseListener implements ActionListener {
@@ -2896,7 +2905,7 @@ public class Jarnal extends JApplet {
 		return false;
 	}
 
-	Jtool oldTool = new Jtool();
+	Tools oldTool = new Tools();
 
 	private class JrnlScrollListener implements MouseWheelListener {
 		public void mouseWheelMoved(MouseWheelEvent e) {
@@ -3292,7 +3301,7 @@ public class Jarnal extends JApplet {
 				}
 				if ((dragOp == 0) && smoothStrokes) {
 					// cnt = 0;
-					Rectangle r = jrnlPane.jpages.smooth();
+					Rectangle r = jrnlPane.pages.smooth();
 					if (r != null) {
 						cnt = 0;
 						jrnlPane.drawRect = r;
@@ -3953,7 +3962,7 @@ public class Jarnal extends JApplet {
 		public void JrnlPane() {
 		}
 
-		public Jpages jpages = new Jpages();
+		public Pages pages = new Pages();
 		private BufferedImage gg;
 		private Graphics2D gg2;
 
@@ -4004,7 +4013,7 @@ public class Jarnal extends JApplet {
 		// API begins here
 
 		public void invalidateP() {
-			jpages.setGraphics(null);
+			pages.setGraphics(null);
 			invalidateFlag = true;
 		}
 
@@ -4012,11 +4021,11 @@ public class Jarnal extends JApplet {
 			if (thumbs || fullScreen)
 				p = offP(p, -1);
 			if (dragOp == 114) {
-				jpages.pasteList(clipdata, p);
+				pages.pasteList(clipdata, p);
 			} else {
 				if (nextScrap == null)
 					return;
-				jpages.addScrap(p, nextScrap);
+				pages.addScrap(p, nextScrap);
 			}
 			dirty = true;
 			setSave(false);
@@ -4043,8 +4052,8 @@ public class Jarnal extends JApplet {
 		}
 
 		public void analyze() {
-			jpages.setCurrent(jt);
-			String str = jpages.analyze(jt, !mini);
+			pages.setCurrent(jt);
+			String str = pages.analyze(jt, !mini);
 			if (!mini)
 				doanalyze(str);
 			else
@@ -4052,8 +4061,8 @@ public class Jarnal extends JApplet {
 		}
 
 		public void analyzeClick() {
-			jpages.setCurrent(jt);
-			String str = jpages.analyzeClick(jt, !mini);
+			pages.setCurrent(jt);
+			String str = pages.analyzeClick(jt, !mini);
 			if (!mini)
 				doanalyze(str);
 			else
@@ -4061,10 +4070,10 @@ public class Jarnal extends JApplet {
 		}
 
 		public void hitImage() {
-			String test = jpages.hitImage();
+			String test = pages.hitImage();
 			if (test == null)
 				return;
-			jpages.clickText();
+			pages.clickText();
 			nextScrap = test;
 			drawState = 0;
 			invalidateP();
@@ -4072,9 +4081,9 @@ public class Jarnal extends JApplet {
 		}
 
 		public void advanceFrame() {
-			int oldpage = jpages.getPage();
-			Jtext test = jpages.checkFrame(1);
-			if (jpages.getPage() != oldpage) {
+			int oldpage = pages.getPage();
+			Jtext test = pages.checkFrame(1);
+			if (pages.getPage() != oldpage) {
 				menuflag = true;
 				setup();
 			}
@@ -4084,9 +4093,9 @@ public class Jarnal extends JApplet {
 		}
 
 		public void previousFrame() {
-			int oldpage = jpages.getPage();
-			Jtext test = jpages.checkFrame(-1);
-			if (jpages.getPage() != oldpage) {
+			int oldpage = pages.getPage();
+			Jtext test = pages.checkFrame(-1);
+			if (pages.getPage() != oldpage) {
 				menuflag = true;
 				setup();
 			}
@@ -4098,28 +4107,28 @@ public class Jarnal extends JApplet {
 		Rectangle fixRR;
 
 		private Rectangle nextFrame(Jtext test, boolean moveforward) {
-			Rectangle oldr = jpages.getOldTextRectangle();
+			Rectangle oldr = pages.getOldTextRectangle();
 			if (oldr != null) {
-				int w = (int) jpages.getWidth();
-				int h = (int) jpages.getHeight();
+				int w = (int) pages.getWidth();
+				int h = (int) pages.getHeight();
 				int ww = (int) oldr.getWidth();
 				int hh = (int) oldr.getHeight();
 				int x = (int) oldr.getX();
 				int y = (int) oldr.getY();
 				Point2D.Double p = null;
 				if (x + (2 * ww) < w) {
-					p = new Point2D.Double(x + ww, jpages.getY());
+					p = new Point2D.Double(x + ww, pages.getY());
 				} else if (y + (2 * hh) < h) {
-					p = new Point2D.Double(jpages.getX(), y + hh);
+					p = new Point2D.Double(pages.getX(), y + hh);
 				}
 				if (p != null)
-					fixRR = jpages.getOldTextRectangle();
+					fixRR = pages.getOldTextRectangle();
 				dirty = true;
-				jpages.setStartMark();
+				pages.setStartMark();
 				int direc = 1;
 				if (!moveforward)
 					direc = -1;
-				jpages.addFrame(jt, test, p, direc);
+				pages.addFrame(jt, test, p, direc);
 				menuflag = true;
 				setup();
 			}
@@ -4127,10 +4136,10 @@ public class Jarnal extends JApplet {
 		}
 
 		public void textOp(String op, int data, String str) {
-			int oldpage = jpages.getPage();
-			Jtext test = jpages.checkFrame(0);
+			int oldpage = pages.getPage();
+			Jtext test = pages.checkFrame(0);
 			fixRR = null;
-			if (jpages.getPage() != oldpage) {
+			if (pages.getPage() != oldpage) {
 				menuflag = true;
 				setup();
 			}
@@ -4143,8 +4152,8 @@ public class Jarnal extends JApplet {
 					Character z = new Character(y);
 					str = z.toString();
 				}
-				Rectangle oldr = jpages.getOldTextRectangle();
-				clipR = jpages.typeKey(str, jt);
+				Rectangle oldr = pages.getOldTextRectangle();
+				clipR = pages.typeKey(str, jt);
 				if ((oldr != null) && (clipR != null))
 					clipR.add(oldr);
 				dirty = true;
@@ -4152,42 +4161,42 @@ public class Jarnal extends JApplet {
 			}
 			if (op.equals("style")) {
 				clipR = null;
-				Rectangle oldr = jpages.getOldTextRectangle();
+				Rectangle oldr = pages.getOldTextRectangle();
 				op = "show";
 				dirty = true;
 				if (str.equals("Bold"))
-					clipR = jpages.setSelStyle(true, false, false, null, null,
+					clipR = pages.setSelStyle(true, false, false, null, null,
 							null);
 				if (str.equals("Italic"))
-					clipR = jpages.setSelStyle(false, true, false, null, null,
+					clipR = pages.setSelStyle(false, true, false, null, null,
 							null);
 				if (str.equals("Underline"))
-					clipR = jpages.setSelStyle(false, false, true, null, null,
+					clipR = pages.setSelStyle(false, false, true, null, null,
 							null);
 				if (str.equals("Size"))
-					clipR = jpages.setSelStyle(false, false, false, new Float(
+					clipR = pages.setSelStyle(false, false, false, new Float(
 							data), null, null);
 				if (str.startsWith("Font ")) {
 					String font = str.substring(5);
-					clipR = jpages.setSelStyle(false, false, false, null, font,
+					clipR = pages.setSelStyle(false, false, false, null, font,
 							null);
 				}
 				if (str.startsWith("Color")) {
 					String color = str.substring(5);
-					clipR = jpages.setSelStyle(false, false, false, null, null,
+					clipR = pages.setSelStyle(false, false, false, null, null,
 							color);
 				}
 				if ((oldr != null) && (clipR != null))
 					clipR.add(oldr);
 			}
 			if (op.equals("extendEmpty")) {
-				clipR = jpages.adv(data, 2);
+				clipR = pages.adv(data, 2);
 			}
 			if (op.equals("extend")) {
-				clipR = jpages.adv(data, 1);
+				clipR = pages.adv(data, 1);
 			}
 			if (op.equals("adv")) {
-				clipR = jpages.adv(data, 0);
+				clipR = pages.adv(data, 0);
 			}
 			if (op.equals("show")) {
 				drawState = 7;
@@ -4203,19 +4212,19 @@ public class Jarnal extends JApplet {
 							clipR.height);
 			}
 			if (test != null)
-				jpages.setEndMark();
+				pages.setEndMark();
 			setStatus("");
 
 		}
 
 		public void setArrow() {
-			jpages.setArrow(markerweight);
+			pages.setArrow(markerweight);
 		}
 
 		public void stroke(Point2D.Double endL) {
 			if (thumbs || fullScreen)
 				endL = offP(endL, -1);
-			jpages.stroke(endL);
+			pages.stroke(endL);
 			boolean oldDirty = dirty;
 			dirty = true;
 			setSave(oldDirty);
@@ -4227,7 +4236,7 @@ public class Jarnal extends JApplet {
 			if (thumbs || fullScreen)
 				endL = offP(endL, -1);
 			if (dragOp != -11)
-				jpages.startStroke(endL, jt);
+				pages.startStroke(endL, jt);
 			else
 				startL = endL;
 		}
@@ -4241,15 +4250,15 @@ public class Jarnal extends JApplet {
 				x[1] = offP(x[1], -1);
 			}
 			if (!makeOverlay)
-				jpages.startDragRect(x);
+				pages.startDragRect(x);
 			else
-				jpages.addOverlay(x, defaultOverlay);
+				pages.addOverlay(x, defaultOverlay);
 		}
 
 		public void startText(Point2D.Double endL) {
 			if (thumbs || fullScreen)
 				endL = offP(endL, -1);
-			clipR = jpages.startText(endL);
+			clipR = pages.startText(endL);
 			setStatus("");
 			if ((clipR == null) || (gg == null)) {
 				drawState = 0;
@@ -4267,12 +4276,12 @@ public class Jarnal extends JApplet {
 				x = x - offX;
 				y = y - offY;
 			}
-			clipR = jpages.dragText(x, y);
+			clipR = pages.dragText(x, y);
 			drawState = 7;
 			if (clipR != null)
 				jrnlPane.repaint(1l, (int) (offX + clipR.getX()),
 						(int) (offY + clipR.getY()), clipR.width, clipR.height);
-			if (jpages.dragShape()) {
+			if (pages.dragShape()) {
 				dirty = true;
 				setStatus("");
 			}
@@ -4281,8 +4290,8 @@ public class Jarnal extends JApplet {
 		public void insertLink(Point2D.Double startL) {
 			if (thumbs || fullScreen)
 				startL = offP(startL, -1);
-			if (jpages.selectSingle(startL, jt)) {
-				String test = jpages.getlink();
+			if (pages.selectSingle(startL, jt)) {
+				String test = pages.getlink();
 				Jarnbox jb = new Jarnbox(gJrnlFrame, "Insert Link", jarn, true);
 				jb.showLink(test);
 				setStatus("");
@@ -4303,7 +4312,7 @@ public class Jarnal extends JApplet {
 			String iname = "";
 			if (prs[0].equals("")) {
 				iname = getFileName() + "?" + name;
-				name = jpages.getExtraFile(name);
+				name = pages.getExtraFile(name);
 				test = "file://" + name + prs[2];
 				prs[0] = "file://";
 			}
@@ -4335,7 +4344,7 @@ public class Jarnal extends JApplet {
 				jn.jrnlPane.followLink(query);
 			} else {
 				String est = firefox;
-				est = Jtool.replaceAll(est, "%1", Jtool.cmdQuote(test));
+				est = Tools.replaceAll(est, "%1", Tools.cmdQuote(test));
 				try {
 					Runtime.getRuntime().exec(est);
 				} catch (Exception ex) {
@@ -4347,8 +4356,8 @@ public class Jarnal extends JApplet {
 		public void browse(Point2D.Double startL) {
 			if (thumbs || fullScreen)
 				startL = offP(startL, -1);
-			if (jpages.selectSingle(startL, jt)) {
-				String test = jpages.getlink();
+			if (pages.selectSingle(startL, jt)) {
+				String test = pages.getlink();
 				followLink(test);
 			}
 		}
@@ -4356,14 +4365,14 @@ public class Jarnal extends JApplet {
 		public void click(Point2D.Double endL) {
 			if (thumbs || fullScreen)
 				endL = offP(endL, -1);
-			jpages.click(endL, jt);
+			pages.click(endL, jt);
 			boolean oldDirty = dirty;
 			dirty = true;
 			setSave(oldDirty);
 		}
 
 		public void endDragOp() {
-			jpages.endDragOp();
+			pages.endDragOp();
 			actionMsg = "";
 		}
 
@@ -4372,23 +4381,23 @@ public class Jarnal extends JApplet {
 		}
 
 		public void setDragOp(int dragOp) {
-			jpages.setDragOp(dragOp);
+			pages.setDragOp(dragOp);
 		}
 
 		public void startDragOp() {
-			jpages.startDragOp(dragOp);
+			pages.startDragOp(dragOp);
 		}
 
 		public void dragOp(Point2D.Double p) {
-			jpages.dragOp(p);
+			pages.dragOp(p);
 		}
 
 		public void putdo(boolean pd) {
-			jpages.putdo(pd);
+			pages.putdo(pd);
 		}
 
 		public Rectangle drawLast() {
-			return jpages.drawLast();
+			return pages.drawLast();
 		}
 
 		// end of API
@@ -4398,9 +4407,9 @@ public class Jarnal extends JApplet {
 		public int foffX = 0;
 		public int foffY = 0;
 
-		public String defaultOverlay = Jtool.defaultOverlay;
-		public String circleOverlay = Jtool.circleOverlay;
-		public String squareOverlay = Jtool.squareOverlay;
+		public String defaultOverlay = Tools.defaultOverlay;
+		public String circleOverlay = Tools.circleOverlay;
+		public String squareOverlay = Tools.squareOverlay;
 
 		String prefix = "text: ";
 		String input = "";
@@ -4413,7 +4422,7 @@ public class Jarnal extends JApplet {
 			if (str.equals(""))
 				return;
 			if (micro && str.equals("<recognized character>")) {
-				jpages.getanalyze(jt).jdic.updateList1();
+				pages.getanalyze(jt).jdic.updateList1();
 				doAction("Clear");
 				return;
 			}
@@ -4461,7 +4470,7 @@ public class Jarnal extends JApplet {
 				internalClipboard = sel;
 			if (parentJarn != null) {
 				parentJarn.jrnlPane.doAction("Paste");
-				parentJarn.jrnlPane.jpages.adv(-input.length(), 1);
+				parentJarn.jrnlPane.pages.adv(-input.length(), 1);
 				parentJarn.jrnlPane.textOp("show", 0, null);
 			}
 		}
@@ -4477,7 +4486,7 @@ public class Jarnal extends JApplet {
 				action = "none";
 			}
 			if (action.equals("Calculate")) {
-				String test = "" + (new Jarncalc(input)).calc();
+				String test = "" + (new Calculator(input)).calc();
 				input = "";
 				strokes = new LinkedList();
 				miniadd(test);
@@ -4495,7 +4504,7 @@ public class Jarnal extends JApplet {
 					action = "Clear Out";
 			}
 			if (action.equals("Number Lock")) {
-				Janalyze janal = jpages.getanalyze(jt);
+				Analyze janal = pages.getanalyze(jt);
 				if (!prefix.equals("Num:  ")) {
 					prefix = "Num:  ";
 					janal.setDictionary("num");
@@ -4507,7 +4516,7 @@ public class Jarnal extends JApplet {
 				action = "none";
 			}
 			if (action.equals("Symbol")) {
-				Janalyze janal = jpages.getanalyze(jt);
+				Analyze janal = pages.getanalyze(jt);
 				if (!prefix.equals("Symbol: ")) {
 					prefix = "Symbol: ";
 					janal.setDictionary("sym");
@@ -4519,7 +4528,7 @@ public class Jarnal extends JApplet {
 				action = "none";
 			}
 			if (action.equals("User")) {
-				Janalyze janal = jpages.getanalyze(jt);
+				Analyze janal = pages.getanalyze(jt);
 				if (!prefix.equals("User: ")) {
 					prefix = "User: ";
 					janal.setDictionary("user");
@@ -4536,14 +4545,14 @@ public class Jarnal extends JApplet {
 				if (strokes.size() > 0) {
 					int st = ((Integer) strokes.removeLast()).intValue();
 					for (int i = 0; i < st; i++)
-						jpages.undo();
+						pages.undo();
 				}
 				action = "none";
 				if (strokes.size() == 0)
 					action = "Clear";
 			}
 			if (action.equals("Capitalize")) {
-				Janalyze janal = jpages.getanalyze(jt);
+				Analyze janal = pages.getanalyze(jt);
 				if (!prefix.equals("TEXT: ")) {
 					prefix = "TEXT: ";
 					janal.setDictionary("base");
@@ -4560,13 +4569,13 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.startsWith("Clear")) {
-				JDictionaryEditor jd = jpages.getanalyze(jt).jdic;
+				JDictionaryEditor jd = pages.getanalyze(jt).jdic;
 				input = "";
 				statusBar.setText(prefix);
-				jpages.clearPage();
-				jpages.setPrint();
+				pages.clearPage();
+				pages.setPrint();
 				action = "none";
-				Janalyze janal = jpages.getanalyze(jt);
+				Analyze janal = pages.getanalyze(jt);
 				if (prefix.equals("Num:  ")) {
 					janal.setDictionary("num");
 				} else
@@ -4630,13 +4639,13 @@ public class Jarnal extends JApplet {
 			if (!pick && !extend)
 				pageList = new TreeSet();
 			else if (pick || pageList.isEmpty()) {
-				Integer iii = new Integer(1 - jpages.getPage());
+				Integer iii = new Integer(1 - pages.getPage());
 				if (pageList.contains(iii))
 					pageList.remove(iii);
 				else
 					pageList.add(iii);
 			} else {
-				int ii = jpages.getPage() - 1;
+				int ii = pages.getPage() - 1;
 				int top = -((Integer) pageList.first()).intValue();
 				int bot = -((Integer) pageList.last()).intValue();
 				if (ii < bot)
@@ -4664,7 +4673,7 @@ public class Jarnal extends JApplet {
 		public boolean pickpage(int x, int y) {
 			if (!thumbs)
 				return false;
-			int oldAP = jpages.getPage() - 1;
+			int oldAP = pages.getPage() - 1;
 			int delta = 0;
 			int w = getTWidth();
 			int h = getTHeight();
@@ -4683,16 +4692,16 @@ public class Jarnal extends JApplet {
 				parentJarn.jrnlPane.doAction("GoToPage");
 			}
 			if (delta != 0) {
-				jpages.nextPage(delta);
+				pages.nextPage(delta);
 				if (showOutline)
 					outline.synchPage(delta);
-				gg = jpages.getGraphics();
+				gg = pages.getGraphics();
 				if (gg != null) {
 					if (gg2 != null)
 						gg2.dispose();
 					gg2 = gg.createGraphics();
 					setHints(gg2);
-					jpages.setGraphics2D(gg2);
+					pages.setGraphics2D(gg2);
 				} else
 					drawState = 0;
 				setStatus("");
@@ -4727,7 +4736,7 @@ public class Jarnal extends JApplet {
 			// if(jt.transparency != 255) isHigh = true;
 			if ((jt.type.equals("Fat")) && isHigh)
 				x = jt.getHeavy();
-			return x * jpages.getScale();
+			return x * pages.getScale();
 		}
 
 		private JCheckBox bct(String action) {
@@ -4785,21 +4794,21 @@ public class Jarnal extends JApplet {
 		}
 
 		private void setTraps() {
-			trapBlack.setSelected(jpages.trapc[0]);
-			trapBlue.setSelected(jpages.trapc[1]);
-			trapGreen.setSelected(jpages.trapc[2]);
-			trapGray.setSelected(jpages.trapc[3]);
-			trapMagenta.setSelected(jpages.trapc[4]);
-			trapOrange.setSelected(jpages.trapc[5]);
-			trapPink.setSelected(jpages.trapc[6]);
-			trapRed.setSelected(jpages.trapc[7]);
-			trapWhite.setSelected(jpages.trapc[8]);
-			trapYellow.setSelected(jpages.trapc[9]);
+			trapBlack.setSelected(pages.trapc[0]);
+			trapBlue.setSelected(pages.trapc[1]);
+			trapGreen.setSelected(pages.trapc[2]);
+			trapGray.setSelected(pages.trapc[3]);
+			trapMagenta.setSelected(pages.trapc[4]);
+			trapOrange.setSelected(pages.trapc[5]);
+			trapPink.setSelected(pages.trapc[6]);
+			trapRed.setSelected(pages.trapc[7]);
+			trapWhite.setSelected(pages.trapc[8]);
+			trapYellow.setSelected(pages.trapc[9]);
 		}
 
 		public void trapAction(String action, boolean selected) {
 			if (action.startsWith("Exit")) {
-				jpages.trapColors = false;
+				pages.trapColors = false;
 				trapDialog.setVisible(false);
 			}
 			if (action.equals("All On"))
@@ -4809,27 +4818,27 @@ public class Jarnal extends JApplet {
 			if (action.equals("Redraw"))
 				doAction("Redraw Page");
 			if (action.equals("Black"))
-				jpages.trapc[0] = selected;
+				pages.trapc[0] = selected;
 			if (action.equals("Blue"))
-				jpages.trapc[1] = selected;
+				pages.trapc[1] = selected;
 			if (action.equals("Green"))
-				jpages.trapc[2] = selected;
+				pages.trapc[2] = selected;
 			if (action.equals("Gray"))
-				jpages.trapc[3] = selected;
+				pages.trapc[3] = selected;
 			if (action.equals("Magenta"))
-				jpages.trapc[4] = selected;
+				pages.trapc[4] = selected;
 			if (action.equals("Orange"))
-				jpages.trapc[5] = selected;
+				pages.trapc[5] = selected;
 			if (action.equals("Pink"))
-				jpages.trapc[6] = selected;
+				pages.trapc[6] = selected;
 			if (action.equals("Red"))
-				jpages.trapc[7] = selected;
+				pages.trapc[7] = selected;
 			if (action.equals("White"))
-				jpages.trapc[8] = selected;
+				pages.trapc[8] = selected;
 			if (action.equals("Yellow"))
-				jpages.trapc[9] = selected;
+				pages.trapc[9] = selected;
 			if (action.equals("Enable Color Trap"))
-				jpages.trapColors = selected;
+				pages.trapColors = selected;
 			if (action.equals("Load Users")) {
 				String oldcwd = cwd;
 				String temp = getFile("Open Users", false);
@@ -4838,14 +4847,14 @@ public class Jarnal extends JApplet {
 				String userfile = uwd + File.separator + temp;
 				String instr = null;
 				try {
-					instr = new String(jpages
+					instr = new String(pages
 							.streamToByteArray(new FileInputStream(userfile)));
 				} catch (Exception ex) {
 					System.err.println(ex);
 					instr = null;
 				}
 				if (instr != null) {
-					usersList = Jtool.readConf(instr);
+					usersList = Tools.readConf(instr);
 					trapDialog.setVisible(false);
 					trapDialog();
 					dirty = true;
@@ -4932,7 +4941,7 @@ public class Jarnal extends JApplet {
 				fname = manageOpen();
 				if (fname != null) {
 					if (manageType.equals("Extras"))
-						jpages.addExtra(fname, manageData);
+						pages.addExtra(fname, manageData);
 					if (manageType.equals("Conf"))
 						setConf(new String(manageData));
 					dirty = true;
@@ -4944,9 +4953,9 @@ public class Jarnal extends JApplet {
 				if (manageSel != null) {
 					manageData = null;
 					if (manageType.equals("Outline"))
-						manageData = jpages.outline.getXML().getBytes();
+						manageData = pages.outline.getXML().getBytes();
 					if (manageType.equals("Extras"))
-						manageData = jpages.getExtra(manageSel);
+						manageData = pages.getExtra(manageSel);
 					if (manageType.equals("Toolbars")
 							&& manageSel.equals("Top Toolbar"))
 						manageData = tb1.getBytes();
@@ -4959,25 +4968,25 @@ public class Jarnal extends JApplet {
 					if (manageType.equals("Conf"))
 						manageData = getConf().getBytes();
 					if (manageType.equals("Active Images"))
-						manageData = jpages.getImage(manageSel);
+						manageData = pages.getImage(manageSel);
 					if (manageType.equals("Inactive Images"))
-						manageData = jpages.getImage(manageSel);
+						manageData = pages.getImage(manageSel);
 					if (manageType.equals("Active Backgrounds"))
-						manageData = jpages.getBackground(manageSel);
+						manageData = pages.getBackground(manageSel);
 					if (manageType.equals("Inactive Backgrounds"))
-						manageData = jpages.getBackground(manageSel);
+						manageData = pages.getBackground(manageSel);
 					if (manageType.equals("Users"))
-						manageData = Jtool.writeConf(usersList).getBytes();
+						manageData = Tools.writeConf(usersList).getBytes();
 					if (manageType.equals("Pages")) {
 						int n = Integer.parseInt(manageSel);
-						manageData = jpages.savePage(n - 1).getBytes();
+						manageData = pages.savePage(n - 1).getBytes();
 					}
 					if (manageType.equals("Undo/Redo Stacks")
 							&& manageSel.startsWith("redostack"))
-						manageData = jpages.saveRedo(getConf());
+						manageData = pages.saveRedo(getConf());
 					if (manageType.equals("Undo/Redo Stacks")
 							&& manageSel.startsWith("undostack"))
-						manageData = jpages.saveUndo(getConf());
+						manageData = pages.saveUndo(getConf());
 					if (manageType.equals("Toolbars")
 							&& manageSel.equals("Bottom Toolbar"))
 						manageData = tb2.getBytes();
@@ -4988,11 +4997,11 @@ public class Jarnal extends JApplet {
 			if (action.equals("Delete")) {
 				if (manageSel != null) {
 					if (manageType.equals("Extras"))
-						jpages.deleteExtra(manageSel);
+						pages.deleteExtra(manageSel);
 					if (manageType.equals("Inactive Images"))
-						jpages.deleteImage(manageSel);
+						pages.deleteImage(manageSel);
 					if (manageType.equals("Inactive Backgrounds"))
-						jpages.deleteBackground(manageSel);
+						pages.deleteBackground(manageSel);
 					if (manageType.equals("Users"))
 						usersList = new Hashtable();
 					dirty = true;
@@ -5043,7 +5052,7 @@ public class Jarnal extends JApplet {
 			cwd = oldcwd;
 			String userfile = manageDir + File.separator + temp;
 			try {
-				manageData = jpages.streamToByteArray(new FileInputStream(
+				manageData = pages.streamToByteArray(new FileInputStream(
 						userfile));
 			} catch (Exception ex) {
 				System.err.println(ex);
@@ -5075,7 +5084,7 @@ public class Jarnal extends JApplet {
 			if (selstr.equals("Outline")) {
 				manageDelete.setEnabled(false);
 				manageOpen.setEnabled(false);
-				String outXML = jpages.outline.getXML();
+				String outXML = pages.outline.getXML();
 				test = new String[1];
 				if (outXML != null)
 					test[0] = "outline.xml";
@@ -5098,15 +5107,15 @@ public class Jarnal extends JApplet {
 			}
 			if (selstr.equals("Active Backgrounds")) {
 				manageDelete.setEnabled(false);
-				test = jpages.getBgs(true);
+				test = pages.getBgs(true);
 			}
 			if (selstr.equals("Inactive Backgrounds")) {
-				test = jpages.getBgs(false);
+				test = pages.getBgs(false);
 			}
 			if (selstr.equals("Pages")) {
 				manageDelete.setEnabled(false);
 				manageOpen.setEnabled(false);
-				int npages = jpages.getPages();
+				int npages = pages.getPages();
 				test = new String[npages];
 				for (int i = 0; i < npages; i++)
 					test[i] = "" + (i + 1);
@@ -5114,14 +5123,14 @@ public class Jarnal extends JApplet {
 			if (selstr.equals("Active Images")) {
 				manageDelete.setEnabled(false);
 				managePaste.setEnabled(true);
-				test = jpages.getImages(true);
+				test = pages.getImages(true);
 			}
 			if (selstr.equals("Inactive Images")) {
 				managePaste.setEnabled(true);
-				test = jpages.getImages(false);
+				test = pages.getImages(false);
 			}
 			if (selstr.equals("Extras")) {
-				test = jpages.getExtras();
+				test = pages.getExtras();
 				managePaste.setText("Copy Link");
 				managePaste.setEnabled(true);
 			}
@@ -5188,8 +5197,8 @@ public class Jarnal extends JApplet {
 		}
 
 		private void trapDialog() {
-			jpages.trapColors = true;
-			trapEnable.setSelected(jpages.trapColors);
+			pages.trapColors = true;
+			trapEnable.setSelected(pages.trapColors);
 			setTraps();
 			JDialog jw = new JDialog(gJrnlFrame, "Color Trap");
 			trapDialog = jw;
@@ -5384,7 +5393,7 @@ public class Jarnal extends JApplet {
 
 		public String mymemory() {
 			Runtime rt = Runtime.getRuntime();
-			long mx = (long) (Jtool.maxMemory() / 1000000);
+			long mx = (long) (Tools.maxMemory() / 1000000);
 			long al = (long) (rt.totalMemory() / 1000000);
 			long us = rt.totalMemory() - rt.freeMemory();
 			us = (long) (us / 1000000);
@@ -5398,7 +5407,7 @@ public class Jarnal extends JApplet {
 
 		public void documentation() {
 			String est = firefox;
-			est = Jtool.replaceAll(est, "%1", homeserver);
+			est = Tools.replaceAll(est, "%1", homeserver);
 			try {
 				Runtime.getRuntime().exec(est);
 			} catch (Exception ex) {
@@ -5429,10 +5438,10 @@ public class Jarnal extends JApplet {
 		private String getConf() {
 			String s = "";
 			s = s + "[Globals]\n";
-			s = s + "pageNumber=" + jpages.getPage() + "\n";
-			float scale = nc() * jpages.getScale();
+			s = s + "pageNumber=" + pages.getPage() + "\n";
+			float scale = nc() * pages.getScale();
 			s = s + "scale=" + scale + "\n";
-			s = s + "highlightLines=" + jpages.highlightLines + "\n";
+			s = s + "highlightLines=" + pages.highlightLines + "\n";
 			s = s + "highlighterStyle=" + highlighterStyle + "\n";
 			s = s + "fitWidth=" + fitWidth + "\n";
 			s = s + "viewQuality=" + viewQuality + "\n";
@@ -5443,7 +5452,7 @@ public class Jarnal extends JApplet {
 			s = s + "threeup=" + threeup + "\n";
 			s = s + "poverlay=" + poverlay + "\n";
 			s = s + "PO=" + PO + "\n";
-			s = s + jpages.getDefaultPaper();
+			s = s + pages.getDefaultPaper();
 			Dimension d = null;
 			if (!embed && (gJrnlFrame != null))
 				d = gJrnlFrame.getSize();
@@ -5487,7 +5496,7 @@ public class Jarnal extends JApplet {
 			s = s + "updateBookmarks=" + updateBookmarks + "\n";
 			s = s + "saveBg=" + saveBg + "\n";
 			s = s + "smoothStrokes=" + smoothStrokes + "\n";
-			s = s + "defaultText=" + jpages.getParms() + "\n";
+			s = s + "defaultText=" + pages.getParms() + "\n";
 			s = s + "defaultOverlay=" + jrnlPane.defaultOverlay + "\n";
 			s = s + "circleOverlay=" + jrnlPane.circleOverlay + "\n";
 			s = s + "squareOverlay=" + jrnlPane.squareOverlay + "\n";
@@ -5518,10 +5527,10 @@ public class Jarnal extends JApplet {
 			if (!netOptions.trim().equals("") && saveBookmarks) {
 				s = s + "[Net Options]\n" + netOptions + "\n\n";
 			}
-			s = s + jpages.saveBgsList(cwd);
+			s = s + pages.saveBgsList(cwd);
 			if (usersList.size() != 0)
-				s = s + "[Users List]\n" + Jtool.writeConf(usersList) + "\n\n";
-			s = s + jpages.getFindConf() + "\n";
+				s = s + "[Users List]\n" + Tools.writeConf(usersList) + "\n\n";
+			s = s + pages.getFindConf() + "\n";
 			return s;
 		}
 
@@ -5543,21 +5552,21 @@ public class Jarnal extends JApplet {
 
 			s = s + "\n";
 
-			String y = Jtool.getEntry(s, "[Globals]");
-			jpages.setDefaultPaper(y);
-			z = Jtool.getLine(y, "pageNumber");
+			String y = Tools.getEntry(s, "[Globals]");
+			pages.setDefaultPaper(y);
+			z = Tools.getLine(y, "pageNumber");
 			if (z != null) {
 				int p = Integer.parseInt(z);
 				if (p > 1)
-					jpages.nextPage(p - 1);
+					pages.nextPage(p - 1);
 				activePage = p - 1;
 			}
-			z = Jtool.getLine(y, "viewQuality");
+			z = Tools.getLine(y, "viewQuality");
 			if (z != null) {
 				viewQuality = Integer.parseInt(z);
 				setVQ();
 			}
-			z = Jtool.getLine(y, "bWidth");
+			z = Tools.getLine(y, "bWidth");
 			float zbWidth = jth.bWidth;
 			if (z != null) {
 				jth.bWidth = Float.parseFloat(z);
@@ -5565,9 +5574,9 @@ public class Jarnal extends JApplet {
 				jtd.bWidth = jth.bWidth;
 				jtbu.bWidth = jth.bWidth;
 				jt.bWidth = jth.bWidth;
-				jpages.jtool.bWidth = jth.bWidth;
+				pages.tools.bWidth = jth.bWidth;
 			}
-			z = Jtool.getLine(y, "hTrans");
+			z = Tools.getLine(y, "hTrans");
 			float zhTrans = jth.hTrans;
 			if (z != null) {
 				jth.hTrans = Float.parseFloat(z);
@@ -5575,27 +5584,27 @@ public class Jarnal extends JApplet {
 				jtd.hTrans = jth.hTrans;
 				jtbu.hTrans = jth.hTrans;
 				jt.hTrans = jth.hTrans;
-				jpages.jtool.hTrans = jth.hTrans;
+				pages.tools.hTrans = jth.hTrans;
 			}
-			z = Jtool.getLine(y, "PO");
+			z = Tools.getLine(y, "PO");
 			if (z != null) {
 				PO = Float.parseFloat(z);
 			}
-			z = Jtool.getLine(y, "saveBg");
+			z = Tools.getLine(y, "saveBg");
 			if (z != null) {
 				if (z.equals("true"))
 					saveBg = true;
 				sbg.setState(saveBg);
 				sbg2.setState(saveBg);
-				jpages.saveBg = saveBg;
+				pages.saveBg = saveBg;
 			}
-			z = Jtool.getLine(y, "smoothStrokes");
+			z = Tools.getLine(y, "smoothStrokes");
 			if (z != null) {
 				if (z.equals("true"))
 					smoothStrokes = true;
 			}
 			smstrk.setState(smoothStrokes);
-			z = Jtool.getLine(y, "allScr");
+			z = Tools.getLine(y, "allScr");
 			if (z != null) {
 				if (z.equals("true"))
 					ascr = true;
@@ -5605,7 +5614,7 @@ public class Jarnal extends JApplet {
 				ascr2.setState(ascr);
 				ascr3.setState(ascr);
 			}
-			z = Jtool.getLine(y, "minScrShot");
+			z = Tools.getLine(y, "minScrShot");
 			if (z != null) {
 				if (z.equals("true"))
 					mscr = true;
@@ -5615,7 +5624,7 @@ public class Jarnal extends JApplet {
 				scr2.setState(mscr);
 				scr3.setState(mscr);
 			}
-			z = Jtool.getLine(y, "backgroundFile");
+			z = Tools.getLine(y, "backgroundFile");
 			if (z != null) {
 				bgfile = z;
 				// the next line should only be executed only initial program
@@ -5623,96 +5632,96 @@ public class Jarnal extends JApplet {
 				// not if we are subsequently resetting the conf
 				// or if we do reset the conf, it should at least be an undoable
 				// operation
-				jpages.initOpenBg(new JbgsSource(bgfile, null));
+				pages.initOpenBg(new JbgsSource(bgfile, null));
 			}
-			z = Jtool.getLine(y, "highlightLines");
+			z = Tools.getLine(y, "highlightLines");
 			if (z != null) {
 				if (z.equals("true"))
-					jpages.highlightLines = true;
+					pages.highlightLines = true;
 				else
-					jpages.highlightLines = false;
+					pages.highlightLines = false;
 			}
-			z = Jtool.getLine(y, "highlighterStyle");
+			z = Tools.getLine(y, "highlighterStyle");
 			if (z != null) {
 				highlighterStyle = z;
 			}
-			z = Jtool.getLine(y, "thumbs");
+			z = Tools.getLine(y, "thumbs");
 			if (z != null) {
 				if (z.equals("true"))
 					thumbs = true;
 				else
 					thumbs = false;
 			}
-			z = Jtool.getLine(y, "threeup");
+			z = Tools.getLine(y, "threeup");
 			if (z != null) {
 				if (z.equals("true"))
 					threeup = true;
 				else
 					threeup = false;
 			}
-			z = Jtool.getLine(y, "poverlay");
+			z = Tools.getLine(y, "poverlay");
 			if (z != null) {
 				if (z.equals("true")) {
 					poverlay = true;
-					jpages.PO = PO;
+					pages.PO = PO;
 				} else {
 					poverlay = false;
-					jpages.PO = 2.0;
+					pages.PO = 2.0;
 				}
 			}
-			z = Jtool.getLine(y, "activePage");
+			z = Tools.getLine(y, "activePage");
 			// if(z != null) activePage = (int) Float.parseFloat(z);
-			z = Jtool.getLine(y, "scale");
+			z = Tools.getLine(y, "scale");
 			if (z != null) {
-				jpages.invalidateGraphics();
-				jpages.setScale(Float.parseFloat(z) / nc());
+				pages.invalidateGraphics();
+				pages.setScale(Float.parseFloat(z) / nc());
 			}
-			z = Jtool.getLine(y, "fitWidth");
+			z = Tools.getLine(y, "fitWidth");
 			if (z != null) {
 				if (z.equals("true"))
 					fitWidth = true;
 				else
 					fitWidth = false;
 			}
-			z = Jtool.getLine(y, "windowWidth");
+			z = Tools.getLine(y, "windowWidth");
 			if (z != null) {
 				int w = (int) Float.parseFloat(z);
-				z = Jtool.getLine(y, "windowHeight");
+				z = Tools.getLine(y, "windowHeight");
 				if (z != null) {
 					int h = (int) Float.parseFloat(z);
 					frameSize = new Dimension(w, h);
 				}
 			}
-			z = Jtool.getLine(y, "windowX");
+			z = Tools.getLine(y, "windowX");
 			if (z != null) {
 				int xx = (int) Float.parseFloat(z);
-				z = Jtool.getLine(y, "windowY");
+				z = Tools.getLine(y, "windowY");
 				if (z != null) {
 					int yy = (int) Float.parseFloat(z);
 					if (!locationSet)
 						frameLocation = new Point(xx, yy);
 				}
 			}
-			z = Jtool.getLine(y, "email");
+			z = Tools.getLine(y, "email");
 			if (z != null) {
 				email = z;
 			}
-			z = Jtool.getLine(y, "netServer");
+			z = Tools.getLine(y, "netServer");
 			if (z != null) {
 				netServer = z;
 			}
-			z = Jtool.getLine(y, "URLEncode");
+			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
 					urlencoded = true;
 				else
 					urlencoded = false;
 			}
-			z = Jtool.getLine(y, "markerweight");
+			z = Tools.getLine(y, "markerweight");
 			if (z != null) {
 				markerweight = Integer.parseInt(z);
 			}
-			z = Jtool.getLine(y, "arrowhead");
+			z = Tools.getLine(y, "arrowhead");
 			if (z != null) {
 				if (z.equals("true"))
 					arrowhead = true;
@@ -5720,7 +5729,7 @@ public class Jarnal extends JApplet {
 					arrowhead = false;
 				arcb.setState(arrowhead);
 			}
-			z = Jtool.getLine(y, "stickyRuler");
+			z = Tools.getLine(y, "stickyRuler");
 			if (z != null) {
 				if (z.equals("true"))
 					stickyRuler = true;
@@ -5728,16 +5737,16 @@ public class Jarnal extends JApplet {
 					stickyRuler = false;
 				srcb.setState(stickyRuler);
 			}
-			z = Jtool.getLine(y, "middleButton");
+			z = Tools.getLine(y, "middleButton");
 			if (z != null)
 				middleButton = z;
-			z = Jtool.getLine(y, "rightButton");
+			z = Tools.getLine(y, "rightButton");
 			if (z != null)
 				rightButton = z;
-			z = Jtool.getLine(y, "netSaveName");
+			z = Tools.getLine(y, "netSaveName");
 			if (z != null)
 				nname = z;
-			z = Jtool.getLine(y, "promptForNetSaveName");
+			z = Tools.getLine(y, "promptForNetSaveName");
 			if (z != null) {
 				if (z.equals("true"))
 					promptForNetSaveName = true;
@@ -5745,60 +5754,60 @@ public class Jarnal extends JApplet {
 					promptForNetSaveName = false;
 				pfnsn.setState(promptForNetSaveName);
 			}
-			z = Jtool.getLine(y, "saveOnExit");
+			z = Tools.getLine(y, "saveOnExit");
 			if (z != null) {
 				if (z.equals("true"))
 					saveOnExit = true;
 				soe.setState(saveOnExit);
 			}
-			z = Jtool.getLine(y, "saveSelfexecuting");
+			z = Tools.getLine(y, "saveSelfexecuting");
 			if (z != null) {
 				if (z.equals("true"))
 					saveSelfexecuting = true;
 				jcbSaveSelfexecuting.setState(saveSelfexecuting);
 			}
-			z = Jtool.getLine(y, "saveBookmarks");
+			z = Tools.getLine(y, "saveBookmarks");
 			if (z != null) {
 				if (z.equals("true"))
 					saveBookmarks = true;
 				sbmk.setState(saveBookmarks);
 			}
-			z = Jtool.getLine(y, "saveUserInfo");
+			z = Tools.getLine(y, "saveUserInfo");
 			if (z != null) {
 				if (z.equals("true"))
 					saveBookmarks = true;
 				sbmk.setState(saveBookmarks);
 			}
-			z = Jtool.getLine(y, "updateBookmarks");
-			z = Jtool.getLine(y, "foffX");
+			z = Tools.getLine(y, "updateBookmarks");
+			z = Tools.getLine(y, "foffX");
 			if (z != null) {
 				jrnlPane.foffX = Integer.parseInt(z);
 			}
-			z = Jtool.getLine(y, "foffY");
+			z = Tools.getLine(y, "foffY");
 			if (z != null) {
 				jrnlPane.foffY = Integer.parseInt(z);
 			}
-			z = Jtool.getLine(y, "obgcolor");
+			z = Tools.getLine(y, "obgcolor");
 			if (z != null) {
 				outline.bgcolor = z;
 			}
-			z = Jtool.getLine(y, "outheight");
+			z = Tools.getLine(y, "outheight");
 			if (z != null) {
 				outheight = Integer.parseInt(z);
 			}
-			z = Jtool.getLine(y, "showOutline");
+			z = Tools.getLine(y, "showOutline");
 			if (z != null) {
 				startOutline = true;
 			}
-			z = Jtool.getLine(y, "divwidth");
+			z = Tools.getLine(y, "divwidth");
 			if (z != null) {
 				divwidth = Integer.parseInt(z);
 			}
-			z = Jtool.getLine(y, "showBarJarnal");
+			z = Tools.getLine(y, "showBarJarnal");
 			if (z != null) {
 				startBarJarnal = true;
 			}
-			z = Jtool.getLine(y, "showInternalMini");
+			z = Tools.getLine(y, "showInternalMini");
 			if (z != null) {
 				startInternalMini = true;
 			}
@@ -5809,82 +5818,82 @@ public class Jarnal extends JApplet {
 					//pencen.setSelected(pencentric);
 				//}
 			//}
-			z = Jtool.getLine(y, "textMode");
+			z = Tools.getLine(y, "textMode");
 			if (z != null) {
 				if (z.equals("true"))
 					textMode = true;
 			}
-			z = Jtool.getLine(y, "defaultText");
+			z = Tools.getLine(y, "defaultText");
 			if (z != null)
-				jpages.setParms(z);
+				pages.setParms(z);
 
-			z = Jtool.getLine(y, "defaultOverlay");
+			z = Tools.getLine(y, "defaultOverlay");
 			if (z != null)
 				jrnlPane.defaultOverlay = z;
-			z = Jtool.getLine(y, "circleOverlay");
+			z = Tools.getLine(y, "circleOverlay");
 			if (z != null)
 				jrnlPane.circleOverlay = z;
-			z = Jtool.getLine(y, "circleOverlay");
+			z = Tools.getLine(y, "circleOverlay");
 			if (z != null)
 				jrnlPane.circleOverlay = z;
 
 
 
-			z = Jtool.getLine(y, "alignToMargins");
+			z = Tools.getLine(y, "alignToMargins");
 			if (z != null) {
 				if (z.equals("false"))
 					alignToMargins = false;
 			}
 			pam.setState(alignToMargins);
 
-			z = Jtool.getLine(y, "bestFit");
+			z = Tools.getLine(y, "bestFit");
 			if (z != null) {
 				if (z.equals("false"))
 					bestFit = false;
 			}
 			pbf.setState(bestFit);
 
-			z = Jtool.getLine(y, "absoluteScale");
+			z = Tools.getLine(y, "absoluteScale");
 			if (z != null) {
 				if (z.equals("true"))
 					absoluteScale = true;
 			}
 			pas.setState(absoluteScale);
 
-			z = Jtool.getLine(y, "showPageNumbers");
+			z = Tools.getLine(y, "showPageNumbers");
 			if (z != null) {
 				if (z.equals("false"))
 					showPageNumbers = false;
 			}
 			psp.setState(showPageNumbers);
 
-			z = Jtool.getLine(y, "withBorders");
+			z = Tools.getLine(y, "withBorders");
 			if (z != null) {
 				if (z.equals("true"))
 					withBorders = true;
 			}
 			wbr.setState(withBorders);
 
-			y = Jtool.getEntry(s, "[Bookmarks]");
+			y = Tools.getEntry(s, "[Bookmarks]");
 			setMarks(y, BOOKMARKS);
 
-			y = Jtool.getEntry(s, "[Servermarks]");
+			y = Tools.getEntry(s, "[Servermarks]");
 			setMarks(y, SERVERS);
 
-			y = Jtool.getEntry(s, "[Users List]");
+			y = Tools.getEntry(s, "[Users List]");
 			if (y != null)
-				usersList = Jtool.readConf(y);
+				usersList = Tools.readConf(y);
 
-			Jtool jtt = Jtool.getTool(Jtool.getEntry(s, "[Default Pen]"));
+			Tools jtt = Tools.getTool(Tools.getEntry(s, "[Default Pen]"));
 			if (jtt != null)
 				jtd = jtt;
-			jtt = Jtool.getTool(Jtool.getEntry(s, "[Default Highlighter]"));
+			jtt = Tools.getTool(Tools.getEntry(s, "[Default Highlighter]"));
 			if (jtt != null)
 				jth = jtt;
-			jtt = Jtool.getTool(Jtool.getEntry(s, "[Button Pen]"));
+			jtt = Tools.getTool(Tools.getEntry(s, "[Button Pen]"));
 			if (jtt != null)
 				jtbu = jtt;
-			jtt = Jtool.getTool(Jtool.getEntry(s, "[Current Tool]"));
+			jtt = Tools.getTool(Tools.getEntry(s, "[Current Tool]"));
 			if (jtt != null)
 				jt = jtt;
 
@@ -5900,33 +5909,33 @@ public class Jarnal extends JApplet {
 			jtd.setWidth(jtd.type);
 			jtbu.setWidth(jtbu.type);
 			jt.setWidth(jt.type);
-			jpages.jtool.bWidth = zbWidth;
-			jpages.jtool.fatWidth = jth.fatWidth;
-			jpages.jtool.setWidth(jpages.jtool.type);
+			pages.tools.bWidth = zbWidth;
+			pages.tools.fatWidth = jth.fatWidth;
+			pages.tools.setWidth(pages.tools.type);
 
 			jth.hTrans = zhTrans;
 			jtd.hTrans = zhTrans;
 			jtbu.hTrans = zhTrans;
 			jt.hTrans = zhTrans;
-			jpages.jtool.hTrans = zhTrans;
+			pages.tools.hTrans = zhTrans;
 
-			z = Jtool.getEntry(s, "[Find Strings]");
+			z = Tools.getEntry(s, "[Find Strings]");
 			if (z != null)
-				jpages.setFindConf(z);
+				pages.setFindConf(z);
 
-			z = Jtool.getOnlyEntry(s, "[Toolbar1]");
+			z = Tools.getOnlyEntry(s, "[Toolbar1]");
 			if (z != null)
 				tb1 = z.trim() + "\n";
 
-			z = Jtool.getOnlyEntry(s, "[Toolbar2]");
+			z = Tools.getOnlyEntry(s, "[Toolbar2]");
 			if (z != null)
 				tb2 = z.trim() + "\n";
 
-			z = Jtool.getOnlyEntry(s, "[Toolbar3]");
+			z = Tools.getOnlyEntry(s, "[Toolbar3]");
 			if (z != null)
 				tb3 = z.trim() + "\n";
 
-			z = Jtool.getEntry(s, "[Net Options]");
+			z = Tools.getEntry(s, "[Net Options]");
 			if (z != null) {
 				int pos = z.indexOf("\n");
 				netOptions = z.substring(pos + 1);
@@ -5942,22 +5951,22 @@ public class Jarnal extends JApplet {
 		public String setMeta2(String s) {
 			String z;
 			s = s + "\n";
-			String y = Jtool.getEntry(s, "[Globals]");
-			z = Jtool.getLine(y, "netServer");
+			String y = Tools.getEntry(s, "[Globals]");
+			z = Tools.getLine(y, "netServer");
 			if (z != null) {
 				netServer = z;
 			}
-			z = Jtool.getLine(y, "netSaveName");
+			z = Tools.getLine(y, "netSaveName");
 			if (z != null)
 				nname = z;
-			z = Jtool.getLine(y, "URLEncode");
+			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
 					urlencoded = true;
 				else
 					urlencoded = false;
 			}
-			z = Jtool.getLine(y, "promptForNetSaveName");
+			z = Tools.getLine(y, "promptForNetSaveName");
 			if (z != null) {
 				if (z.equals("true"))
 					promptForNetSaveName = true;
@@ -5965,7 +5974,7 @@ public class Jarnal extends JApplet {
 					promptForNetSaveName = false;
 			}
 			String netOptions2 = null;
-			netOptions2 = Jtool.getEntry(s, "[Net Options]");
+			netOptions2 = Tools.getEntry(s, "[Net Options]");
 			if (netOptions2 != null) {
 				int pos = netOptions2.indexOf("\n");
 				netOptions2 = netOptions2.substring(pos + 1);
@@ -6044,7 +6053,7 @@ public class Jarnal extends JApplet {
 				if (!fname.equals(""))
 					sug = fname + "." + sug;
 				else {
-					bgfile = jpages.bgs().getSource().getName();
+					bgfile = pages.bgs().getSource().getName();
 					if (bgfile == null)
 						bgfile = "";
 					if (!bgfile.equals(""))
@@ -6074,8 +6083,8 @@ public class Jarnal extends JApplet {
 		}
 
 		public void setStop() {
-			if (!jpages.wantscontrol) {
-				jpages.jcom.requestinactive();
+			if (!pages.wantscontrol) {
+				pages.communicator.requestinactive();
 				return;
 			}
 			if (!replayActive) {
@@ -6085,7 +6094,7 @@ public class Jarnal extends JApplet {
 			handButton.setToolTipText(trans("Release Control"));
 			handButton.setIcon(handstop);
 			handButton.setVisible(true);
-			jpages.active = true;
+			pages.active = true;
 		}
 
 		public void setWarning() {
@@ -6099,14 +6108,14 @@ public class Jarnal extends JApplet {
 			handButton.setToolTipText(trans("Request Control"));
 			handButton.setIcon(hand);
 			handButton.setVisible(true);
-			jpages.active = false;
-			jpages.wantscontrol = false;
+			pages.active = false;
+			pages.wantscontrol = false;
 		}
 
 		public void doDisconnect() {
-			if (jpages.jcom != null) {
-				jpages.jcom.disconnect();
-				jpages.jcom = null;
+			if (pages.communicator != null) {
+				pages.communicator.disconnect();
+				pages.communicator = null;
 			}
 			setConnectMenu(false);
 			if (handButton != null)
@@ -6122,7 +6131,7 @@ public class Jarnal extends JApplet {
 				locked = false;
 				dragOp = 0;
 			}
-			jpages.active = true;
+			pages.active = true;
 			serverMsg = "";
 			setStatus("");
 		}
@@ -6137,8 +6146,8 @@ public class Jarnal extends JApplet {
 		}
 		
 		public void absPage(int nindex){
-			int delta = jpages.getPage() - 1 - nindex;
-			jpages.absPage(nindex);
+			int delta = pages.getPage() - 1 - nindex;
+			pages.absPage(nindex);
 			if (showOutline)
 				outline.synchPage(delta);
 			setTSize();
@@ -6163,7 +6172,7 @@ public class Jarnal extends JApplet {
 			String userfile = uwd + File.separator + temp;
 			String instr = null;
 			try {
-				instr = new String(jpages
+				instr = new String(pages
 						.streamToByteArray(new FileInputStream(userfile)));
 			} catch (Exception ex) {
 				System.err.println(ex);
@@ -6209,7 +6218,7 @@ public class Jarnal extends JApplet {
 		public void toFullScreen() {
 			clockTimer.start();
 			addMouseWheelListener(jsl);
-			jpages.showTextMarks(false);
+			pages.showTextMarks(false);
 			fscr = new JFrame();
 			fscr.setUndecorated(true);
 			fscr.setResizable(false);
@@ -6243,7 +6252,7 @@ public class Jarnal extends JApplet {
 
 		public void fromFullScreen() {
 			removeMouseWheelListener(jsl);
-			jpages.showTextMarks(true);
+			pages.showTextMarks(true);
 			boolean showHand = handButton.isShowing();
 			GraphicsEnvironment.getLocalGraphicsEnvironment()
 					.getDefaultScreenDevice().setFullScreenWindow(null);
@@ -6283,27 +6292,27 @@ public class Jarnal extends JApplet {
 			try {
 				FileInputStream fis = new FileInputStream(cwd + File.separator
 						+ textfile);
-				instr = new String(jpages.streamToByteArray(fis));
+				instr = new String(pages.streamToByteArray(fis));
 				fis.close();
 			} catch (Exception ex) {
 				System.out.println("File: " + textfile + " not found");
 				return;
 			}
-			jpages.setStartMark();
-			jpages.reText();
+			pages.setStartMark();
+			pages.reText();
 			textOp("type", 0, instr);
-			jpages.textSplit();
-			int h = (int) jpages.getHeight();
-			Rectangle rr = jpages.forceTextRectangle();
+			pages.textSplit();
+			int h = (int) pages.getHeight();
+			Rectangle rr = pages.forceTextRectangle();
 			int y = (int) rr.getY();
 			int t = h - (2 * y);
 			if (t <= y)
 				t = (int) (0.9 * (h - y));
 			if (t <= 0)
 				t = (int) (0.1 * h);
-			jpages.setTextHeight(y + t);
+			pages.setTextHeight(y + t);
 			drawState = 0;
-			jpages.setEndMark();
+			pages.setEndMark();
 			dirty = true;
 		}
 
@@ -6323,21 +6332,21 @@ public class Jarnal extends JApplet {
 					doOpen = temp.exists();
 				}
 				if (doOpen) {
-					setConf(jpages.open(openfile));
+					setConf(pages.open(openfile));
 					if(obgfile.equals("") && !template)
 						addBookmarkAll(openfile);
-					if (jpages.recordingOn())
+					if (pages.recordingOn())
 						recbox.setState(true);
 					// new fitwidth: keep the scale on an existing file
 					fitWidth = false;
 				} 
 			} else
 				setSizeToBg = true;
-			if (template && (jpages.getPages() == 1))
+			if (template && (pages.getPages() == 1))
 				setSizeToBg = true;
 			openfile = "";
 			if (!obgfile.equals("")) {
-				jpages.openBg(new JbgsSource(obgfile, null));
+				pages.openBg(new JbgsSource(obgfile, null));
 				addBookmarkAll("BG: " + obgfile + "::" + templateFile);
 				obgfile = "";
 				// new fitwidth: if we load a background set the width to the
@@ -6349,7 +6358,7 @@ public class Jarnal extends JApplet {
 				textfile = temp.getName();
 				cwd = temp.getParent();
 			}
-			jpages.openLoad(loadFiles);
+			pages.openLoad(loadFiles);
 			loadFiles = new LinkedList();
 			template = false;
 			if (!savefile.equals("")) {
@@ -6374,7 +6383,7 @@ public class Jarnal extends JApplet {
 			if (embed)
 				return null;
 			if (temp != null) {
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				if(cwdt.substring(0, 4).equals("BG: ")){
 					cwdt = cwdt.substring(4);
 					int ncolon = cwdt.indexOf("::");
@@ -6395,9 +6404,9 @@ public class Jarnal extends JApplet {
 				else openfile = cwdt + File.separator + temp;
 				ttitle = temp;
 				if(beginServer){
-					if (jpages.jcom != null) {
-						jpages.jcom.disconnect();
-						jpages.jcom = null;
+					if (pages.communicator != null) {
+						pages.communicator.disconnect();
+						pages.communicator = null;
 					}
 				}
 				Jarnal newJ = Jarnal.newJarnal("Jarnal - " + temp);
@@ -6424,7 +6433,7 @@ public class Jarnal extends JApplet {
 			if (!userDir.exists())
 				userDir.mkdir();
 			for (int i = 0; i < names.length; i++) {
-				jpages.saveDic((new File(userDir, files[i])).getPath(),
+				pages.saveDic((new File(userDir, files[i])).getPath(),
 						names[i]);
 			}
 		}
@@ -6461,15 +6470,15 @@ public class Jarnal extends JApplet {
 					.getResourceAsStream("images/dict.txt");
 			InputStream ven = getDicStream("jarnal.recog",
 					"images/jarnal.recog");
-			Janalyze.initStream(in, ven, din);
+			Analyze.initStream(in, ven, din);
 			ven = getDicStream("jarnal_num.recog", "images/jarnal_num.recog");
-			Janalyze.initDictionary(ven, "num");
+			Analyze.initDictionary(ven, "num");
 			ven = getDicStream("jarnal_sym.recog", "images/jarnal_sym.recog");
-			Janalyze.initDictionary(ven, "sym");
+			Analyze.initDictionary(ven, "sym");
 			ven = getDicStream("jarnal_cap.recog", "images/jarnal_cap.recog");
-			Janalyze.initDictionary(ven, "cap");
+			Analyze.initDictionary(ven, "cap");
 			ven = getDicStream("jarnal_user.recog", "images/jarnal_user.recog");
-			Janalyze.initDictionary(ven, "user");
+			Analyze.initDictionary(ven, "user");
 		}
 
 		public void setWidth(String width) {
@@ -6478,17 +6487,17 @@ public class Jarnal extends JApplet {
 		}
 
 		private void deletePages() {
-			jpages.setStartMark();
+			pages.setStartMark();
 			Iterator ts = pageList.iterator();
 			while (ts.hasNext()) {
 				int ii = -((Integer) ts.next()).intValue();
-				int pp = jpages.getPage() - 1;
+				int pp = pages.getPage() - 1;
 				int delta = ii - pp;
 				if (pp != 0)
-					jpages.nextPage(delta);
-				jpages.pageDelete();
+					pages.nextPage(delta);
+				pages.pageDelete();
 			}
-			jpages.setEndMark();
+			pages.setEndMark();
 			setup();
 			dirty = true;
 		}
@@ -6497,41 +6506,41 @@ public class Jarnal extends JApplet {
 			if (pageList.isEmpty())
 				return insBgText(true);
 			boolean something = false;
-			jpages.setStartMark();
+			pages.setStartMark();
 			Iterator ts = pageList.iterator();
 			while (ts.hasNext()) {
 				int ii = -((Integer) ts.next()).intValue();
-				int pp = jpages.getPage() - 1;
+				int pp = pages.getPage() - 1;
 				int delta = ii - pp;
 				if (pp != 0)
-					jpages.nextPage(delta);
+					pages.nextPage(delta);
 				if (insBgText(false))
 					something = true;
 			}
-			jpages.setEndMark();
+			pages.setEndMark();
 			return something;
 		}
 
 		private boolean insBgText(boolean mark) {
-			String src = jpages.getBgsName();
+			String src = pages.getBgsName();
 			if (src == null)
 				return false;
 			if (src.equals(""))
 				return false;
-			int p = jpages.bgindex() + 1;
-			String data = jpages.getBgText(p, src);
+			int p = pages.bgindex() + 1;
+			String data = pages.getBgText(p, src);
 			if (data == null)
 				return false;
 			if (mark)
-				jpages.setStartMark();
-			jpages.bgFade(75);
+				pages.setStartMark();
+			pages.bgFade(75);
 			// textOp("style", 10, "Size");
-			jpages.bgText(true);
-			jpages.reText();
+			pages.bgText(true);
+			pages.reText();
 			textOp("type", 0, data);
 			drawState = 0;
 			if (mark)
-				jpages.setEndMark();
+				pages.setEndMark();
 			return true;
 		}
 
@@ -6658,7 +6667,7 @@ public class Jarnal extends JApplet {
 			if (action.equals("Last Page"))
 				pageChange = 1000;
 			if (action.equals("Go To Page")) {
-				int cp = jpages.getPage();
+				int cp = pages.getPage();
 				(new Jarnbox(gJrnlFrame, "GoToPage", jarn, false)).getInt(cp, 1000, true);
 
 				// Number test = (new Jarnbox(gJrnlFrame,
@@ -6666,7 +6675,7 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("GoToPage")) {
 				if (gotopage != null) {
-					int cp = jpages.getPage();
+					int cp = pages.getPage();
 					// if(test != null) {
 					// pageChange = test.intValue() - cp;
 					// }
@@ -6674,7 +6683,7 @@ public class Jarnal extends JApplet {
 				}
 			}
 			if (pageChange != 0) {
-				if (jpages.nextPage(pageChange) && action.equals("Next Page"))
+				if (pages.nextPage(pageChange) && action.equals("Next Page"))
 					action = "New Page";
 				if (showOutline)
 					outline.synchPage(pageChange);
@@ -6684,10 +6693,10 @@ public class Jarnal extends JApplet {
 				zmiddleIgnore = true;
 			}
 			if (action.startsWith("pageref")) {
-				int initP = jpages.getPage();
-				if (jpages.gotoPage(action)) {
+				int initP = pages.getPage();
+				if (pages.gotoPage(action)) {
 					if (showOutline)
-						outline.synchPage(jpages.getPage() - initP);
+						outline.synchPage(pages.getPage() - initP);
 					setTSize();
 					setup();
 					makeInvalid = false;
@@ -6695,7 +6704,7 @@ public class Jarnal extends JApplet {
 			}
 			if (action.startsWith("Zpageref")) {
 				action = action.substring(1);
-				if (jpages.gotoPage(action)) {
+				if (pages.gotoPage(action)) {
 					setTSize();
 					setup();
 					makeInvalid = false;
@@ -6705,15 +6714,15 @@ public class Jarnal extends JApplet {
 				dirty = true;
 				if (poverlay) {
 					poverlay = false;
-					jpages.PO = 2.0;
+					pages.PO = 2.0;
 				} else {
 					poverlay = true;
-					jpages.PO = PO;
+					pages.PO = PO;
 				}
 				if (!locked)
 					dragOp = 0;
 				drawState = 0;
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				setup();
 			}
 
@@ -6724,16 +6733,16 @@ public class Jarnal extends JApplet {
 					if (!locked)
 						dragOp = 0;
 					drawState = 0;
-					jpages.invalidateGraphics();
-					jpages.setScale(2 * jpages.getScale());
+					pages.invalidateGraphics();
+					pages.setScale(2 * pages.getScale());
 				} else {
 					thumbs = true;
-					jpages.invalidateGraphics();
-					jpages.setScale(jpages.getScale() / 2);
+					pages.invalidateGraphics();
+					pages.setScale(pages.getScale() / 2);
 					if (threeup) {
 						threeup = false;
 					}
-					activePage = jpages.getPage() - 1;
+					activePage = pages.getPage() - 1;
 				}
 				setup();
 			}
@@ -6744,18 +6753,18 @@ public class Jarnal extends JApplet {
 					thumbs = false;
 					threeup = false;
 					poverlay = false;
-					jpages.PO = 2.0;
+					pages.PO = 2.0;
 					if (!locked)
 						dragOp = 0;
 					drawState = 0;
 				} else {
 					if (thumbs) {
-						jpages.invalidateGraphics();
-						jpages.setScale(2 * jpages.getScale());
+						pages.invalidateGraphics();
+						pages.setScale(2 * pages.getScale());
 					}
 					thumbs = true;
 					threeup = true;
-					activePage = jpages.getPage() - 1;
+					activePage = pages.getPage() - 1;
 				}
 				setup();
 			}
@@ -6766,30 +6775,30 @@ public class Jarnal extends JApplet {
 			//}
 
 			if (action.equals("Server Full Screen")){
-				if (jpages.jcom == null)
+				if (pages.communicator == null)
 					return;
-				jpages.jcom.request("serverfullscreen");
+				pages.communicator.request("serverfullscreen");
 			}
 
 			if (action.equals("Server Lock Page")){
-				if (jpages.jcom == null)
+				if (pages.communicator == null)
 					return;
-				jpages.jcom.request("serverlockpage");
+				pages.communicator.request("serverlockpage");
 			}
 
 			if (action.equals("Request Control")) {
-				if (jpages.jcom == null)
+				if (pages.communicator == null)
 					return;
-				if ((!jpages.active) && jpages.wantscontrol) {
+				if ((!pages.active) && pages.wantscontrol) {
 					setStart();
-				} else if (!jpages.active) {
+				} else if (!pages.active) {
 					handButton.setIcon(handmixed);
 					handButton.setToolTipText(trans("Cancel Control Request"));
-					jpages.wantscontrol = true;
-					jpages.jcom.requestactive();
+					pages.wantscontrol = true;
+					pages.communicator.requestactive();
 				} else {
-					jpages.putdo(true);
-					jpages.jcom.requestinactive();
+					pages.putdo(true);
+					pages.communicator.requestinactive();
 					setStart();
 				}
 				return;
@@ -6858,8 +6867,8 @@ public class Jarnal extends JApplet {
 					System.err.println("Can't get temp file " + ex);
 				}
 				if (tfile != null) {
-					Jcom jc = jpages.jcom;
-					jpages.jcom = null;
+					Communicator jc = pages.communicator;
+					pages.communicator = null;
 					// we must get jcom out of jpages before doing openName
 					// open name can close the existing Jarnal, and this will
 					// cause
@@ -6869,8 +6878,8 @@ public class Jarnal extends JApplet {
 					connectPresentation = false;
 					Jarnal newJ = openName(tfile.getParent(), tfile.getName());
 					if (newJ == null) newJ = jarn;
-					newJ.jrnlPane.jpages.jcom = jc;
-					newJ.jrnlPane.jpages.active = true;
+					newJ.jrnlPane.pages.communicator = jc;
+					newJ.jrnlPane.pages.active = true;
 					newJ.jrnlPane.setDisconnect();
 					newJ.jrnlPane.setStart();
 					newJ.jcom = jcom;
@@ -6993,8 +7002,8 @@ public class Jarnal extends JApplet {
 				saveSelfexecuting = !saveSelfexecuting;
 				jcbSaveSelfexecuting.setState(saveSelfexecuting);
 				if (saveSelfexecuting) {
-					jpages.portableBgs = true;
-					pbgs.setState(jpages.portableBgs);
+					pages.portableBgs = true;
+					pbgs.setState(pages.portableBgs);
 					saveBg = false;
 					action = "Save Background With File";
 				}
@@ -7003,9 +7012,9 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Portable Backgrounds")) {
-				jpages.portableBgs = !jpages.portableBgs;
-				pbgs.setState(jpages.portableBgs);
-				if (jpages.portableBgs) {
+				pages.portableBgs = !pages.portableBgs;
+				pbgs.setState(pages.portableBgs);
+				if (pages.portableBgs) {
 					saveBg = false;
 					action = "Save Background With File";
 				}
@@ -7017,10 +7026,10 @@ public class Jarnal extends JApplet {
 				saveBg = !saveBg;
 				sbg.setState(saveBg);
 				sbg2.setState(saveBg);
-				jpages.saveBg = saveBg;
+				pages.saveBg = saveBg;
 				if (!saveBg) {
-					jpages.portableBgs = false;
-					pbgs.setState(jpages.portableBgs);
+					pages.portableBgs = false;
+					pbgs.setState(pages.portableBgs);
 				}
 				dirty = true;
 				setSave(false);
@@ -7049,14 +7058,14 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Print Background")) {
 				action = "already Printed Background";
-				String src = jpages.getBgsName();
+				String src = pages.getBgsName();
 				if (src == null)
 					return;
 				if (src.equals(""))
 					return;
 				String est = printpdf;
 				try {
-					est = Jtool.replaceAll(est, "%1", Jtool.cmdQuote(src));
+					est = Tools.replaceAll(est, "%1", Tools.cmdQuote(src));
 					System.out.println(est);
 					Runtime rt = Runtime.getRuntime();
 					// rt.exec(est);
@@ -7203,9 +7212,9 @@ public class Jarnal extends JApplet {
 						// jbcancel.msg.setText("Spooling ps to pdf");
 						jbcancelmsg("Spooling ps to pdf");
 						String est = ps2pdf;
-						est = Jtool.replaceAll(est, "%1", Jtool
+						est = Tools.replaceAll(est, "%1", Tools
 								.cmdQuote(tfilename));
-						est = Jtool.replaceAll(est, "%2", Jtool
+						est = Tools.replaceAll(est, "%2", Tools
 								.cmdQuote(pdfFile));
 						System.out.println(est);
 						Runtime rt = Runtime.getRuntime();
@@ -7226,7 +7235,7 @@ public class Jarnal extends JApplet {
 				if (action.equals("zPrint via PDF")) {
 					String est = printpdf;
 					try {
-						est = Jtool.replaceAll(est, "%1", pdfFile);
+						est = Tools.replaceAll(est, "%1", pdfFile);
 						System.out.println(est);
 						Runtime rt = Runtime.getRuntime();
 						Process ps = rt.exec(est);
@@ -7290,11 +7299,11 @@ public class Jarnal extends JApplet {
 					offX = foffX;
 					offY = foffY;
 					if (thumbs && !threeup)
-						jpages.setScale(2 * jpages.getScale());
+						pages.setScale(2 * pages.getScale());
 					thumbs = false;
 					threeup = false;
 					textMode = false;
-					jpages.invalidateGraphics();
+					pages.invalidateGraphics();
 					toFullScreen();
 				}
 				fullScreen = !fullScreen;
@@ -7319,15 +7328,15 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("New")) {
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				Jarnal jrnl = Jarnal.newJarnal("Jarnal", getConf());
 				//jrnl.jrnlPane.setConf(getConf());
 				//jrnl.jrnlPane.setToolbars(tb1, tb2);
-				String spp = jpages.getDefaultPaper();
+				String spp = pages.getDefaultPaper();
 				Jpaper pp = new Jpaper();
 				pp.setConf(spp);
 				pp.bgid = "none";
-				jrnl.jrnlPane.jpages.setPaperConf(pp.getConf());
+				jrnl.jrnlPane.pages.setPaperConf(pp.getConf());
 				jrnl.nname = "unsaved.jaj";
 				jrnl.saveBookmarks = false;
 				jrnl.sbmk.setState(false);
@@ -7335,7 +7344,7 @@ public class Jarnal extends JApplet {
 				jrnl.iwd = iwd;
 				jrnl.bwd = bwd;
 				if (onBackground) {
-					jrnl.jrnlPane.jpages.openBg(new JbgsSource(bgfile, null));
+					jrnl.jrnlPane.pages.openBg(new JbgsSource(bgfile, null));
 					;
 					jrnl.fitWidth = true;
 					jrnl.jrnlPane.resize();
@@ -7371,13 +7380,13 @@ public class Jarnal extends JApplet {
 					tfname = "unsaved.jaj";
 				ht.put("$f", tfname);
 				ht.put("$p", cwd + File.separator + tfname);
-				ht.put("$n", "" + jpages.getPages());
+				ht.put("$n", "" + pages.getPages());
 				if (uniqueID == null)
 					uniqueID = suggestName()
 							+ Long.toString((new Random()).nextLong(), 36);
 				ht.put("$u", uniqueID);
 				ht.put("$g", nname);
-				HtmlPost hp = new HtmlPost(netServer, netOptions, jpages, ht,
+				HtmlPost hp = new HtmlPost(netServer, netOptions, pages, ht,
 						getConf(), urlencoded);
 				hp.setJarnal(jarn);
 				hp.withBorders = withBorders;
@@ -7443,7 +7452,7 @@ public class Jarnal extends JApplet {
 				}
 				if (cwd == null)
 					cwd = ".";
-				boolean isSaved = jpages.save(cwd + File.separator + fname,
+				boolean isSaved = pages.save(cwd + File.separator + fname,
 						getConf());
 				if (!embed){
 					tttitle = fname;
@@ -7475,7 +7484,7 @@ public class Jarnal extends JApplet {
 							+ Long.toString((new Random()).nextLong(), 36);
 					fname = temp;
 					addBookmarkAll(cwd + File.separator + fname);
-					dirty = !jpages.save(cwd + File.separator + fname,
+					dirty = !pages.save(cwd + File.separator + fname,
 							getConf());
 					if (!dirty)
 						internalName = "";
@@ -7497,11 +7506,11 @@ public class Jarnal extends JApplet {
 					return;
 				email = ans;
 				ByteArrayOutputStream bas = new ByteArrayOutputStream();
-				jpages().save(bas, getConf());
+				pages().save(bas, getConf());
 				byte ba[] = bas.toByteArray();
 				byte bav[][] = new byte[1][];
 				bav[0] = ba;
-				Jsendmail jsm = new Jsendmail();
+				SendMail jsm = new SendMail();
 				String sendname = fname;
 				if (sendname.equals(""))
 					sendname = "temp.jaj";
@@ -7527,14 +7536,14 @@ public class Jarnal extends JApplet {
 					File tfile = File.createTempFile("temppdf", "pdf");
 					pdfFile = tfile.getPath();
 					doAction("zPrint as PDF");
-					ba = jpages.streamToByteArray(new FileInputStream(tfile));
+					ba = pages.streamToByteArray(new FileInputStream(tfile));
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					return;
 				}
 				byte bav[][] = new byte[1][];
 				bav[0] = ba;
-				Jsendmail jsm = new Jsendmail();
+				SendMail jsm = new SendMail();
 				String sendname = fname;
 				if (sendname.equals(""))
 					sendname = "temp.pdf";
@@ -7571,10 +7580,10 @@ public class Jarnal extends JApplet {
 					return;
 				textfile = temp;
 				action = "save all text";
-				alltext = jpages.copyAllHtml();
+				alltext = pages.copyAllHtml();
 			}
 			if (action.equals("save text")) {
-				alltext = jpages.copyAllText();
+				alltext = pages.copyAllText();
 				action = "save all text";
 			}
 			if (action.equals("save all text")) {
@@ -7674,31 +7683,31 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Zoom")) {
 				(new Jarnbox(gJrnlFrame, "Zoom", jarn, false)).getPosDecNumber(
-						jpages.getScale(), 100.0f, true);
+						pages.getScale(), 100.0f, true);
 			}
 			if (action.equals("Preview Zoom")) {
 				if (previewZoom != null) {
 					float scale = previewZoom.floatValue();
-					float oldscale = jpages.getScale();
+					float oldscale = pages.getScale();
 					if (scale != oldscale) {
-						jpages.invalidateGraphics();
-						jpages.setScale(scale);
+						pages.invalidateGraphics();
+						pages.setScale(scale);
 						zoom(oldscale);
 					}
 				}
 			}
 			if (action.equals("Zoom In")) {
 				fitWidth = false;
-				jpages.invalidateGraphics();
-				float oldscale = jpages.getScale();
-				jpages.upScale(1);
+				pages.invalidateGraphics();
+				float oldscale = pages.getScale();
+				pages.upScale(1);
 				zoom(oldscale);
 			}
 			if (action.equals("Zoom Out")) {
 				fitWidth = false;
-				jpages.invalidateGraphics();
-				float oldscale = jpages.getScale();
-				jpages.upScale(-1);
+				pages.invalidateGraphics();
+				float oldscale = pages.getScale();
+				pages.upScale(-1);
 				zoom(oldscale);
 			}
 			if (action.equals("Fit Width")) {
@@ -7707,7 +7716,7 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Background Information")) {
-				JOptionPane.showConfirmDialog(gJrnlFrame, jpages.bgs()
+				JOptionPane.showConfirmDialog(gJrnlFrame, pages.bgs()
 						.getInfo(), "Background File Information",
 						JOptionPane.DEFAULT_OPTION);
 			}
@@ -7765,7 +7774,7 @@ public class Jarnal extends JApplet {
 				try {
 					File tfile = File.createTempFile("bar", ".jaj");
 					tfile.deleteOnExit();
-					jpages.save(tfile.getPath(), getConf());
+					pages.save(tfile.getPath(), getConf());
 					JPanel miniFrame = new JPanel(new BorderLayout());
 					Jarnal mj = barJarnal(tfile.getPath(), jarn, miniFrame,
 							toolkit);
@@ -7795,7 +7804,7 @@ public class Jarnal extends JApplet {
 					try {
 						File tfile = File.createTempFile("bar", ".jaj");
 						tfile.deleteOnExit();
-						jpages.save(tfile.getPath(), getConf());
+						pages.save(tfile.getPath(), getConf());
 						JPanel miniFrame = new JPanel(new BorderLayout());
 						Jarnal mj = barJarnal(tfile.getPath(), jarn, miniFrame,
 								toolkit);
@@ -7830,7 +7839,7 @@ public class Jarnal extends JApplet {
 				if (bpanel == null) {
 					JPanel miniFrame = new JPanel(new BorderLayout());
 					Jarnal mj = miniJarnal(null, miniFrame, toolkit);
-					mj.jrnlPane.jpages.setWidth(8.5f);
+					mj.jrnlPane.pages.setWidth(8.5f);
 					mj.parentJarn = jarn;
 					bpanel = new JPanel(new BorderLayout());
 					cp.remove(statusBar);
@@ -7871,7 +7880,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Next Frame")) {
 				advanceFrame();
-				jpages.nextFrame();
+				pages.nextFrame();
 				dirty = true;
 			}
 			if (action.equals("Previous Frame"))
@@ -7894,14 +7903,14 @@ public class Jarnal extends JApplet {
 			if (action.equals("Screenshot Background")) {
 				if (mscr)
 					gJrnlFrame.setState(Frame.ICONIFIED);
-				Jarnscr jscr = new Jarnscr(this, false, ascr);
+				Screen jscr = new Screen(this, false, ascr);
 				(new Thread(jscr)).start();
 			}
 
 			if (action.equals("Screenshot Image")) {
 				if (mscr)
 					gJrnlFrame.setState(Frame.ICONIFIED);
-				Jarnscr jscr = new Jarnscr(this, true, ascr);
+				Screen jscr = new Screen(this, true, ascr);
 				(new Thread(jscr)).start();
 			}
 
@@ -7914,7 +7923,7 @@ public class Jarnal extends JApplet {
 								+ (new Random()).nextInt(), ".png");
 						String bgfile = tfile.getPath();
 						javax.imageio.ImageIO.write(scr, "PNG", tfile);
-						jpages.openBg(new JbgsSource(bgfile, null));
+						pages.openBg(new JbgsSource(bgfile, null));
 					} catch (Exception ex) {
 						System.err.println(ex);
 						scr = null;
@@ -7945,7 +7954,7 @@ public class Jarnal extends JApplet {
 						return;
 					ByteArrayInputStream baist = new ByteArrayInputStream(baost
 							.toByteArray());
-					nextScrap = jpages.addScrapImage(baist, "ScreenCapture"
+					nextScrap = pages.addScrapImage(baist, "ScreenCapture"
 							+ (new Random()).nextInt() + ".png");
 					scr = null;
 					dragOp = 113;
@@ -7978,7 +7987,7 @@ public class Jarnal extends JApplet {
 					return;
 				String insfile = cwd + File.separator + temp;
 				// jpages.insert(insfile, textMode);
-				jpages.insert(insfile, action);
+				pages.insert(insfile, action);
 				setup();
 				setStatus("");
 			}
@@ -8001,7 +8010,7 @@ public class Jarnal extends JApplet {
 					return;
 				String scrapfile = iwd + File.separator + temp;
 				try {
-					nextScrap = jpages.addScrapImage(new FileInputStream(
+					nextScrap = pages.addScrapImage(new FileInputStream(
 							scrapfile), temp);
 				} catch (Exception ex) {
 					System.err.println(ex);
@@ -8014,8 +8023,8 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Repeating")) {
-				jpages.setRepeating(!jpages.getRepeating());
-				rbh.setState(jpages.getRepeating());
+				pages.setRepeating(!pages.getRepeating());
+				rbh.setState(pages.getRepeating());
 				dirty = true;
 				setup();
 			}
@@ -8034,7 +8043,7 @@ public class Jarnal extends JApplet {
 				if (temp == null)
 					return;
 				bgfile = bwd + File.separator + temp;
-				jpages.insertBg(new JbgsSource(bgfile, null), action);
+				pages.insertBg(new JbgsSource(bgfile, null), action);
 				fitWidth = true;
 				resize();
 				dirty = true;
@@ -8050,7 +8059,7 @@ public class Jarnal extends JApplet {
 				if (temp == null)
 					return;
 				bgfile = bwd + File.separator + temp;
-				jpages.openBg(new JbgsSource(bgfile, null));
+				pages.openBg(new JbgsSource(bgfile, null));
 				fitWidth = true;
 				resize();
 				dirty = true;
@@ -8070,7 +8079,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Remove Background")) {
 				bgfile = "";
-				jpages.removeBg();
+				pages.removeBg();
 				dirty = true;
 				setup();
 			}
@@ -8132,35 +8141,35 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Set Text Default"))
-				jpages.setDefaultParms();
+				pages.setDefaultParms();
 			if (action.equals("Set Default Paper"))
-				jpages.setDefaultPaper();
+				pages.setDefaultPaper();
 			if (action.equals("Apply Paper to All Pages")
 					|| action.equals("Apply to All with Background")) {
-				Jpaper jpap = jpages.setDefaultPaper();
+				Jpaper jpap = pages.setDefaultPaper();
 				String bghandle = jpap.bgid;
 				boolean samebg = false;
 				if (action.equals("Apply to All with Background"))
 					samebg = true;
-				int savePage = jpages.getPage();
-				jpages.nextPage(-savePage);
-				for (int ii = 0; ii < jpages.getPages(); ii++) {
+				int savePage = pages.getPage();
+				pages.nextPage(-savePage);
+				for (int ii = 0; ii < pages.getPages(); ii++) {
 					if (!samebg)
-						jpages.setPaper(jpap, false);
-					else if (jpages.getPaper().bgid.equals(bghandle))
-						jpages.setPaper(jpap, false);
-					jpages.nextPage(1);
+						pages.setPaper(jpap, false);
+					else if (pages.getPaper().bgid.equals(bghandle))
+						pages.setPaper(jpap, false);
+					pages.nextPage(1);
 				}
-				jpages.nextPage(savePage - jpages.getPage());
+				pages.nextPage(savePage - pages.getPage());
 				setup();
 				dirty = true;
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				drawState = 0;
 			}
 
 			if (action.equals("Properties")) {
-				jpages.selectSingle(popupPoint, jt);
-				if (jpages.overlaySelected())
+				pages.selectSingle(popupPoint, jt);
+				if (pages.overlaySelected())
 					action = "Overlay Style";
 				else
 					action = "Modify Selection";
@@ -8175,7 +8184,7 @@ public class Jarnal extends JApplet {
 				int ncol = action.indexOf(" overlay");
 				if (ncol > 0) {
 					String ocol = action.substring(0, ncol);
-					defaultOverlay = jpages.setOverlayColor(defaultOverlay, ocol);
+					defaultOverlay = pages.setOverlayColor(defaultOverlay, ocol);
 				}
 			}
 			if (action.equals("Circle")){
@@ -8186,28 +8195,28 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("Fade Overlay")) {
 				overlayOp = true;
-				Number test = (new Jarnbox(gJrnlFrame, "Fade Overlay")).getInt(jpages.getOverlayFade(defaultOverlay), 100);
+				Number test = (new Jarnbox(gJrnlFrame, "Fade Overlay")).getInt(pages.getOverlayFade(defaultOverlay), 100);
 				if (test != null)
-					defaultOverlay = jpages.setOverlayStyle(defaultOverlay, -1, -1, null, null, -1, test.intValue(), -1);
+					defaultOverlay = pages.setOverlayStyle(defaultOverlay, -1, -1, null, null, -1, test.intValue(), -1);
 			}
 			if (action.equals("Overlay Outline Thickness")) {
 				overlayOp = true;
-				Number test = (new Jarnbox(gJrnlFrame, "Overlay Outline Thickness")).getInt(jpages.getOutlineThickeness(defaultOverlay), 20);
+				Number test = (new Jarnbox(gJrnlFrame, "Overlay Outline Thickness")).getInt(pages.getOutlineThickeness(defaultOverlay), 20);
 				if (test != null)
-					defaultOverlay = jpages.setOverlayStyle(defaultOverlay, -1,-1, null, null, test.intValue(), -1, -1);
+					defaultOverlay = pages.setOverlayStyle(defaultOverlay, -1,-1, null, null, test.intValue(), -1, -1);
 			}
 			if (action.endsWith(" outline")) {
 				overlayOp = true;
 				int ncol = action.indexOf(" outline");
 				if (ncol > 0) {
 					String ocol = action.substring(0, ncol);
-					defaultOverlay = jpages.setOverlayOutline(defaultOverlay,
+					defaultOverlay = pages.setOverlayOutline(defaultOverlay,
 							ocol);
 				}
 			}
 			if (overlayOp) {
 				dirty = true;
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				drawState = 0;
 			}
 
@@ -8243,7 +8252,7 @@ public class Jarnal extends JApplet {
 						.showDialog(gJrnlFrame, jt, jarn);
 
 			if (action.equals("Arrow Weight")) {
-				jpages.applyArrow(markerweight);
+				pages.applyArrow(markerweight);
 				dirty = true;
 			}
 
@@ -8251,71 +8260,71 @@ public class Jarnal extends JApplet {
 				(new paperDialogListener()).showDialog(gJrnlFrame, jarn);
 
 			if (action.equals("white paper")) {
-				jpages.setPaper(Jpaper.WHITE);
+				pages.setPaper(Jpaper.WHITE);
 				dirty = true;
 			}
 			if (action.equals("yellow paper")) {
-				jpages.setPaper(Jpaper.lighter(Color.yellow.getRGB()));
+				pages.setPaper(Jpaper.lighter(Color.yellow.getRGB()));
 				dirty = true;
 			}
 			if (action.equals("pink paper")) {
-				jpages.setPaper(Jpaper.lighter(Color.pink.getRGB()));
+				pages.setPaper(Jpaper.lighter(Color.pink.getRGB()));
 				dirty = true;
 			}
 			if (action.equals("orange paper")) {
-				jpages.setPaper(0xffcc99);
+				pages.setPaper(0xffcc99);
 				dirty = true;
 			}
 			if (action.equals("blue paper")) {
-				jpages.setPaper(0xccffff);
+				pages.setPaper(0xccffff);
 				dirty = true;
 			}
 			if (action.equals("green paper")) {
-				jpages.setPaper(0x99ff99);
+				pages.setPaper(0x99ff99);
 				dirty = true;
 			}
 
 			if (action.equals("Lined")) {
-				jpages.setPaper("Lined");
+				pages.setPaper("Lined");
 				dirty = true;
 			}
 			if (action.equals("Plain")) {
-				jpages.setPaper("Plain");
+				pages.setPaper("Plain");
 				dirty = true;
 			}
 			if (action.equals("Graph")) {
-				jpages.setPaper("Graph");
+				pages.setPaper("Graph");
 				dirty = true;
 			}
 			if (action.equals("Graph Paper")) {
-				String paper = jpages.getPaper().paper;
+				String paper = pages.getPaper().paper;
 				if (paper.equals("Graph"))
-					jpages.setPaper("Plain");
+					pages.setPaper("Plain");
 				else
-					jpages.setPaper("Graph");
+					pages.setPaper("Graph");
 				dirty = true;
 			}
 			if (action.equals("Ruled")) {
-				jpages.setPaper("Ruled");
+				pages.setPaper("Ruled");
 				dirty = true;
 			}
 			if (action.equals("Thick Lines")) {
-				jpages.setLines(15);
+				pages.setLines(15);
 				dirty = true;
 			}
 			if (action.equals("Medium Lines")) {
-				jpages.setLines(25);
+				pages.setLines(25);
 				dirty = true;
 			}
 			if (action.equals("Thin Lines")) {
-				jpages.setLines(35);
+				pages.setLines(35);
 				dirty = true;
 			}
 			if (action.equals("Other Lines")) {
 				Number test = (new Jarnbox(gJrnlFrame, "Other Lines")).getInt(
 						25, 1000);
 				if (test != null) {
-					jpages.setLines(test.intValue());
+					pages.setLines(test.intValue());
 					drawState = 0;
 					dirty = true;
 				}
@@ -8324,74 +8333,74 @@ public class Jarnal extends JApplet {
 			boolean resize = false;
 
 			if (action.equals("Fit Page Width")) {
-				jpages.setBgToPaper(true);
+				pages.setBgToPaper(true);
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("Fit Page Height")) {
-				jpages.setBgToPaper(false);
+				pages.setBgToPaper(false);
 				resize = true;
 				dirty = true;
 			}
 
 			if (action.equals("Fade Background")) {
 				Number test = (new Jarnbox(gJrnlFrame, "Fade Background"))
-						.getInt(jpages.bgFade(), 100);
+						.getInt(pages.bgFade(), 100);
 				if (test != null) {
-					jpages.bgFade(test.intValue());
+					pages.bgFade(test.intValue());
 					resize = true;
 					dirty = true;
 				}
 			}
 			if (action.equals("Rotate Background")) {
-				jpages.setStartMark();
-				jpages.bgRotate(1);
-				jpages.setSizeToBg();
-				jpages.setEndMark();
+				pages.setStartMark();
+				pages.bgRotate(1);
+				pages.setSizeToBg();
+				pages.setEndMark();
 				resize = true;
 				dirty = true;
 			}
 
 			if (action.equals("Background Scale")) {
 				Number test = (new Jarnbox(gJrnlFrame, "Background Scale"))
-						.getPosDecNumber(jpages.bgScale(), 100);
+						.getPosDecNumber(pages.bgScale(), 100);
 				if (test != null) {
-					jpages.bgScale(test.floatValue());
+					pages.bgScale(test.floatValue());
 					resize = true;
 					dirty = true;
 				}
 			}
 			if (action.equals("Background Page")) {
 				Number test = (new Jarnbox(gJrnlFrame, "Background Page"))
-						.getInt(jpages.bgindex(), 1000);
+						.getInt(pages.bgindex(), 1000);
 				if (test != null) {
-					jpages.bgindex(test.intValue());
+					pages.bgindex(test.intValue());
 					resize = true;
 					dirty = true;
 				}
 			}
 			if (action.equals("Toggle Landscape")) {
-				jpages.toggleLandscape();
+				pages.toggleLandscape();
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("Show Background")) {
-				shbg.setState(jpages.toggleBackground());
+				shbg.setState(pages.toggleBackground());
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("translucent")) {
-				jpages.setTransparency(100);
+				pages.setTransparency(100);
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("transparent")) {
-				jpages.setTransparency(60);
+				pages.setTransparency(60);
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("opaque")) {
-				jpages.setTransparency(255);
+				pages.setTransparency(255);
 				resize = true;
 				dirty = true;
 			}
@@ -8401,33 +8410,33 @@ public class Jarnal extends JApplet {
 				drawState = 0;
 				if (ans != null) {
 					int test = ans.intValue();
-					jpages.setTransparency(test);
+					pages.setTransparency(test);
 					resize = true;
 					dirty = true;
 				}
 			}
 
 			if (action.equals("Index Card")) {
-				jpages.setStartMark();
-				jpages.setHeight(3.0f);
-				jpages.setWidth(5.0f);
-				jpages.setLines(40);
-				jpages.setPaper("Ruled");
-				jpages.setEndMark();
+				pages.setStartMark();
+				pages.setHeight(3.0f);
+				pages.setWidth(5.0f);
+				pages.setLines(40);
+				pages.setPaper("Ruled");
+				pages.setEndMark();
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("Normal Size")) {
-				jpages.setStartMark();
-				jpages.setHeight(10.25f);
-				jpages.setWidth(8.5f);
-				jpages.setLines(25);
-				jpages.setEndMark();
+				pages.setStartMark();
+				pages.setHeight(10.25f);
+				pages.setWidth(8.5f);
+				pages.setLines(25);
+				pages.setEndMark();
 				resize = true;
 				dirty = true;
 			}
 			if (action.equals("Fit to Background")) {
-				jpages.setSizeToBg();
+				pages.setSizeToBg();
 				resize = true;
 				dirty = true;
 			}
@@ -8447,8 +8456,8 @@ public class Jarnal extends JApplet {
 					jtbu.setWidth(jtbu.type);
 					jt.fatWidth = test.floatValue();
 					jt.setWidth(jt.type);
-					jpages.jtool.fatWidth = test.floatValue();
-					jpages.jtool.setWidth(jpages.jtool.type);
+					pages.tools.fatWidth = test.floatValue();
+					pages.tools.setWidth(pages.tools.type);
 					dirty = true;
 				}
 			}
@@ -8461,7 +8470,7 @@ public class Jarnal extends JApplet {
 					jtd.bWidth = jth.bWidth;
 					jtbu.bWidth = jth.bWidth;
 					jt.bWidth = jth.bWidth;
-					jpages.jtool.bWidth = jth.bWidth;
+					pages.tools.bWidth = jth.bWidth;
 				}
 				dirty = true;
 			}
@@ -8475,16 +8484,16 @@ public class Jarnal extends JApplet {
 					jtd.hTrans = jth.hTrans;
 					jtbu.hTrans = jth.hTrans;
 					jt.hTrans = jth.hTrans;
-					jpages.jtool.hTrans = jth.hTrans;
+					pages.tools.hTrans = jth.hTrans;
 				}
 				dirty = true;
 			}
 
 			if (action.equals("Page Overlay")) {
 				Number test = (new Jarnbox(gJrnlFrame, "Page Overlay"))
-						.getPosDecNumber(jpages.PO, 100.00);
+						.getPosDecNumber(pages.PO, 100.00);
 				if (test != null) {
-					jpages.PO = test.floatValue();
+					pages.PO = test.floatValue();
 				}
 				dirty = true;
 			}
@@ -8512,30 +8521,30 @@ public class Jarnal extends JApplet {
 			if (viewQuality != bq + fq) {
 				viewQuality = bq + fq;
 				dirty = true;
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				drawState = 0;
 				setVQ();
 			}
 
 			if (action.equals("Silent External Renderer")) {
-				Jbgs.silentGS = !Jbgs.silentGS;
-				backSilentGS.setState(Jbgs.silentGS);
-				if (Jbgs.silentGS) {
-					Jbgs.useGS = true;
-					backUseGS.setState(Jbgs.useGS);
+				Background.silentGS = !Background.silentGS;
+				backSilentGS.setState(Background.silentGS);
+				if (Background.silentGS) {
+					Background.useGS = true;
+					backUseGS.setState(Background.useGS);
 				}
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				drawState = 0;
 			}
 
 			if (action.equals("Use External Renderer")) {
-				Jbgs.useGS = !Jbgs.useGS;
-				backUseGS.setState(Jbgs.useGS);
-				if (!Jbgs.useGS) {
-					Jbgs.silentGS = false;
-					backSilentGS.setState(Jbgs.silentGS);
+				Background.useGS = !Background.useGS;
+				backUseGS.setState(Background.useGS);
+				if (!Background.useGS) {
+					Background.silentGS = false;
+					backSilentGS.setState(Background.silentGS);
 				}
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				drawState = 0;
 			}
 
@@ -8635,12 +8644,12 @@ public class Jarnal extends JApplet {
 					offY = foffY;
 				}
 				if (thumbs && !threeup)
-					jpages.setScale(2 * jpages.getScale());
+					pages.setScale(2 * pages.getScale());
 				thumbs = false;
 				threeup = false;
 				poverlay = false;
-				jpages.PO = 2.0;
-				jpages.invalidateGraphics();
+				pages.PO = 2.0;
+				pages.invalidateGraphics();
 				// dragOp = 13;
 				dirty = true;
 				standardCursor();
@@ -8677,7 +8686,7 @@ public class Jarnal extends JApplet {
 			if (action.equals("Undo Recognition")) {
 				if (!analyze)
 					return;
-				jpages.undoRecog();
+				pages.undoRecog();
 				dirty = true;
 			}
 
@@ -8697,7 +8706,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Recognize Page")) {
 				janalyzeinit();
-				String str = jpages.analyzeAll(jt);
+				String str = pages.analyzeAll(jt);
 				textOp("type", 0, str);
 				drawState = 0;
 				// return;
@@ -8802,7 +8811,7 @@ public class Jarnal extends JApplet {
 				janalyzeinit();
 				JDictionaryEditor jd = new JDictionaryEditor();
 				Jarnal min = jarn.microJarnal(jd.jpan, toolkit);
-				Janalyze janal = min.jrnlPane.jpages.getanalyze(jt);
+				Analyze janal = min.jrnlPane.pages.getanalyze(jt);
 				janal.train = true;
 				jd.janal = janal;
 				janal.jdic = jd;
@@ -8856,17 +8865,17 @@ public class Jarnal extends JApplet {
 				penChanged = true;
 			}
 			if (action.equals("Choose Pen")) {
-				Jtool jtCopy = new Jtool();
+				Tools jtCopy = new Tools();
 				jtCopy.fullCopy(jt);
-				Jtool.penDialogListener pdial = jtCopy.showDialog(gJrnlFrame,
+				Tools.penDialogListener pdial = jtCopy.showDialog(gJrnlFrame,
 						jt, jtd, jth, jtbu, jarn);
 				penChanged = pdial.dirty;
 				if (pdial.highlighterStyle != null)
 					highlighterStyle = pdial.highlighterStyle;
-				jpages.jtool.bWidth = jt.bWidth;
-				jpages.jtool.fatWidth = jt.fatWidth;
-				jpages.jtool.hTrans = jt.hTrans;
-				jpages.jtool.setWidth(jpages.jtool.type);
+				pages.tools.bWidth = jt.bWidth;
+				pages.tools.fatWidth = jt.fatWidth;
+				pages.tools.hTrans = jt.hTrans;
+				pages.tools.setWidth(pages.tools.type);
 			}
 			if (action.equals("Set Fine")) {
 				setWidth("Fine");
@@ -9048,44 +9057,44 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Highlight Lines"))
-				jpages.highlightLines = !jpages.highlightLines;
+				pages.highlightLines = !pages.highlightLines;
 
 			if (action.equals("Undo")) {
 				// nextScrap = null;
-				if (jpages.undo())
+				if (pages.undo())
 					setup();
 				dirty = true;
 			}
 			if (action.equals("Undo All")) {
-				jpages.setMark("tempundoall");
-				jpages.untilMark("undo", "markthisdoesnotexist");
+				pages.setMark("tempundoall");
+				pages.untilMark("undo", "markthisdoesnotexist");
 				setup();
 				dirty = true;
 			}
 			if (action.equals("Redo")) {
-				if (jpages.redo())
+				if (pages.redo())
 					setup();
 				dirty = true;
 			}
 			if (action.equals("Redo All")) {
-				jpages.untilMark("redo", "marktempundoall");
+				pages.untilMark("redo", "marktempundoall");
 				setup();
 				dirty = true;
 			}
 
 			if (action.equals("Record")) {
-				jpages.recordingOn(!jpages.recordingOn());
-				recbox.setState(jpages.recordingOn());
+				pages.recordingOn(!pages.recordingOn());
+				recbox.setState(pages.recordingOn());
 				return;
 			}
 
 			if (action.startsWith("Delete")) {
 				if (!pageList.isEmpty()) {
 					deletePages();
-				} else if (textMode || !jpages.pageSelected())
+				} else if (textMode || !pages.pageSelected())
 					action = "Clear";
 				else {
-					jpages.pageDelete();
+					pages.pageDelete();
 					setup();
 					dirty = true;
 				}
@@ -9097,8 +9106,8 @@ public class Jarnal extends JApplet {
 					textOp("type", 0, "");
 					return;
 				}
-				if (jpages.pageSelected()) {
-					jpages.clearPage();
+				if (pages.pageSelected()) {
+					pages.clearPage();
 					setup();
 					dirty = true;
 				} else {
@@ -9111,27 +9120,27 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Duplicate Page")) {
-				jpages.pageDup();
+				pages.pageDup();
 				setup();
 				dirty = true;
 			}
 
 			if (action.equals("New Page Before")) {
-				jpages.setStartMark();
-				jpages.pageBefore("");
-				jpages.setSizeToBg();
-				jpages.setEndMark();
+				pages.setStartMark();
+				pages.pageBefore("");
+				pages.setSizeToBg();
+				pages.setEndMark();
 				setup();
 				dirty = true;
 				jrnlPane.requestFocus();
 			}
 
 			if (action.equals("New Page")) {
-				jpages.setStartMark();
-				jpages.pageAfter("");
-				jpages.newBg();
-				jpages.setSizeToBg();
-				jpages.setEndMark();
+				pages.setStartMark();
+				pages.pageAfter("");
+				pages.newBg();
+				pages.setSizeToBg();
+				pages.setEndMark();
 				setup();
 				dirty = true;
 			}
@@ -9215,31 +9224,31 @@ public class Jarnal extends JApplet {
 						Jpaper jpp = new Jpaper();
 						jpp.setConf(data);
 						if (!pageList.isEmpty()) {
-							jpages.setStartMark();
+							pages.setStartMark();
 							Iterator ts = pageList.iterator();
 							while (ts.hasNext()) {
 								int izi = -((Integer) ts.next()).intValue();
-								int pzp = jpages.getPage() - 1;
+								int pzp = pages.getPage() - 1;
 								int deltaz = izi - pzp;
 								if (pzp != 0)
-									jpages.nextPage(deltaz);
-								jpages.setPaper(jpp);
+									pages.nextPage(deltaz);
+								pages.setPaper(jpp);
 								invalidateP();
 							}
-							jpages.setEndMark();
+							pages.setEndMark();
 						} else
-							jpages.setPaper(jpp);
+							pages.setPaper(jpp);
 					}
 					if (jtype.equals("page")) {
-						if (jpages.pageSelected() && !textMode)
-							jpages.replacePage(data);
+						if (pages.pageSelected() && !textMode)
+							pages.replacePage(data);
 						else {
-							jpages.pageAfter(data);
+							pages.pageAfter(data);
 							setup();
 						}
 					}
 					if (jtype.equals("pages")) {
-						jpages.setStartMark();
+						pages.setStartMark();
 						String ter = UndoPage.terminator;
 						int nf0 = 0;
 						int nfn = 0;
@@ -9248,14 +9257,14 @@ public class Jarnal extends JApplet {
 							nfn = data.indexOf(ter, nf0);
 							String tdata = data.substring(nf0, nfn);
 							nf0 = nfn + ter.length();
-							if (firstIter && jpages.pageSelected() && !textMode) {
-								jpages.replacePage(tdata);
+							if (firstIter && pages.pageSelected() && !textMode) {
+								pages.replacePage(tdata);
 								firstIter = false;
 							} else {
-								jpages.pageAfter(tdata);
+								pages.pageAfter(tdata);
 							}
 						}
-						jpages.setEndMark();
+						pages.setEndMark();
 						setup();
 					}
 					if (jtype.equals("object")) {
@@ -9268,7 +9277,7 @@ public class Jarnal extends JApplet {
 					if (jtype.equals("image")) {
 						String oldScrap = nextScrap;
 						try {
-							nextScrap = jpages.addScrapImage(im);
+							nextScrap = pages.addScrapImage(im);
 						} catch (Exception ex) {
 							System.err.println(ex);
 							nextScrap = oldScrap;
@@ -9286,7 +9295,7 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Copy Paper")) {
-				String temp = jpages.getPaperCopyConf();
+				String temp = pages.getPaperCopyConf();
 				JarnalSelection sel = new JarnalSelection(temp, "", temp,
 						"paper");
 				if (!isApplet) {
@@ -9298,11 +9307,11 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Select All Text")) {
-				jpages.selectAllText();
+				pages.selectAllText();
 			}
 
 			if (action.equals("Copy All Text")) {
-				StringSelection sel = new StringSelection(jpages.copyAllText());
+				StringSelection sel = new StringSelection(pages.copyAllText());
 				if (!isApplet) {
 					Clipboard clip = toolkit.getSystemClipboard();
 					clip.setContents(sel, sel);
@@ -9314,31 +9323,31 @@ public class Jarnal extends JApplet {
 			if (action.startsWith("Copy") || action.startsWith("Cut")) {
 				JarnalSelection sel = null;
 				if (!pageList.isEmpty()) {
-					sel = jpages.copyPages(action, pageList);
+					sel = pages.copyPages(action, pageList);
 					if (action.startsWith("Cut"))
 						deletePages();
 				} else {
-					if (jpages.pageSelected() && !textMode) {
-						sel = jpages.copyPage(action, getFileName());
+					if (pages.pageSelected() && !textMode) {
+						sel = pages.copyPage(action, getFileName());
 						if (action.startsWith("Cut")) {
-							jpages.pageDelete();
+							pages.pageDelete();
 							setup();
 							dirty = true;
 						}
 					}
 					if (textMode) {
-						sel = jpages.clipText();
+						sel = pages.clipText();
 						if (action.startsWith("Cut"))
 							textOp("type", 0, "");
 					}
-					if (!jpages.pageSelected() && !textMode) {
-						String temp = jpages.copyDragList();
+					if (!pages.pageSelected() && !textMode) {
+						String temp = pages.copyDragList();
 						String dhtml = "";
 						if (!isApplet) {
 							try {
 								File gfile = File.createTempFile("jarnalClip",
 										".jpg");
-								if (jpages.writeClippedGraphicFile(gfile, null,
+								if (pages.writeClippedGraphicFile(gfile, null,
 										"jpg", false))
 									dhtml = "<img src=\"file://"
 											+ gfile.getPath() + "\">";
@@ -9388,7 +9397,7 @@ public class Jarnal extends JApplet {
 		public void setSave(boolean qck) {
 			if (mini)
 				return;
-			boolean jps[] = jpages.getStatus();
+			boolean jps[] = pages.getStatus();
 			if (undoButton == null)
 				return;
 			undoButton.setEnabled(jps[0]);
@@ -9436,8 +9445,8 @@ public class Jarnal extends JApplet {
 			if (!isApplet) {
 				Runtime rt = Runtime.getRuntime();
 				float test = (float) rt.freeMemory()
-						+ (float) Jtool.maxMemory() - (float) rt.totalMemory();
-				test = 100.0f - (100.0f * test / (float) Jtool.maxMemory());
+						+ (float) Tools.maxMemory() - (float) rt.totalMemory();
+				test = 100.0f - (100.0f * test / (float) Tools.maxMemory());
 				freemem = " &nbsp;&nbsp;mem: " + (int) test + "%";
 				if (test > 90.0f)
 					freemem = "<font color=red>" + freemem + "</font>";
@@ -9445,18 +9454,18 @@ public class Jarnal extends JApplet {
 			String dstring = "";
 			String fstring = "";
 			setSave(false);
-			boolean jps[] = jpages.getStatus();
+			boolean jps[] = pages.getStatus();
 			if (prevPageButton == null)
 				return;
 			prevPageButton.setEnabled(jps[2]);
 			firstPageButton.setEnabled(jps[2]);
 			lastPageButton.setEnabled(jps[3]);
-			shbg.setState(jpages.showBackground());
-			rbh.setState(jpages.getRepeating());
+			shbg.setState(pages.showBackground());
+			rbh.setState(pages.getRepeating());
 			if (textMode)
 				fstring = " [Text]";
-			String tstring = jpages.getHtmlDesc();
-			tstring = Jtool.lastToHtml(tstring);
+			String tstring = pages.getHtmlDesc();
+			tstring = Tools.lastToHtml(tstring);
 			stat = "";
 			if (actionMsg != "")
 				stat = "&lt;" + actionMsg + "&gt;";
@@ -9467,15 +9476,15 @@ public class Jarnal extends JApplet {
 			if (dragOp == 117)
 				stat = "&lt;Click to link&gt;";
 			String pstatus = "Pg";
-			if (!textMode && jpages.pageSelected())
+			if (!textMode && pages.pageSelected())
 				pstatus = "<font color=blue>Pg</font>";
 			if (!fullScreen)
-				statusBar.setText("<html><nobr>" + pstatus + " " + jpages.getPage()
-						+ "/" + jpages.getPages() + " " + dstring + fstring
+				statusBar.setText("<html><nobr>" + pstatus + " " + pages.getPage()
+						+ "/" + pages.getPages() + " " + dstring + fstring
 						+ " " + tstring + " &nbsp;" + jt.htmlDesc() + " "
-						+ stat + " &nbsp;" + jpages.getPaperDesc(absoluteScale)
+						+ stat + " &nbsp;" + pages.getPaperDesc(absoluteScale)
 						+ serverMsg + freemem + "</nobr></html>");
-			pageLabel.setText("" + jpages.getPage() + "/" + jpages.getPages());
+			pageLabel.setText("" + pages.getPage() + "/" + pages.getPages());
 		}
 
 		public void setCursor() {
@@ -9497,24 +9506,24 @@ public class Jarnal extends JApplet {
 		private int theight = -1;
 
 		public void setTSize() {
-			int test[] = jpages.getMaxSize(activePage, np());
+			int test[] = pages.getMaxSize(activePage, np());
 			twidth = test[0];
 			theight = test[1];
 		}
 
 		private int getTWidth() {
 			if (twidth == -1)
-				return jpages.getWidth();
+				return pages.getWidth();
 			if (!thumbs)
-				return jpages.getWidth();
+				return pages.getWidth();
 			return twidth;
 		}
 
 		private int getTHeight() {
 			if (theight == -1)
-				return jpages.getHeight();
+				return pages.getHeight();
 			if (!thumbs)
-				return jpages.getHeight();
+				return pages.getHeight();
 			return theight;
 		}
 
@@ -9537,19 +9546,19 @@ public class Jarnal extends JApplet {
 		}
 
 		public void zoom(float oldscale) {
-			float scale = jpages.getScale();
+			float scale = pages.getScale();
 			if (oldscale == scale)
 				return;
 			Rectangle r = sp.getViewport().getViewRect();
 			float z = scale / oldscale;
 			Point p = new Point((int) (z * r.getX()), (int) (z * r.getY()));
-			jpages.invalidateGraphics();
+			pages.invalidateGraphics();
 			setup(p);
 		}
 
 		// fits page to display
 		public void resize() {
-			float oldscale = jpages.getScale();
+			float oldscale = pages.getScale();
 			Dimension d = null;
 			if (barjarnal)
 				d = new Dimension(tpanel.getDividerLocation(), tpanel.getHeight());
@@ -9567,7 +9576,7 @@ public class Jarnal extends JApplet {
 				gcb = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
 				dw = (float) gcb.width;
 			}
-			float scale = (float) (dw / jpages.getBaseWidth());
+			float scale = (float) (dw / pages.getBaseWidth());
 			if (!thumbs) {
 				dw = (float) (sp.getHeight() - 3);
 				if (fullScreen) {
@@ -9577,13 +9586,13 @@ public class Jarnal extends JApplet {
 					if (showOutline)
 						dw = dw - (float) outheight - (float) foffX;
 				}
-				float tscale = (float) (dw / jpages.getBaseHeight());
+				float tscale = (float) (dw / pages.getBaseHeight());
 				if (tscale < scale)
 					scale = tscale;
 			}
 			scale = scale / nc();
 			if (scale != oldscale) {
-				jpages.setScale(scale);
+				pages.setScale(scale);
 				zoom(oldscale);
 			}
 			setup();
@@ -9602,7 +9611,7 @@ public class Jarnal extends JApplet {
 			if (!((dragOp == -1) && stickyRuler))
 				dragOp = 0;
 			if (thumbs)
-				activePage = jpages.getPage() - 1;
+				activePage = pages.getPage() - 1;
 			// else activePage = 0;
 			setTSize();
 			setOffset();
@@ -9696,8 +9705,8 @@ public class Jarnal extends JApplet {
 			if (!thumbs)
 				return 1;
 			if (thumbs && threeup)
-				return jpages.getPages();
-			return (jpages.getPages() + 1) / 2;
+				return pages.getPages();
+			return (pages.getPages() + 1) / 2;
 		}
 
 		private int nc() {
@@ -9732,32 +9741,32 @@ public class Jarnal extends JApplet {
 		}
 
 		private void updateCurrentPage() {
-			jpages.setScale(jpages.getScale());
-			int w = jpages.getWidth();
-			int h = jpages.getHeight();
+			pages.setScale(pages.getScale());
+			int w = pages.getWidth();
+			int h = pages.getHeight();
 			gg = (BufferedImage) jrnlCreateImage(w, h);
 			if (gg2 != null)
 				gg2.dispose();
 			gg2 = gg.createGraphics();
 			setHints(gg2);
 			gg2.clearRect(0, 0, w, h);
-			jpages.setGraphics2D(gg2);
-			jpages.updatePage(gg2, gg, firstPage(), jpages.getPage() - 1, bq);
+			pages.setGraphics2D(gg2);
+			pages.updatePage(gg2, gg, firstPage(), pages.getPage() - 1, bq);
 		}
 
 		private void updatePage(Graphics2D g2, int i) {
-			BufferedImage gbi = jpages.getGraphics(firstPage() + i);
+			BufferedImage gbi = pages.getGraphics(firstPage() + i);
 			Graphics2D gbi2;
 			boolean fooflag = false;
 			if (gbi == null) {
-				float s = jpages.setScale(i);
+				float s = pages.setScale(i);
 				// gbi = (BufferedImage)jrnlCreateImage((int)(s *
 				// jpages.getWidth(i)), (int)(s * jpages.getHeight(i)));
-				gbi = (BufferedImage) jrnlCreateImage(jpages.getWidthInt(i),
-						jpages.getHeightInt(i));
+				gbi = (BufferedImage) jrnlCreateImage(pages.getWidthInt(i),
+						pages.getHeightInt(i));
 				gbi2 = gbi.createGraphics();
 				setHints(gbi2);
-				jpages.updatePage(gbi2, gbi, firstPage(), i, bq);
+				pages.updatePage(gbi2, gbi, firstPage(), i, bq);
 				fooflag = true;
 			} else {
 				gbi2 = gbi.createGraphics();
@@ -9770,7 +9779,7 @@ public class Jarnal extends JApplet {
 				if (gg2 != null)
 					gg2.dispose();
 				gg2 = gbi2;
-				jpages.setGraphics2D(gg2);
+				pages.setGraphics2D(gg2);
 			} else if (gbi2 != null)
 				gbi2.dispose();
 			// it would be nice to draw some additional pages in the background
@@ -9782,7 +9791,7 @@ public class Jarnal extends JApplet {
 
 		private BufferedImage jrnlCreateImage(int w, int h) {
 			BufferedImage hmg = null;
-			hmg = jpages.getImage(w, h);
+			hmg = pages.getImage(w, h);
 			if (hmg != null)
 				return hmg;
 			boolean flag = false;
@@ -9790,7 +9799,7 @@ public class Jarnal extends JApplet {
 			try {
 				hmg = (BufferedImage) createImage(w, h);
 			} catch (Error er) {
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 				flag = true;
 			}
 			if (flag) {
@@ -9798,7 +9807,7 @@ public class Jarnal extends JApplet {
 					hmg = (BufferedImage) createImage(w, h);
 				} catch (Error er) {
 					memoryerrorstring = "\n" + mymemory();
-					jpages.setScale(jpages.getScale() / 2);
+					pages.setScale(pages.getScale() / 2);
 					hmg = (BufferedImage) createImage(1, 1);
 					jtm.setMemoryError();
 				}
@@ -9852,8 +9861,8 @@ public class Jarnal extends JApplet {
 
 		public void resetRectangle() {
 			dragOp = 76;
-			xx = jpages.getDragRectX(xx, offX);
-			yy = jpages.getDragRectY(yy, offY);
+			xx = pages.getDragRectX(xx, offX);
+			yy = pages.getDragRectY(yy, offY);
 			if (invalidateFlag)
 				return;
 			setRectangle(null);
@@ -9916,7 +9925,7 @@ public class Jarnal extends JApplet {
 					vdpi = Jpaper.adpi;
 				double llength = Math.sqrt(((xx[0] - xx[1]) * (xx[0] - xx[1]))
 						+ ((yy[0] - yy[1]) * (yy[0] - yy[1])))
-						/ ((double) jpages.getScale() * vdpi);
+						/ ((double) pages.getScale() * vdpi);
 				java.text.DecimalFormat df = new java.text.DecimalFormat(
 						"#0.00");
 				actionMsg = "Ruler " + df.format(llength) + "\"";
@@ -9989,12 +9998,12 @@ public class Jarnal extends JApplet {
 			if (Jarnal.isApplet)
 				return;
 			Runtime rt = Runtime.getRuntime();
-			float test = (float) rt.freeMemory() + (float) Jtool.maxMemory()
+			float test = (float) rt.freeMemory() + (float) Tools.maxMemory()
 					- (float) rt.totalMemory();
-			test = 100.0f - (100.0f * test / (float) Jtool.maxMemory());
+			test = 100.0f - (100.0f * test / (float) Tools.maxMemory());
 			if (test > 90.0f) {
 				System.out.println("memory low; clearing caches");
-				jpages.invalidateGraphics();
+				pages.invalidateGraphics();
 			}
 		}
 
@@ -10052,7 +10061,7 @@ public class Jarnal extends JApplet {
 				}
 				int X = (int) (clipR.getX());
 				int Y = (int) (clipR.getY());
-				jpages.draw(gg2, X, Y, clipR.width, clipR.height);
+				pages.draw(gg2, X, Y, clipR.width, clipR.height);
 				drawState = 0;
 				if (!menuflag) {
 					menuflag = false;
@@ -10087,9 +10096,9 @@ public class Jarnal extends JApplet {
 				if ((dragOp == -1) && (cnt > 0))
 					jrnlPane.stroke(x[cnt - 1]);
 				else if ((dragOp != 0) && (cnt > 0) && (dragOp != 11))
-					bbs = jpages.dragOp(x[cnt - 1]);
+					bbs = pages.dragOp(x[cnt - 1]);
 				if (clearRegion) {
-					bbs = jpages.eraseDragList();
+					bbs = pages.eraseDragList();
 					clearRegion = false;
 				}
 				if (gg == null)
@@ -10099,21 +10108,21 @@ public class Jarnal extends JApplet {
 					bbs.add(drawRect);
 				}
 				cnt = 0;
-				int w = jpages.getWidth();
-				int h = jpages.getHeight();
+				int w = pages.getWidth();
+				int h = pages.getHeight();
 				// We create buffered images, if they don't exist,
 				// or if we changed the page size.
 				if (gg == null || gg.getWidth() != w || gg.getHeight() != h) {
-					jpages.invalidate();
+					pages.invalidate();
 					updateCurrentPage();
 					if (!jpsetup)
-						Jpar.setGraphics(gg2);
+						Parameter.setGraphics(gg2);
 				}
 				setHints(gg2);
 				setTSize();
 				if ((drawState == 100) && (bbs == null)) {
 					for (int i = 0; i < np(); i++) {
-						if (firstPage() + i < jpages.getPages()) {
+						if (firstPage() + i < pages.getPages()) {
 							if (pageIsVisible(i))
 								updatePage(g2, i);
 						}
@@ -10127,7 +10136,7 @@ public class Jarnal extends JApplet {
 					return;
 				}
 				if (bbs == null) {
-					gg = jpages.getGraphics();
+					gg = pages.getGraphics();
 					if (gg == null) {
 						updateCurrentPage();
 					} else {
@@ -10135,14 +10144,14 @@ public class Jarnal extends JApplet {
 							gg2.dispose();
 						gg2 = gg.createGraphics();
 						setHints(gg2);
-						jpages.setGraphics2D(gg2);
+						pages.setGraphics2D(gg2);
 					}
 				} else {
 					bbs = compactr(null, bbs);
 					for (Iterator i = bbs.iterator(); i.hasNext();) {
 						Rectangle r = (Rectangle) i.next();
 						gg2.clearRect(r.x, r.y, r.width, r.height);
-						jpages.draw(gg2, r.x, r.y, r.width, r.height);
+						pages.draw(gg2, r.x, r.y, r.width, r.height);
 					}
 				}
 				this.requestFocus();
@@ -10154,7 +10163,7 @@ public class Jarnal extends JApplet {
 					g2.drawImage(gg, offX, offY, this);
 				else {
 					for (int i = 0; i < np(); i++) {
-						if (firstPage() + i < jpages.getPages())
+						if (firstPage() + i < pages.getPages())
 							if (pageIsVisible(i))
 								updatePage(g2, i);
 					}
@@ -10199,21 +10208,21 @@ public class Jarnal extends JApplet {
 			for (int ii = 0; ii < 1000; ii++) {
 				if (cancelPrint)
 					return;
-				if (ii >= jpages.getPages())
+				if (ii >= pages.getPages())
 					return;
 				float test = (float) rt.freeMemory()
-						+ (float) Jtool.maxMemory() - (float) rt.totalMemory();
-				test = 100.0f - (100.0f * test / (float) Jtool.maxMemory());
+						+ (float) Tools.maxMemory() - (float) rt.totalMemory();
+				test = 100.0f - (100.0f * test / (float) Tools.maxMemory());
 				if (test > 80.0f)
-					jpages.invalidateGraphics();
+					pages.invalidateGraphics();
 				if (pdfWriter == null) {
 					gg = pdf.getGraphics();
 					g2 = g.createGraphics();
 				} else {
 					if (!bestFit) {
-						double W = jpages.getWidth(ii);
+						double W = pages.getWidth(ii);
 						if (W >= 0) {
-							double H = jpages.getHeight(ii);
+							double H = pages.getHeight(ii);
 							float scale = 1.0f;
 							if (!absoluteScale)
 								scale = 72.0f / ((float) Jpaper.dpi);
@@ -10267,12 +10276,12 @@ public class Jarnal extends JApplet {
 				jrnlPDFWriter pdfWriter) throws PrinterException {
 			if (cancelPrint)
 				return Printable.NO_SUCH_PAGE;
-			double W = jpages.getWidth(pi);
+			double W = pages.getWidth(pi);
 			if (W < 0)
 				return Printable.NO_SUCH_PAGE;
 			// jbcancel.msg.setText("Printing page " + (pi + 1));
 			jbcancelmsg("Printing page " + (pi + 1));
-			double H = jpages.getHeight(pi);
+			double H = pages.getHeight(pi);
 
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -10321,7 +10330,7 @@ public class Jarnal extends JApplet {
 			if (pdfWriter != null)
 				pdfWriter.setMargins(X, Y);
 
-			if (jpages.print(g2, pi, scale, withBorders, pdfWriter)) {
+			if (pages.print(g2, pi, scale, withBorders, pdfWriter)) {
 				String pn = "" + (pi + 1);
 				g2.setPaint(Color.darkGray);
 				if (showPageNumbers)
@@ -10337,11 +10346,11 @@ public class Jarnal extends JApplet {
 		}
 
 		public void writeGraphicFile(File f, String type) {
-			jpages.writeGraphicFile(f, null, type, withBorders);
+			pages.writeGraphicFile(f, null, type, withBorders);
 		}
 
 		public void writeTIFFGraphicFile(File f) {
-			jpages.writeTIFFGraphicFile(f, null, withBorders);
+			pages.writeTIFFGraphicFile(f, null, withBorders);
 		}
 	}
 }

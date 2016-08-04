@@ -21,7 +21,7 @@ public class Jarnbox {
 	public JDialog jw;
 	public JFrame f;
 	public Jarnal jarn = null;
-	public Jpages jp = null;
+	public Pages jp = null;
 	public Jarnal.JrnlPane jpn = null;
 	public String title;
 	public boolean done = false;
@@ -128,7 +128,7 @@ public class Jarnbox {
 
 	public void showUnRe(){
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		Container cp = jw.getContentPane();
 		cp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -163,7 +163,7 @@ public class Jarnbox {
 
 	public void showFind(){
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		Container cp = jw.getContentPane();
 		cp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -213,7 +213,7 @@ public class Jarnbox {
 
 	public void showLink(String link){
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		Container cp = jw.getContentPane();
 		cp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -247,7 +247,7 @@ public class Jarnbox {
 
 	public void showReplay(){
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		if(jp.active) jp.setMark("tempundoall");
 		Container cp = jw.getContentPane();
 		cp.setLayout(new GridBagLayout());
@@ -343,10 +343,10 @@ public class Jarnbox {
 		jarn.saveBg = flipon;
 		jarn.sbg.setState(flipon);
 		jarn.sbg2.setState(flipon);
-		jarn.jrnlPane.jpages.saveBg = flipon;
+		jarn.jrnlPane.pages.saveBg = flipon;
 		if(!flipon){
-			jarn.jrnlPane.jpages.portableBgs = false;
-			jarn.pbgs.setState(jarn.jrnlPane.jpages.portableBgs);
+			jarn.jrnlPane.pages.portableBgs = false;
+			jarn.pbgs.setState(jarn.jrnlPane.pages.portableBgs);
 		}
 		cb0.setSelected(flipon);
 	}
@@ -553,7 +553,7 @@ class dialogListener implements ActionListener {
 			}
 			if(test.startsWith("file://")){
 				String url[] = Jarnal.parseURL(test);
-				String path = "../" + Jbgs.relativePath(jb.jarn.cwd, url[1]);
+				String path = "../" + Background.relativePath(jb.jarn.cwd, url[1]);
 				jb.text1.setText(path + url[2]);
 			}				
 		}
@@ -564,7 +564,7 @@ class dialogListener implements ActionListener {
 			if(temp != null){
 				lfile = jb.jarn.cwd + File.separator + temp;
 				String url[] = Jarnal.parseURL(lfile);
-				String path = "../" + Jbgs.relativePath(jb.jarn.cwd, url[1]);
+				String path = "../" + Background.relativePath(jb.jarn.cwd, url[1]);
 				jb.text1.setText(path + url[2]);
 			}
 			jb.jarn.cwd = oldcwd;			
@@ -682,13 +682,13 @@ class dialogClosing extends WindowAdapter {
 
 class timerListener implements ActionListener{
 
-	Jpages jpa;
+	Pages jpa;
 	Jarnal jarn;
 	Jarnal.JrnlPane jpn;
 	String action;
 	Jarnbox jb;
 
-	public timerListener(Jpages jpa, Jarnal jarn, Jarnbox jb, String action){
+	public timerListener(Pages jpa, Jarnal jarn, Jarnbox jb, String action){
 		this.jpa = jpa;
 		this.jarn = jarn;
 		jpn = jarn.jrnlPane;
@@ -751,11 +751,11 @@ class paperDialogListener implements ActionListener {
 	JCheckBox jcb4;
 	JCheckBox jcb5;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 
 	private void setRuling(){
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		int transparency = jp.getPaper().transparency;
 		combo5.setSelectedIndex(3);
 		if(transparency == 100) combo5.setSelectedIndex(1);
@@ -792,7 +792,7 @@ class paperDialogListener implements ActionListener {
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, "Paper and Background", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -1096,7 +1096,7 @@ class checkForUpdatesListener implements ActionListener {
 	JDialog jw;
 	JFrame jf;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 	String curver = null;
 	String stableverstr = null;
@@ -1123,7 +1123,7 @@ class checkForUpdatesListener implements ActionListener {
 	}
 
 	private String getLibVersion(){
-		String libf = Jtool.getBasepath() + "lib/lib-ver.txt";
+		String libf = Tools.getBasepath() + "lib/lib-ver.txt";
 		FileInputStream fis = null;
 		try{
 			fis = new FileInputStream(libf);
@@ -1149,7 +1149,7 @@ class checkForUpdatesListener implements ActionListener {
 
 	private void getReleaseNotes(){
 		String est = jarn.firefox;
-		est = Jtool.replaceAll(est, "%1", jarn.verserver + "../../../workshops/changelog.php?econsite=econsjarn");
+		est = Tools.replaceAll(est, "%1", jarn.verserver + "../../../workshops/changelog.php?econsite=econsjarn");
 		try{
 			Runtime.getRuntime().exec(est);	
 		}
@@ -1164,7 +1164,7 @@ class checkForUpdatesListener implements ActionListener {
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		String title = "Download File?";
 		if(action.equals("helpmenu")) title = "Check For Updates";
 		jw = new JDialog(jf, title, false);
@@ -1197,7 +1197,7 @@ class checkForUpdatesListener implements ActionListener {
 			item.addActionListener(this);
 			cp.add(item, c);
 			c.gridy++;
-			label = new JLabel("<html><br>File will be downloaded to<br>" + Jtool.getBasepath() + "upgrade-jarnal.jar<br>");
+			label = new JLabel("<html><br>File will be downloaded to<br>" + Tools.getBasepath() + "upgrade-jarnal.jar<br>");
 			cp.add(label, c);
 			c.gridy++;
 		}
@@ -1206,7 +1206,7 @@ class checkForUpdatesListener implements ActionListener {
 			item.addActionListener(this);
 			cp.add(item, c);
 			c.gridy++;
-			label = new JLabel("<html><br>File will be downloaded to<br>" + Jtool.getBasepath() + "upgrade-jarnal.jar<br>");
+			label = new JLabel("<html><br>File will be downloaded to<br>" + Tools.getBasepath() + "upgrade-jarnal.jar<br>");
 			cp.add(label, c);
 			c.gridy++;
 		}
@@ -1215,7 +1215,7 @@ class checkForUpdatesListener implements ActionListener {
 			item.addActionListener(this);
 			cp.add(item, c);
 			c.gridy++;
-			label = new JLabel("<html><br>Files will be downloaded to<br>" + Jtool.getBasepath() + "upgrade-lib<br>");
+			label = new JLabel("<html><br>Files will be downloaded to<br>" + Tools.getBasepath() + "upgrade-lib<br>");
 			cp.add(label, c);
 			c.gridy++;
 		}			
@@ -1265,7 +1265,7 @@ class checkForUpdatesListener implements ActionListener {
 		jw.setVisible(false);
 		String source = "jarnal.jar";
 		if(action.equals("stable")) source = "stable-jarnal.jar";
-		String target = Jtool.getBasepath();
+		String target = Tools.getBasepath();
 		if(action.equals("library")){
 			source = "jpedallib.zip";
 			target = target + "upgrade-lib.zip";
@@ -1274,7 +1274,7 @@ class checkForUpdatesListener implements ActionListener {
 		HtmlPost hp = new HtmlPost(jarn.verserver + source, null, null, null, null, false);
 		boolean success = hp.pipeFile(target);
 		if(success && action.equals("library")){
-			File dirName = new File(Jtool.getBasepath() + "upgrade-lib");
+			File dirName = new File(Tools.getBasepath() + "upgrade-lib");
 			dirName.mkdir();
 			try{
 				FileInputStream fis = new FileInputStream(target);
@@ -1282,7 +1282,7 @@ class checkForUpdatesListener implements ActionListener {
 					ZipInputStream zip = new ZipInputStream(fis);
 					for(ZipEntry ze = zip.getNextEntry(); ze != null; ze = zip.getNextEntry()){
 						String zname = ze.getName().substring(4);
-						FileOutputStream fos = new FileOutputStream(Jtool.getBasepath() + "upgrade-lib" + File.separator + zname);
+						FileOutputStream fos = new FileOutputStream(Tools.getBasepath() + "upgrade-lib" + File.separator + zname);
 						int nmin = 1000000;
 						int nborg = 40000;
 						int nmax = nmin + ( 5 * nborg); 
@@ -1340,14 +1340,14 @@ class screenShotListener implements ActionListener {
 	JCheckBox jcb1;
 	JCheckBox jcb2;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 
 	public void showDialog(JFrame jf, Jarnal jarn, String title){
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, title, false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -1412,14 +1412,14 @@ class printOptionsListener implements ActionListener {
 	JCheckBox jcb4;
 	JCheckBox jcb5;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 
 	public void showDialog(JFrame jf, Jarnal jarn){
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, "Print Options", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -1514,7 +1514,7 @@ class saveOptionsListener implements ActionListener {
 	JCheckBox jcb5;
 	JCheckBox jcb6;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 	boolean thenExit = false;
 
@@ -1535,7 +1535,7 @@ class saveOptionsListener implements ActionListener {
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, "Save Options", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -1625,7 +1625,7 @@ class overlayDialogListener implements ActionListener {
 	SpinnerNumberModel model3;
 	SpinnerNumberModel model4;
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 	boolean lockgui = false;
 
@@ -1690,7 +1690,7 @@ class overlayDialogListener implements ActionListener {
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, "Overlay", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -1882,7 +1882,7 @@ class textDialogListener implements ActionListener {
 	String sels2[] = {" 6pt", " 7pt", " 8pt", " 9pt", "10pt", "11pt", "12pt", "13pt", "14pt", "15pt", "16pt", "18pt", "20pt", "22pt", "24pt", "26pt", "28pt", "32pt", "36pt", "40pt", "48pt", "54pt", "60pt", "66pt", "72pt", "80pt", "88pt", "96pt"};
 	String sels3[];
 	Jarnal jarn;
-	Jpages jp;
+	Pages jp;
 	Jarnal.JrnlPane jpn;
 	boolean lockgui = false;
 
@@ -1911,7 +1911,7 @@ class textDialogListener implements ActionListener {
 		this.jarn = jarn;
 		this.jf = jf;
 		jpn = jarn.jrnlPane;
-		jp = jpn.jpages;
+		jp = jpn.pages;
 		jw = new JDialog(jf, "Text Style", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();
@@ -2017,14 +2017,14 @@ class selectionDialogListener implements ActionListener {
 	SpinnerNumberModel model2;
 	SpinnerNumberModel model3;
 	Jarnal jarn;
-	Jpages jp;
-	Jtool curPen;
+	Pages jp;
+	Tools curPen;
 	boolean done = false;
 
-	public void showDialog(JFrame jf, Jtool curPen, Jarnal jarn){
+	public void showDialog(JFrame jf, Tools curPen, Jarnal jarn){
 		this.curPen = curPen;
 		this.jarn = jarn;
-		jp = jarn.jrnlPane.jpages;
+		jp = jarn.jrnlPane.pages;
 		jw = new JDialog(jf, "Modify Selection", false);
 		jw.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		Container cp = jw.getContentPane();

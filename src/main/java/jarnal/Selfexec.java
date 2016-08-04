@@ -7,13 +7,7 @@ import java.util.jar.*;
 
 public class Selfexec {
 
-	static String jhome;
-	static String jexec;
-	static String uhome;
-	static String udir;
-	static String osname;
-	static String osversion;
-	static String url;
+	static String jhome, jexec, uhome, udir, osname, osversion, url;
 	static String appname = "jarnal";
 
 	public static void main(String[] args) {
