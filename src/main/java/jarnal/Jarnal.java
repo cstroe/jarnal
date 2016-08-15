@@ -358,7 +358,7 @@ public class Jarnal extends JApplet {
 		}
 		if (openfile.equals("-large")) {
 			openfile = oldopenfile;
-			loadImagesLarge();
+			Images.loadImagesLarge();
 		}
 		if (openfile.equals("-mousecursor")){
 			openfile = oldopenfile;
@@ -493,7 +493,7 @@ public class Jarnal extends JApplet {
 
 	public static void main(String[] args) {
 		getInstance().initTrans();
-        getInstance().loadImages();
+        Images.loadImages();
         getInstance().loadShell(false);
 		int len = java.lang.reflect.Array.getLength(args);
 		int iarg = 0;
@@ -673,7 +673,7 @@ public class Jarnal extends JApplet {
 	}
 
 	public void init() {
-		loadImages();
+		Images.loadImages();
 		meta = "";
 		openfile = "";
 		openbgfile = "";
@@ -1557,7 +1557,7 @@ public class Jarnal extends JApplet {
 
 	public void buildMenu(JFrame jf) {
 		if (jf != null)
-			jf.setIconImage(jarnalIcon.getImage());
+			jf.setIconImage(Images.jarnalIcon.getImage());
 		JMenu file = new JMenu(trans("File"));
 		file.add(bmi("New"));
 		if (!isApplet)
@@ -1980,248 +1980,6 @@ public class Jarnal extends JApplet {
 	public JButton handButton = null;
 	public JLabel pageLabel = new JLabel();
 	public JLabel clockLabel = new JLabel();
-	JButton memoryButton;
-
-	static ImageIcon hand;
-	static ImageIcon handstop;
-	static ImageIcon handyellow;
-	static ImageIcon handmixed;
-	static ImageIcon handmixed2;
-	static ImageIcon fsave;
-	static ImageIcon newdoc;
-	static ImageIcon undo;
-	static ImageIcon redo;
-	static ImageIcon minus;
-	static ImageIcon plus;
-	static ImageIcon fit;
-	static ImageIcon eraser;
-	static ImageIcon erasetop;
-	static ImageIcon erasebot;
-	static ImageIcon bigeraser;
-	static ImageIcon clonedoc;
-	static ImageIcon red;
-	static ImageIcon blk;
-	static ImageIcon blu;
-	static ImageIcon mgn;
-	static ImageIcon grn;
-	static ImageIcon highyel;
-	static ImageIcon highmag;
-	static ImageIcon highdef;
-	static ImageIcon white;
-	static ImageIcon left;
-	static ImageIcon leftleft;
-	static ImageIcon right;
-	static ImageIcon rightright;
-	static ImageIcon select;
-	static ImageIcon selectrect;
-	static ImageIcon newpage;
-	static ImageIcon def;
-	static ImageIcon fin;
-	static ImageIcon med;
-	static ImageIcon hev;
-	static ImageIcon fat;
-	static ImageIcon razor;
-	static ImageIcon ruler;
-	static ImageIcon thumbsico;
-	static ImageIcon opico;
-	static ImageIcon text;
-	static ImageIcon clock;
-	static ImageIcon threePages;
-	static ImageIcon editcut;
-	static ImageIcon editcopy;
-	static ImageIcon editpaste;
-	static ImageIcon cap;
-	static ImageIcon num;
-	static ImageIcon sym;
-	static ImageIcon calc;
-	static ImageIcon LC;
-	static ImageIcon Spc;
-	static ImageIcon Bsp;
-	static ImageIcon browse;
-	static ImageIcon fullscreen;
-	static ImageIcon returnico;
-	static ImageIcon userico;
-	static ImageIcon multi;
-	static ImageIcon iwidth;
-	static ImageIcon wrench;
-	static ImageIcon arrow;
-	static ImageIcon jarnalIcon;
-
-	static private void loadImagesLarge() {
-
-		fsave = new ImageIcon(Jarnal.class.getResource("images/filesave-l.png"));
-		newdoc = new ImageIcon(Jarnal.class.getResource("images/newdoc-l.png"));
-		undo = new ImageIcon(Jarnal.class.getResource("images/undo-l.png"));
-		redo = new ImageIcon(Jarnal.class.getResource("images/redo-l.png"));
-		minus = new ImageIcon(Jarnal.class.getResource("images/viewmag--l.png"));
-		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+-l.png"));
-		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit-l.png"));
-		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser-l.png"));
-		erasetop = new ImageIcon(Jarnal.class
-				.getResource("images/erasetop-l.png"));
-		erasebot = new ImageIcon(Jarnal.class
-				.getResource("images/erasebot-l.png"));
-		bigeraser = new ImageIcon(Jarnal.class
-				.getResource("images/bigeraser-l.png"));
-		clonedoc = new ImageIcon(Jarnal.class
-				.getResource("images/clonedoc-l.png"));
-		red = new ImageIcon(Jarnal.class.getResource("images/pencilred-l.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk-l.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu-l.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn-l.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn-l.png"));
-		highyel = new ImageIcon(Jarnal.class
-				.getResource("images/highlighteryel-l.png"));
-		highmag = new ImageIcon(Jarnal.class
-				.getResource("images/highlightermag-l.png"));
-		highdef = new ImageIcon(Jarnal.class
-				.getResource("images/highlighterdef-l.png"));
-		white = new ImageIcon(Jarnal.class.getResource("images/whiteout-l.png"));
-		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow-l.png"));
-		leftleft = new ImageIcon(Jarnal.class
-				.getResource("images/2leftarrow-l.png"));
-		right = new ImageIcon(Jarnal.class
-				.getResource("images/1rightarrow-l.png"));
-		rightright = new ImageIcon(Jarnal.class
-				.getResource("images/2rightarrow-l.png"));
-		select = new ImageIcon(Jarnal.class.getResource("images/select-l.png"));
-		selectrect = new ImageIcon(Jarnal.class
-				.getResource("images/selectrect-l.png"));
-		newpage = new ImageIcon(Jarnal.class.getResource("images/new-l.png"));
-		def = new ImageIcon(Jarnal.class.getResource("images/default-l.png"));
-		fin = new ImageIcon(Jarnal.class.getResource("images/fine-l.png"));
-		med = new ImageIcon(Jarnal.class.getResource("images/medium-l.png"));
-		hev = new ImageIcon(Jarnal.class.getResource("images/heavy-l.png"));
-		fat = new ImageIcon(Jarnal.class.getResource("images/fat-l.png"));
-		razor = new ImageIcon(Jarnal.class.getResource("images/razor-l.png"));
-		ruler = new ImageIcon(Jarnal.class.getResource("images/ruler-l.png"));
-		thumbsico = new ImageIcon(Jarnal.class.getResource("images/thumbs-l.png"));
-		opico = new ImageIcon(Jarnal.class.getResource("images/opico-l.png"));
-		threePages = new ImageIcon(Jarnal.class
-				.getResource("images/threepages-l.png"));
-		text = new ImageIcon(Jarnal.class.getResource("images/text-l.png"));
-		clock = new ImageIcon(Jarnal.class.getResource("images/clock-l.png"));
-		hand = new ImageIcon(Jarnal.class.getResource("images/hand-l.png"));
-		handstop = new ImageIcon(Jarnal.class
-				.getResource("images/handstop-l.png"));
-		handyellow = new ImageIcon(Jarnal.class
-				.getResource("images/handyellow-l.png"));
-		handmixed = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed-l.png"));
-		handmixed2 = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed2-l.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut-l.png"));
-		editcopy = new ImageIcon(Jarnal.class
-				.getResource("images/editcopy-l.png"));
-		editpaste = new ImageIcon(Jarnal.class
-				.getResource("images/editpaste-l.png"));
-		cap = new ImageIcon(Jarnal.class.getResource("images/cap-l.png"));
-		num = new ImageIcon(Jarnal.class.getResource("images/num-l.png"));
-		sym = new ImageIcon(Jarnal.class.getResource("images/sym-l.png"));
-		calc = new ImageIcon(Jarnal.class.getResource("images/calc-l.png"));
-		LC = new ImageIcon(Jarnal.class.getResource("images/lc-l.png"));
-		Spc = new ImageIcon(Jarnal.class.getResource("images/spc-l.png"));
-		Bsp = new ImageIcon(Jarnal.class.getResource("images/bsp-l.png"));
-		browse = new ImageIcon(Jarnal.class.getResource("images/browser-l.png"));
-		fullscreen = new ImageIcon(Jarnal.class
-				.getResource("images/fullscreen-l.png"));
-		returnico = new ImageIcon(Jarnal.class.getResource("images/rtn-l.png"));
-		userico = new ImageIcon(Jarnal.class.getResource("images/user-l.png"));
-		multi = new ImageIcon(Jarnal.class.getResource("images/multi-l.png"));
-		iwidth = new ImageIcon(Jarnal.class.getResource("images/iwidth-l.png"));
-		wrench = new ImageIcon(Jarnal.class.getResource("images/wrench-l.png"));
-		arrow = new ImageIcon(Jarnal.class.getResource("images/arrow-l.png"));
-		jarnalIcon = new ImageIcon(Jarnal.class
-				.getResource("images/jarnal.png"));
-	}
-
-	static private void loadImages() {
-
-		fsave = new ImageIcon(Jarnal.class.getResource("images/filesave.png"));
-		newdoc = new ImageIcon(Jarnal.class.getResource("images/newdoc.png"));
-		undo = new ImageIcon(Jarnal.class.getResource("images/undo.png"));
-		redo = new ImageIcon(Jarnal.class.getResource("images/redo.png"));
-		minus = new ImageIcon(Jarnal.class.getResource("images/viewmag-.png"));
-		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+.png"));
-		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit.png"));
-		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser.png"));
-		erasetop = new ImageIcon(Jarnal.class
-				.getResource("images/erasetop.png"));
-		erasebot = new ImageIcon(Jarnal.class
-				.getResource("images/erasebot.png"));
-		bigeraser = new ImageIcon(Jarnal.class
-				.getResource("images/bigeraser.png"));
-		clonedoc = new ImageIcon(Jarnal.class
-				.getResource("images/clonedoc.png"));
-		red = new ImageIcon(Jarnal.class.getResource("images/pencilred.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn.png"));
-		highyel = new ImageIcon(Jarnal.class
-				.getResource("images/highlighteryel.png"));
-		highmag = new ImageIcon(Jarnal.class
-				.getResource("images/highlightermag.png"));
-		highdef = new ImageIcon(Jarnal.class
-				.getResource("images/highlighterdef.png"));
-		white = new ImageIcon(Jarnal.class.getResource("images/whiteout.png"));
-		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow.png"));
-		leftleft = new ImageIcon(Jarnal.class
-				.getResource("images/2leftarrow.png"));
-		right = new ImageIcon(Jarnal.class
-				.getResource("images/1rightarrow.png"));
-		rightright = new ImageIcon(Jarnal.class
-				.getResource("images/2rightarrow.png"));
-		select = new ImageIcon(Jarnal.class.getResource("images/select.png"));
-		selectrect = new ImageIcon(Jarnal.class
-				.getResource("images/selectrect.png"));
-		newpage = new ImageIcon(Jarnal.class.getResource("images/new.png"));
-		def = new ImageIcon(Jarnal.class.getResource("images/default.png"));
-		fin = new ImageIcon(Jarnal.class.getResource("images/fine.png"));
-		med = new ImageIcon(Jarnal.class.getResource("images/medium.png"));
-		hev = new ImageIcon(Jarnal.class.getResource("images/heavy.png"));
-		fat = new ImageIcon(Jarnal.class.getResource("images/fat.png"));
-		razor = new ImageIcon(Jarnal.class.getResource("images/razor.png"));
-		ruler = new ImageIcon(Jarnal.class.getResource("images/ruler.png"));
-		thumbsico = new ImageIcon(Jarnal.class.getResource("images/thumbs.png"));
-		opico = new ImageIcon(Jarnal.class.getResource("images/opico.png"));
-		threePages = new ImageIcon(Jarnal.class
-				.getResource("images/threepages.png"));
-		text = new ImageIcon(Jarnal.class.getResource("images/text.png"));
-		clock = new ImageIcon(Jarnal.class.getResource("images/clock.png"));
-		hand = new ImageIcon(Jarnal.class.getResource("images/hand.png"));
-		handstop = new ImageIcon(Jarnal.class
-				.getResource("images/handstop.png"));
-		handyellow = new ImageIcon(Jarnal.class
-				.getResource("images/handyellow.png"));
-		handmixed = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed.png"));
-		handmixed2 = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed2.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut.png"));
-		editcopy = new ImageIcon(Jarnal.class
-				.getResource("images/editcopy.png"));
-		editpaste = new ImageIcon(Jarnal.class
-				.getResource("images/editpaste.png"));
-		cap = new ImageIcon(Jarnal.class.getResource("images/cap.png"));
-		num = new ImageIcon(Jarnal.class.getResource("images/num.png"));
-		sym = new ImageIcon(Jarnal.class.getResource("images/sym.png"));
-		calc = new ImageIcon(Jarnal.class.getResource("images/calc.png"));
-		LC = new ImageIcon(Jarnal.class.getResource("images/lc.png"));
-		Spc = new ImageIcon(Jarnal.class.getResource("images/spc.png"));
-		Bsp = new ImageIcon(Jarnal.class.getResource("images/bsp.png"));
-		browse = new ImageIcon(Jarnal.class.getResource("images/browser.png"));
-		fullscreen = new ImageIcon(Jarnal.class
-				.getResource("images/fullscreen.png"));
-		returnico = new ImageIcon(Jarnal.class.getResource("images/rtn.png"));
-		userico = new ImageIcon(Jarnal.class.getResource("images/user.png"));
-		multi = new ImageIcon(Jarnal.class.getResource("images/multi.png"));
-		iwidth = new ImageIcon(Jarnal.class.getResource("images/iwidth.png"));
-		wrench = new ImageIcon(Jarnal.class.getResource("images/wrench.png"));
-		arrow = new ImageIcon(Jarnal.class.getResource("images/arrow.png"));
-		jarnalIcon = new ImageIcon(Jarnal.class
-				.getResource("images/jarnal.png"));
-	}
 
 	boolean RQ = false;
 	boolean SB = false;
@@ -2232,74 +1990,74 @@ public class Jarnal extends JApplet {
 	private boolean addTool(JToolBar jtb, String action) {
 		ImageIcon ico = null;
         switch(action){
-            case "Browse": {if (isApplet) return false; ico = browse; break;}
+            case "Browse": {if (isApplet) return false; ico = Images.browse; break;}
             case "separator":{ jtb.addSeparator(); return false; }
             case "Request Control": { if (RQ) return false; jtb.add(handButton); handButton.setVisible(false); RQ = true; return true; }
             case "Page Number": { jtb.add(pageLabel); return true; }
             case "Clock": { jtb.add(clockLabel); setClock(); return true; }
-            case "Network Save": { if (SB) return false; SB = true; saveButton = bjb("Network Save", fsave); jtb.add(saveButton); isNetSave = true; return true; }
+            case "Network Save": { if (SB) return false; SB = true; saveButton = bjb("Network Save", Images.fsave); jtb.add(saveButton); isNetSave = true; return true; }
             case "Save": { if (SB) return false; SB = true; jtb.add(saveButton); return true; }
-            case "Undo": { undoButton = bjb("Undo", undo); jtb.add(undoButton); return true; }
-            case "Redo": { redoButton = bjb("Redo", redo); jtb.add(redoButton); return true; }
-            case "First Page": { firstPageButton = bjb("First Page", leftleft); jtb.add(firstPageButton); return true; }
-            case "Previous Page": { prevPageButton = bjb("Previous Page", left); jtb.add(prevPageButton); return true; }
-            case "Last Page": { lastPageButton = bjb("Last Page", rightright); jtb.add(lastPageButton); return true; }
-            case "Next Page": {ico = right; break;}
-            case "Next Frame": {ico = right; break;}
-            case "New": {ico = newdoc; break;}
-            case "New On Background": {if(!isApplet) ico = newdoc; break;}
-            case "Network Save and Close": {ico = fsave; break;}
-            case "Save Text": {ico = fsave; break;}
-            case "Save and Close": {ico = fsave; break;}
-            case "Save Dictionaries": {ico = fsave; break;}
-            case "Zoom Out": {ico = minus; break;}
-            case "FitW Width": {ico = fit; break;}
-            case "Zoom In": {ico = plus; break;}
-            case "Thumbs": {ico = thumbsico; break;}
-            case "Overlay Pages": {ico = opico; break;}
-            case "Continuous": {ico = threePages; break;}
-            case "New Page": {ico = newpage; break;}
-            case "Default Pen": {ico = def; break;}
-            case "Fine": {ico = fin; break;}
-            case "Medium": {ico = med; break;}
-            case "Heavy": {ico = hev; break;}
-            case "Fat": {ico = fat; break;}
-            case "green":   {ico = grn; action = "Green"; break;}
-            case "magenta": {ico = mgn; action = "Magenta"; break;}
-            case "breen":   {ico = blk; action = "Black"; break;}
-            case "red":     {ico = grn; action = "Red"; break;}
-            case "multi":   {ico = multi; action = "Choose Instrument Color"; jbo = bjb(action, ico); jtb.add(jbo); return true;}
-            case "iwidth":  {ico = iwidth; action = "Choose Instrument Width"; jbw = bjb(action, ico); jtb.add(jbw); return true; }
-            case "wrench": { ico = wrench; action = "Main Menu"; jbmm = bjb(action, ico); jtb.add(jbmm); hideMenu = true; return true; }
-            case "Default Highlighter": {ico = highdef; break;}
-            case "Yellow Highlighter":  {ico = highyel; break;}
-            case "Magenta Highlighter": {ico = highmag; break;}
-            case "White Out":           {ico = white; break;}
-            case "Draw Arrow":          {ico = arrow; break;}
-            case "Razor":               {ico = razor; break;}
-            case "Ruler":               {ico = ruler; break;}
-            case "Select":              {ico = select; break;}
-            case "Select Rectangle":    {ico = selectrect; break;}
-            case "Cut":                 {ico = editcut; break;}
-            case "Copy":                {ico = editcopy; break;}
-            case "Paste":               {ico = editpaste; break;}
-            case "Paste Out":           {ico = editpaste; break;}
-            case "Eraser":              {ico = eraser; break;}
-            case "Clear":               {ico = bigeraser; break;}
-            case "Clear Out":           {ico = bigeraser; break;}
-            case "Duplicate":           {ico = clonedoc; break;}
-            case "Top Eraser":          {ico = erasetop; break;}
-            case "Bottom Eraser":       {ico = erasebot; break;}
-            case "Stamp Date":          {ico = clock; break;}
-            case "Text":                {ico = text; break;}
-            case "Capitalize":          {ico = cap; break;}
-            case "Number Lock":         {ico = num; break;}
-            case "Symbol":              {ico = sym; break;}
-            case "Space":               {ico = Spc; break;}
-            case "Backspace":           {ico = Bsp; break;}
-            case "Full Screen":         {ico = fullscreen; break;}
-            case "Return":              {ico = returnico; break;}
-            case "User":                {ico = userico; break;}
+            case "Undo": { undoButton = bjb("Undo", Images.undo); jtb.add(undoButton); return true; }
+            case "Redo": { redoButton = bjb("Redo", Images.redo); jtb.add(redoButton); return true; }
+            case "First Page": { firstPageButton = bjb("First Page", Images.leftleft); jtb.add(firstPageButton); return true; }
+            case "Previous Page": { prevPageButton = bjb("Previous Page", Images.left); jtb.add(prevPageButton); return true; }
+            case "Last Page": { lastPageButton = bjb("Last Page", Images.rightright); jtb.add(lastPageButton); return true; }
+            case "Next Page": {ico = Images.right; break;}
+            case "Next Frame": {ico = Images.right; break;}
+            case "New": {ico = Images.newdoc; break;}
+            case "New On Background": {if(!isApplet) ico = Images.newdoc; break;}
+            case "Network Save and Close": {ico = Images.fsave; break;}
+            case "Save Text": {ico = Images.fsave; break;}
+            case "Save and Close": {ico = Images.fsave; break;}
+            case "Save Dictionaries": {ico = Images.fsave; break;}
+            case "Zoom Out": {ico = Images.minus; break;}
+            case "FitW Width": {ico = Images.fit; break;}
+            case "Zoom In": {ico = Images.plus; break;}
+            case "Thumbs": {ico = Images.thumbsico; break;}
+            case "Overlay Pages": {ico = Images.opico; break;}
+            case "Continuous": {ico = Images.threePages; break;}
+            case "New Page": {ico = Images.newpage; break;}
+            case "Default Pen": {ico = Images.def; break;}
+            case "Fine": {ico = Images.fin; break;}
+            case "Medium": {ico = Images.med; break;}
+            case "Heavy": {ico = Images.hev; break;}
+            case "Fat": {ico = Images.fat; break;}
+            case "green":   {ico = Images.grn; action = "Green"; break;}
+            case "magenta": {ico = Images.mgn; action = "Magenta"; break;}
+            case "breen":   {ico = Images.blk; action = "Black"; break;}
+            case "red":     {ico = Images.grn; action = "Red"; break;}
+            case "multi":   {ico = Images.multi; action = "Choose Instrument Color"; jbo = bjb(action, ico); jtb.add(jbo); return true;}
+            case "iwidth":  {ico = Images.iwidth; action = "Choose Instrument Width"; jbw = bjb(action, ico); jtb.add(jbw); return true; }
+            case "wrench": { ico = Images.wrench; action = "Main Menu"; jbmm = bjb(action, ico); jtb.add(jbmm); hideMenu = true; return true; }
+            case "Default Highlighter": {ico = Images.highdef; break;}
+            case "Yellow Highlighter":  {ico = Images.highyel; break;}
+            case "Magenta Highlighter": {ico = Images.highmag; break;}
+            case "White Out":           {ico = Images.white; break;}
+            case "Draw Arrow":          {ico = Images.arrow; break;}
+            case "Razor":               {ico = Images.razor; break;}
+            case "Ruler":               {ico = Images.ruler; break;}
+            case "Select":              {ico = Images.select; break;}
+            case "Select Rectangle":    {ico = Images.selectrect; break;}
+            case "Cut":                 {ico = Images.editcut; break;}
+            case "Copy":                {ico = Images.editcopy; break;}
+            case "Paste":               {ico = Images.editpaste; break;}
+            case "Paste Out":           {ico = Images.editpaste; break;}
+            case "Eraser":              {ico = Images.eraser; break;}
+            case "Clear":               {ico = Images.bigeraser; break;}
+            case "Clear Out":           {ico = Images.bigeraser; break;}
+            case "Duplicate":           {ico = Images.clonedoc; break;}
+            case "Top Eraser":          {ico = Images.erasetop; break;}
+            case "Bottom Eraser":       {ico = Images.erasebot; break;}
+            case "Stamp Date":          {ico = Images.clock; break;}
+            case "Text":                {ico = Images.text; break;}
+            case "Capitalize":          {ico = Images.cap; break;}
+            case "Number Lock":         {ico = Images.num; break;}
+            case "Symbol":              {ico = Images.sym; break;}
+            case "Space":               {ico = Images.Spc; break;}
+            case "Backspace":           {ico = Images.Bsp; break;}
+            case "Full Screen":         {ico = Images.fullscreen; break;}
+            case "Return":              {ico = Images.returnico; break;}
+            case "User":                {ico = Images.userico; break;}
         }
 
 		if (ico != null) {
@@ -2349,24 +2107,15 @@ public class Jarnal extends JApplet {
 
 		if(outline == null) outline = new Out(this);
 
-		Image cursorD = toolkit.getImage(Jarnal.class
-				.getResource("images/dotblk.png"));
-		Image cursorB = toolkit.getImage(Jarnal.class
-				.getResource("images/blank.png"));
-		Image cursorX = toolkit.getImage(Jarnal.class
-				.getResource("images/box.png"));
-		Image cursorW = toolkit.getImage(Jarnal.class
-				.getResource("images/whitecursor.png"));
-		Image cursorH = toolkit.getImage(Jarnal.class
-				.getResource("images/highcursor.png"));
-		Image cursorHa = toolkit.getImage(Jarnal.class
-				.getResource("images/handcursor.png"));
-		Image cursorCl = toolkit.getImage(Jarnal.class
-				.getResource("images/clockcursor.png"));
-		Image cursorTc = toolkit.getImage(Jarnal.class
-				.getResource("images/toppencursor.png"));
-		Image cursorBc = toolkit.getImage(Jarnal.class
-				.getResource("images/botpencursor.png"));
+		Image cursorD = toolkit.getImage(Jarnal.class.getResource("images/dotblk.png"));
+		Image cursorB = toolkit.getImage(Jarnal.class.getResource("images/blank.png"));
+		Image cursorX = toolkit.getImage(Jarnal.class.getResource("images/box.png"));
+		Image cursorW = toolkit.getImage(Jarnal.class.getResource("images/whitecursor.png"));
+		Image cursorH = toolkit.getImage(Jarnal.class.getResource("images/highcursor.png"));
+		Image cursorHa = toolkit.getImage(Jarnal.class.getResource("images/handcursor.png"));
+		Image cursorCl = toolkit.getImage(Jarnal.class.getResource("images/clockcursor.png"));
+		Image cursorTc = toolkit.getImage(Jarnal.class.getResource("images/toppencursor.png"));
+		Image cursorBc = toolkit.getImage(Jarnal.class.getResource("images/botpencursor.png"));
 
 		JPanel x = new JPanel(new BorderLayout());
 		jpt = x;
@@ -2403,23 +2152,16 @@ public class Jarnal extends JApplet {
 
 		if(gJrnlFrame != null) gJrnlFrame.setTitle("Jarnal - " + tttitle);
 
-		//JTabbedPane tp = new JTabbedPane();
-        	//tp.addTab(tttitle, null);
-        	//tp.setMnemonicAt(0, KeyEvent.VK_1);
-		//if(tabs) x.add(tp, BorderLayout.NORTH);
-		//tp.setPreferredSize(new Dimension(10000,20));
-
-		if (!doneMeta)
-			jrnlPane.setMeta();
+		if (!doneMeta) jrnlPane.setMeta();
 		doneMeta = true;
 
-		handButton = bjb("Request Control", hand);
+		handButton = bjb("Request Control", Images.hand);
 		handButton.setVisible(false);
 		if (isApplet) {
-			saveButton = bjb("Network Save", fsave);
+			saveButton = bjb("Network Save", Images.fsave);
 			isNetSave = true;
 		} else
-			saveButton = bjb("Save", fsave);
+			saveButton = bjb("Save", Images.fsave);
 
 		int orient = javax.swing.SwingConstants.HORIZONTAL;
 		if (mini)
@@ -2427,7 +2169,6 @@ public class Jarnal extends JApplet {
 		jtb1 = new JToolBar(orient);
 		if (parseTB(jtb1, tb1)) {
 			if (!mini)
-				//x.add(jtb1, BorderLayout.NORTH);
 				x.add(jtb1, BorderLayout.CENTER);
 			else
 				container.add(jtb1, BorderLayout.WEST);
@@ -2444,12 +2185,6 @@ public class Jarnal extends JApplet {
 			else
 				container.add(jtb2, BorderLayout.EAST);
 		}
-
-		//if (jmb != null) {
-		//	if (RQ && !isApplet)
-		//		jmb.add(connectMenu);
-		//	jmb.add(helpMenu);
-		//}
 
 		jrnlPane.setCursor();
 		sp = new JScrollPane(jrnlPane);
@@ -5936,21 +5671,21 @@ public class Jarnal extends JApplet {
 				dragOp = 0;
 			}
 			handButton.setToolTipText(trans("Release Control"));
-			handButton.setIcon(handstop);
+			handButton.setIcon(Images.handstop);
 			handButton.setVisible(true);
 			pages.active = true;
 		}
 
 		public void setWarning() {
-			if (handButton.getIcon() != handmixed)
-				handButton.setIcon(handmixed2);
+			if (handButton.getIcon() != Images.handmixed)
+				handButton.setIcon(Images.handmixed2);
 		}
 
 		public void setStart() {
 			locked = true;
 			dragOp = 100;
 			handButton.setToolTipText(trans("Request Control"));
-			handButton.setIcon(hand);
+			handButton.setIcon(Images.hand);
 			handButton.setVisible(true);
 			pages.active = false;
 			pages.wantscontrol = false;
@@ -6636,7 +6371,7 @@ public class Jarnal extends JApplet {
 				if ((!pages.active) && pages.wantscontrol) {
 					setStart();
 				} else if (!pages.active) {
-					handButton.setIcon(handmixed);
+					handButton.setIcon(Images.handmixed);
 					handButton.setToolTipText(trans("Cancel Control Request"));
 					pages.wantscontrol = true;
 					pages.communicator.requestactive();

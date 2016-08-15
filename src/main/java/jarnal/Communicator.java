@@ -534,7 +534,7 @@ class JarnalServer extends Thread {
 
 	public synchronized void getfile(JarnalClient jcl){
 		freeze = true;
-		if(jc.active) jarn.handButton.setIcon(jarn.handyellow);
+		if(jc.active) jarn.handButton.setIcon(Images.handyellow);
 		if(anymodify()) {
 			try {wait();} 
 			catch (InterruptedException ie) {}
