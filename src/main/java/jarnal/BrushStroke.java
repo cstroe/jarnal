@@ -708,7 +708,7 @@ class Jscrap extends BrushStroke {
 		width = gg.getWidth();
 		height = gg.getHeight();
 		updateRectangle();
-		Jarnal.nextScrap = save(null);
+		Jarnal.getInstance().nextScrap = save(null);
 	}
 
 	public Jscrap(Page parent, String str){

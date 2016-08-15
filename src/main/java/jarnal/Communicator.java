@@ -188,7 +188,7 @@ class JarnalClient extends Thread {
 		try{
 			os.write(("getfile" + terminator).getBytes());
 			String ffname = readString();
-			fname = File.createTempFile(ffname + "." + Jarnal.jarnalTmp, ".jaj");
+			fname = File.createTempFile(ffname + "." + Jarnal.getInstance().jarnalTmp, ".jaj");
 			FileOutputStream out = new FileOutputStream(fname);
 			byte[] ba = read();
 			out.write(ba, 0, ba.length - terminator.length());

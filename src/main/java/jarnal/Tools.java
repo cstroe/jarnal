@@ -1072,7 +1072,7 @@ class HtmlPost {
 			URL url = new URL(server);
       			conn = (HttpURLConnection) url.openConnection();
 			InputStream is = conn.getInputStream();	
-			File tfile = File.createTempFile(Jarnal.jarnalTmp, ext);
+			File tfile = File.createTempFile(Jarnal.getInstance().jarnalTmp, ext);
 			nfile = tfile.getPath();
 			FileOutputStream tout = new FileOutputStream(tfile);
 			int nmax = 10000; 

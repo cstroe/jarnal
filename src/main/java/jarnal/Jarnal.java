@@ -13,131 +13,132 @@ import java.awt.image.BufferedImage;
 
 public class Jarnal extends JApplet {
 
-	static Dimension frameSize = new Dimension(738, 992);
-	static Point frameLocation = new Point(0, 0);
-	static int nWins = 0;
+    public static Jarnal INSTANCE = new Jarnal();
+    public Jarnal parentJarn = null;
 
-	static float guiSize = 14.0f;
+	public Dimension frameSize = new Dimension(738, 992);
+    public Point frameLocation = new Point(0, 0);
+	public int nWins = 0;
 
-	static JFrame sJrnlFrame = null;
+    public float guiSize = 14.0f;
 
-	static String ext = ".jaj";
-	
-	static String openfile = "", openmfile = "", openbgfile = "";
-	static String opentextfile = "", savefile = "", pdffile ="";
-	
-	static String confdir = "";
-	static String meta = "", meta2 = "";
-	
-	static boolean javagui = false;
-	static boolean multitouch = false;
-	static boolean doneMeta = false;
-	
-	static boolean setLocation = false;
-	static boolean locationSet = false;
-	
-	static boolean showMenu = true, showGUI = false;
+    public JFrame sJrnlFrame = null;
 
-	static boolean template = false;
-	static boolean isApplet = false;
-	static boolean startfs = false;
-	
-	
-	static LinkedList loadFiles = new LinkedList();
-	
-	static HashSet wins = new HashSet();
-	
-	public static String nextScrap = null;
-	public static Transferable internalClipboard;
+    public String ext = ".jaj";
+
+    public String openfile = "", openmfile = "", openbgfile = "";
+    public String opentextfile = "", savefile = "", pdffile ="";
+
+    public String confdir = "";
+    public String meta = "", meta2 = "";
+
+    public boolean javagui = false;
+    public boolean multitouch = false;
+    public boolean doneMeta = false;
+
+    public boolean setLocation = false;
+    public boolean locationSet = false;
+
+	public boolean showMenu = true, showGUI = false;
+
+	public boolean template = false;
+	public boolean isApplet = false;
+	public boolean startfs = false;
+
+	public LinkedList loadFiles = new LinkedList();
+
+	public HashSet wins = new HashSet();
+
+	public String nextScrap = null;
+	public Transferable internalClipboard;
 	boolean embed = false;
-	static public boolean miniDic = false;
-	static public String defaultConf;
-	static public String memoryerrorstring = "";
+	public boolean miniDic = false;
+	public String defaultConf;
+	public String memoryerrorstring = "";
 
-	static String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	static String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	
-	static String firefox;
-	
-	static String ps2pdf;
-	static String printpdf;
-	static String pdfconverter;
-	
-	static String gs;
-	
-	
-	static int tzadjust = 0;
-	static boolean printaround = false;
-	static int keepbookmarks = 0;
-	static int defmarks = 12;
-	static boolean tabs = false;
+	public String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	public String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
 
-	static Jarnal jarnalbook = null;
+	public String firefox;
 
-	static String homeserver = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
-	static String verserver = "http://www.dklevine.com/general/software/tc1000/";
-	static String startconnect = null;
+	public String ps2pdf;
+	public String printpdf;
+	public String pdfconverter;
 
-	static String language = Locale.getDefault().toString().substring(0, 2);
-	static Hashtable hlang = null;
+	public String gs;
 
-	static boolean toppCf = false;
-	static boolean botpCf = false;
+	public int tzadjust = 0;
+	public boolean printaround = false;
+	public int keepbookmarks = 0;
+	public int defmarks = 12;
+	public boolean tabs = false;
 
-	JrnlPane jrnlPane;
-	Out outline;
-	JScrollPane sp;
-	SLabel statusBar;
-	static final Color slabelgray = new Color(0xf5f5f5);
-	static final Color slabelblue = new Color(0xe0ffff);
+	public Jarnal jarnalbook = null;
+
+	public String homeserver = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
+	public String verserver = "http://www.dklevine.com/general/software/tc1000/";
+	public String startconnect = null;
+
+	public String language = Locale.getDefault().toString().substring(0, 2);
+	public Hashtable hlang = null;
+
+	public boolean toppCf = false;
+	public boolean botpCf = false;
+
+    public JrnlPane jrnlPane;
+    public Out outline;
+    public JScrollPane sp;
+    public SLabel statusBar;
+	public final Color slabelgray = new Color(0xf5f5f5);
+	public final Color slabelblue = new Color(0xe0ffff);
 	boolean slset = false;
-	JFrame gJrnlFrame;
-	JPanel gJrnlPanel;
-	Toolkit toolkit;
+    public JFrame gJrnlFrame;
+    public JPanel gJrnlPanel;
+    public Toolkit toolkit;
 
-	public static String ttitle = "";
+	public String ttitle = "";
 	public String tttitle = "";
-	public static int tnum = 1;
+	public int tnum = 1;
 	public String templateFile = null;
 	public String fname = "";
 	public String internalName = "";
 	public String nname = "unsaved.jaj";
 	public String textfile = null;
 	public OutputStream netsaveos;
-	String cwd = "";
-	String iwd = null;
-	String bwd = null;
-	String bgfile = "";
+    public String cwd = "";
+    public String iwd = null;
+    public String bwd = null;
+    public String bgfile = "";
 
-	static LinkedList allBookmarks = new LinkedList();
-	static LinkedList allServermarks = new LinkedList();
-	static public String jarnalTmp = "jarnalTmp";
+	public LinkedList allBookmarks = new LinkedList();
+	public LinkedList allServermarks = new LinkedList();
+	public String jarnalTmp = "jarnalTmp";
 
-	static boolean pencentric = false;
-	static boolean startMini = false;
-	static boolean connectPresentation = false;
+	public boolean pencentric = false;
+	public boolean startMini = false;
+	public boolean connectPresentation = false;
 	boolean mini = false;
 	boolean micro = false;
 	boolean barjarnal = false;
 	boolean showOutline = false;
 
-	Tools jt = new Tools();
-	Tools jtd = new Tools();
-	Tools jth = new Tools();
-	Tools jtbu = new Tools();
-	String middleButton = "Eraser";
-	String rightButton = "Context Menu";
-	String old_color = "black";
-	float old_width = -1.0f;
-	float fatWidth = 11.0f;
+    public Tools jt = new Tools();
+    public Tools jtd = new Tools();
+    public Tools jth = new Tools();
+    public Tools jtbu = new Tools();
+    public String middleButton = "Eraser";
+    public String rightButton = "Context Menu";
+    public String old_color = "black";
+    public float old_width = -1.0f;
+    public float fatWidth = 11.0f;
 	boolean stickyRuler = false;
 	boolean arrowhead = false;
 	boolean temparrow = false;
-	int markerweight = 10;
-	boolean hideCursor = true;
-	boolean textMode = false;
-	boolean makeOverlay = false;
-	boolean saveOnExit = false;
+    public int markerweight = 10;
+    public boolean hideCursor = true;
+    public boolean textMode = false;
+    public boolean makeOverlay = false;
+    public boolean saveOnExit = false;
 	boolean saveBookmarks = false;
 	boolean updateBookmarks = true;
 	boolean saveBg = false;
@@ -147,69 +148,67 @@ public class Jarnal extends JApplet {
 	boolean oldurlencoded;
 	boolean saveSelfexecuting;
 	boolean smoothStrokes = true;
-	String email = "";
-	String netServer = "";
-	String netOptions = "";
-	String uniqueID;
-	String serverMessage = "<html><body>Nothing saved to server</body></html>";
-	int viewQuality = 0x40;
-	String highlighterStyle = "translucent";
-	String lastAction = null;
-	String userColor = null;
-	int divwidth = 90;
-	int outheight = 90;
+	public String email = "";
+	public String netServer = "";
+	public String netOptions = "";
+	public String uniqueID;
+	public String serverMessage = "<html><body>Nothing saved to server</body></html>";
+	public int viewQuality = 0x40;
+	public String highlighterStyle = "translucent";
+	public String lastAction = null;
+	public String userColor = null;
+	public int divwidth = 90;
+	public int outheight = 90;
 
-	boolean alignToMargins = true;
-	boolean bestFit = true;
-	boolean absoluteScale = false;
-	boolean showPageNumbers = true;
-	boolean withBorders = false;
+	public boolean alignToMargins = true;
+	public boolean bestFit = true;
+	public boolean absoluteScale = false;
+	public boolean showPageNumbers = true;
+	public boolean withBorders = false;
 
-	boolean analyze = false;
-	boolean trainrecog = false;
-	boolean mscr = true;
-	boolean ascr = false;
+	public boolean analyze = false;
+	public boolean trainrecog = false;
+	public boolean mscr = true;
+	public boolean ascr = false;
 
-	boolean fullScreen = false;
+	public boolean fullScreen = false;
 
-	public Jarnal parentJarn = null;
-
-	JarnalClient jcom;
-	JarnalServer jserver;
-	Jarnal jarn;
-	int serverPort = -1 ;
-	static public int defaultServerPort = 1189;
-	public static boolean beginServer = false;
+	public JarnalClient jcom;
+	public JarnalServer jserver;
+	public Jarnal jarn;
+	public int serverPort = -1 ;
+	public int defaultServerPort = 1189;
+	public boolean beginServer = false;
 	public String serverMsg = "";
 
-	boolean dirty = false; // file changed; used for save/exit dialogs
-	boolean isNetSave = false;
-	boolean fitWidth = true; // should the width of the page be sized to the
+    public boolean dirty = false; // file changed; used for save/exit dialogs
+    public boolean isNetSave = false;
+    public boolean fitWidth = true; // should the width of the page be sized to the
 								// display area?
-	int dragOp = 0;
-	boolean thumbs = true; // flag for multi-page views
-	boolean threeup = true; // if true multi-page view is three in a row, if
+    public int dragOp = 0;
+    public boolean thumbs = true; // flag for multi-page views
+    public boolean threeup = true; // if true multi-page view is three in a row, if
 							// false, multi-page view is 2x2
-	boolean poverlay = false; // if true pages are truncated by a factor of PO
-	double PO = 0.25;
-	boolean locked = false; // is the display locked? see also dragOp = 100
-	boolean replayActive = false;
-	int activePage = 0; // in a multipage view, which of the pages on the
+    public boolean poverlay = false; // if true pages are truncated by a factor of PO
+    public double PO = 0.25;
+    public boolean locked = false; // is the display locked? see also dragOp = 100
+    public boolean replayActive = false;
+    public int activePage = 0; // in a multipage view, which of the pages on the
 						// display is actually being used
 	// jpages.getPage() is one-based, activePage is zero based
 	// in the current implementation activePage should always be
 	// jpages.getPage()-1
-	String actionMsg = ""; // status bar message reflecting choice of a
+    public String actionMsg = ""; // status bar message reflecting choice of a
 							// drag-drop tool
 
-	int sbarSize = 20;
+    public int sbarSize = 20;
 
-	Number previewZoom = null;
-	Number gotopage = null;
+    public Number previewZoom = null;
+    public Number gotopage = null;
 
-	Hashtable usersList = new Hashtable();
+    public Hashtable usersList = new Hashtable();
 
-	public static String trans(String label) {
+	public String trans(String label) {
 		if (hlang == null)
 			return label;
 		String lbl = (String) hlang.get(label);
@@ -218,7 +217,7 @@ public class Jarnal extends JApplet {
 		return lbl;
 	}
 
-	public static void initTrans() {
+	public void initTrans() {
 		hlang = null;
 
 		System.out.println(language);
@@ -267,7 +266,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	public static int setarg(String[] args, int iarg, int len) {
+	public int setarg(String[] args, int iarg, int len) {
 		String oldopenfile = openfile;
 		openfile = args[iarg];
 		int ret = iarg + 1;
@@ -420,7 +419,7 @@ public class Jarnal extends JApplet {
 		return ret;
 	}
 
-	public static boolean closeWin(){
+	public boolean closeWin(){
 		Jarnal jarn = null;
 		for (Iterator i = wins.iterator(); i.hasNext();) {
 			jarn = (Jarnal) i.next();
@@ -429,11 +428,11 @@ public class Jarnal extends JApplet {
 		return jarn.jrnlPane.winDone();
 	}
 
-	public static void closeAll(){
+	public void closeAll(){
 		while(closeWin());
 	}		
 
-	public static jrnlTimerListener getJrnlTimerListener() {
+	public jrnlTimerListener getJrnlTimerListener() {
 		Jarnal jarn = null;
 		for (Iterator i = wins.iterator(); i.hasNext();) {
 			jarn = (Jarnal) i.next();
@@ -442,7 +441,7 @@ public class Jarnal extends JApplet {
 		return jarn.jtm;
 	}
 
-	public static void pipe() {
+	public void pipe() {
 		if (HtmlPost.checkURL(openfile) && !isApplet) {
 			HtmlPost hp = new HtmlPost(openfile, null, null, null, null, false);
 			openfile = hp.pipe(".jaj");
@@ -477,7 +476,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	private static void getMeta() {
+	private void getMeta() {
 		if (!openmfile.equals("")) {
 			try {
 				FileInputStream fin = new FileInputStream(openmfile);
@@ -493,16 +492,16 @@ public class Jarnal extends JApplet {
 	}
 
 	public static void main(String[] args) {
-		initTrans();
-		loadImages();
-		loadShell(false);
+		getInstance().initTrans();
+        getInstance().loadImages();
+        getInstance().loadShell(false);
 		int len = java.lang.reflect.Array.getLength(args);
 		int iarg = 0;
 		// for(int ioi = 0; ioi < len; ioi++) System.out.println(args[ioi]);
 		while (iarg < len) {
-			iarg = setarg(args, iarg, len);
+			iarg = getInstance().setarg(args, iarg, len);
 		}
-		if (!javagui) {
+		if (!getInstance().javagui) {
 			try {
 				System.out.println(UIManager
 						.getSystemLookAndFeelClassName());
@@ -512,13 +511,13 @@ public class Jarnal extends JApplet {
 				e.printStackTrace();
 			}
 		}
-		loadShell(true);
-		pipe();
-		getMeta();
-		initJ();
+        getInstance().loadShell(true);
+        getInstance().pipe();
+        getInstance().getMeta();
+        getInstance().initJ();
 	}
 
-	private static String parseShell(String shell) {
+	private String parseShell(String shell) {
 		String z;
 		shell = shell.trim();
 		shell = shell + "\n";
@@ -577,14 +576,14 @@ public class Jarnal extends JApplet {
 		return s;
 	}
 
-	private static File getConfDir() {
+	private File getConfDir() {
 		String userhome = System.getProperty("user.home");
 		if (confdir.equals(""))
 			return new File(userhome);
 		return new File(userhome + File.separator + confdir);
 	}
 
-	private static void writeShell() {
+	private void writeShell() {
 		if (isApplet)
 			return;
 		String shell = parseShell("");
@@ -600,7 +599,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	private static void loadShell(boolean writeShell) {
+	private void loadShell(boolean writeShell) {
 		String shell = jarnalshell;
 		if (Tools.checkMSWindows()) {
 			shell = jarnalshellwin;
@@ -763,7 +762,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	public static Jarnal initJ() {
+	public Jarnal initJ() {
 		String title = "Jarnal";
 		if (!openfile.equals("") && !template) {
 			File temp = new File(openfile);
@@ -802,15 +801,15 @@ public class Jarnal extends JApplet {
 
 	static boolean invisible = false;
 
-	public static JTabbedPane tp = new JTabbedPane();
+	public JTabbedPane tp = new JTabbedPane();
 
-	public static boolean firstFrame = true;
+	public boolean firstFrame = true;
 
-	public static Jarnal newJarnal(String title) {
+	public Jarnal newJarnal(String title) {
 		return newJarnal(title, null);
 	}
 
-	public static Jarnal newJarnal(String title, String conf) {
+	public Jarnal newJarnal(String title, String conf) {
 		JFrame jrnlFrame = null;
 		if(!invisible && tabs && (sJrnlFrame == null))			tp.addTab("", null);
 		if(!invisible && (sJrnlFrame != null)) firstFrame = false;
@@ -885,17 +884,17 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal miniJarnal(String title) {
+	public Jarnal miniJarnal(String title) {
 		JFrame jrnlFrame = new JFrame(title);
 		return miniJarnal(jrnlFrame, jrnlFrame.getContentPane(), jrnlFrame
 				.getToolkit());
 	}
 
-	public static Jarnal miniJarnal(JFrame jrnlFrame, Container cp, Toolkit tk) {
+	public Jarnal miniJarnal(JFrame jrnlFrame, Container cp, Toolkit tk) {
 		return miniJarnal(true, jrnlFrame, cp, tk);
 	}
 
-	public static Jarnal miniJarnal(boolean rtmenu, JFrame jrnlFrame,
+	public Jarnal miniJarnal(boolean rtmenu, JFrame jrnlFrame,
 			Container cp, Toolkit tk) {
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
@@ -923,7 +922,7 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
+	public Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
 			Toolkit tk) {
 		openfile = ofile;
 		final Jarnal controller = new Jarnal();
@@ -938,7 +937,7 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal microJarnal(Container cp, Toolkit tk) {
+	public Jarnal microJarnal(Container cp, Toolkit tk) {
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
 		controller.jarn = controller;
@@ -1072,7 +1071,7 @@ public class Jarnal extends JApplet {
 		return "file://" + cwd + File.separator + fname;
 	}
 
-	public static String getAbsoluteName(String cwd, String target) {
+	public String getAbsoluteName(String cwd, String target) {
 		if (target.startsWith("..")) {
 			target = target.substring(2);
 			target = cwd + target;
@@ -1090,7 +1089,7 @@ public class Jarnal extends JApplet {
 		return target;
 	}
 
-	public static String[] parseURL(String url) {
+	public String[] parseURL(String url) {
 		String ans[] = new String[3];
 		ans[0] = "";
 		ans[1] = "";
@@ -2623,8 +2622,8 @@ public class Jarnal extends JApplet {
 		return jrnlPane;
 	}
 
-	public static int BOOKMARKS = 1;
-	public static int SERVERS = 2;
+	public int BOOKMARKS = 1;
+	public int SERVERS = 2;
 
 	public boolean addToList(LinkedList list, String str){
 		for(ListIterator j = list.listIterator(); j.hasNext();)
@@ -6396,7 +6395,7 @@ public class Jarnal extends JApplet {
 						pages.communicator = null;
 					}
 				}
-				Jarnal newJ = Jarnal.newJarnal("Jarnal - " + temp);
+				Jarnal newJ = newJarnal("Jarnal - " + temp);
 				if ((fname == "") && !dirty) {
 					if(!tabs){
 						newJ.gJrnlFrame.setLocation(gJrnlFrame.getLocation());
@@ -7316,7 +7315,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("New")) {
 				pages.invalidateGraphics();
-				Jarnal jrnl = Jarnal.newJarnal("Jarnal", getConf());
+				Jarnal jrnl = newJarnal("Jarnal", getConf());
 				//jrnl.jrnlPane.setConf(getConf());
 				//jrnl.jrnlPane.setToolbars(tb1, tb2);
 				String spp = pages.getDefaultPaper();
@@ -9982,7 +9981,7 @@ public class Jarnal extends JApplet {
 		}
 
 		public void checkMemory() {
-			if (Jarnal.isApplet)
+			if (isApplet)
 				return;
 			Runtime rt = Runtime.getRuntime();
 			float test = (float) rt.freeMemory() + (float) Tools.maxMemory()
@@ -10340,4 +10339,8 @@ public class Jarnal extends JApplet {
 			pages.writeTIFFGraphicFile(f, null, withBorders);
 		}
 	}
+
+    public static Jarnal getInstance() {
+        return INSTANCE;
+    }
 }

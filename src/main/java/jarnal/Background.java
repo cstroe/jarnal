@@ -37,7 +37,7 @@ class JbgsSource {
 	 * Create a background image sequence source.
 	 * Normally, the file name is interpreted as the
 	 * name of a local file and the image sequence is read from that
-	 * file. If Jarnal.isApplet, the byte array is used instead. If it
+	 * file. If Jarnal.getInstance().isApplet, the byte array is used instead. If it
 	 * is null, the file name is interpreted as an URL and the Information
 	 * is read from the server into the byte array.
 	 * @param fname the name of the file to read background information
@@ -49,7 +49,7 @@ class JbgsSource {
 		bgfname = fname;
 		if("".equals(fname)) return;
 		try{
-			if(Jarnal.isApplet){
+			if(Jarnal.getInstance().isApplet){
 				if(arr == null){
 					HtmlPost hp = new HtmlPost(fname, null, null, null, null, false);
 					bgstream = hp.pipeBytes();
@@ -160,10 +160,10 @@ abstract class Background {
 				int ev = 0;
 				try{
 					Runtime rt = Runtime.getRuntime();
-					String est = Jarnal.pdfconverter;
+					String est = Jarnal.getInstance().pdfconverter;
 					String trg = src + ".pdf";
 					String estev[] = new String[3];
-					estev[0] = Jarnal.pdfconverter;
+					estev[0] = Jarnal.getInstance().pdfconverter;
 					estev[1] = "-invisible";
 					estev[2] = "macro:///Standard.Convert.ConvertToPdf(" + src + "," + trg +")";
 					Process ps = rt.exec(estev);
@@ -194,7 +194,7 @@ abstract class Background {
 				catch(Exception ex){ex.printStackTrace(); ev = 1;}
 				if(ev !=0) {
 					jd = new JbgsDefault(s);
-					Jarnal.getJrnlTimerListener().setMessage("No background reader found for: " + src, "Problem Loading Background");
+					Jarnal.getInstance().getJrnlTimerListener().setMessage("No background reader found for: " + src, "Problem Loading Background");
 				}
 			}
 			return jd;
@@ -521,7 +521,7 @@ class JbgsDefault extends Background {
 			InputStream sin = s.getInputStream();
 			if(sin == null){
 				System.out.println("Background not found");
-					if(noReaderMsg) Jarnal.getJrnlTimerListener().setMessage("Background file not found\n or could not be opened: " + s.getName(), "Problem Loading Background");
+					if(noReaderMsg) Jarnal.getInstance().getJrnlTimerListener().setMessage("Background file not found\n or could not be opened: " + s.getName(), "Problem Loading Background");
 					noReaderMsg = true;
 				return;
 			}
@@ -536,7 +536,7 @@ class JbgsDefault extends Background {
 					iind = 0;
 				}
 				if(!oof){
-					if(Jarnal.isApplet || Jarnal.showGUI){
+					if(Jarnal.getInstance().isApplet || Jarnal.getInstance().showGUI){
 						ByteArrayOutputStream bbb = new ByteArrayOutputStream();	
 						int nmax = 10000; 
 						byte bb[] = new byte[nmax + 1];
@@ -570,7 +570,7 @@ class JbgsDefault extends Background {
 				}
 				else {
 					System.out.println("no background reader found");
-					if(noReaderMsg) Jarnal.getJrnlTimerListener().setMessage("No background reader found for: " + s.getName(), "Problem Loading Background");
+					if(noReaderMsg) Jarnal.getInstance().getJrnlTimerListener().setMessage("No background reader found for: " + s.getName(), "Problem Loading Background");
 					noReaderMsg = false;
 					bgLoad = false;
 				}
@@ -771,7 +771,7 @@ class JbgsPdf extends JbgsDefault {
 		if ((cachescale[i] == s) && (cachefade[i] == bgfade) && (cachecc[i] != null) && (cachecc[i].equals(cc))) return imgcache[i];
 		else {
 			if(useGS){
-				String est = Jarnal.gs;
+				String est = Jarnal.getInstance().gs;
 				String additionalMsg = "";
 				try{
 					String pfile = pagefiles[i];
@@ -783,10 +783,10 @@ class JbgsPdf extends JbgsDefault {
 					//else (new File(pfile)).delete();
 					Runtime rt = Runtime.getRuntime();
 					int fact = 2; 
-					if((Jarnal.gs.indexOf("GraphicsAlphaBits") > -1) && (bq == 2)) noRescale = false;
+					if((Jarnal.getInstance().gs.indexOf("GraphicsAlphaBits") > -1) && (bq == 2)) noRescale = false;
 					int bbq = 1;
 					int cut = fact * 72;
-					if((Jarnal.gs.indexOf("pdftoppm") > -1) || noRescale) {
+					if((Jarnal.getInstance().gs.indexOf("pdftoppm") > -1) || noRescale) {
 						fact = 1;
 						bbq = 1;
 						cut = 1;
@@ -822,7 +822,7 @@ class JbgsPdf extends JbgsDefault {
 							estev[2] = pfile;
 							estev[3] = "" + rs;
 							estev[4] = src.getName();
-							estev = Tools.replaceAllUnixFoo(Jarnal.gs, estev);
+							estev = Tools.replaceAllUnixFoo(Jarnal.getInstance().gs, estev);
 							ps = rt.exec(estev);
 						}							
    						java.util.Timer jst = new java.util.Timer();
@@ -836,8 +836,8 @@ class JbgsPdf extends JbgsDefault {
 							if(num.length() == 2) num = "0000" + num;
 							if(num.length() == 3) num = "000" + num;
 							String ppmext = ".ppm";
-							if(Jarnal.gs.indexOf("png") > -1) ppmext = ".png";
-							if(Jarnal.gs.indexOf("jpeg") > -1) ppmext = ".jpg";
+							if(Jarnal.getInstance().gs.indexOf("png") > -1) ppmext = ".png";
+							if(Jarnal.getInstance().gs.indexOf("jpeg") > -1) ppmext = ".jpg";
 							rfile = pfile + "-" + num + ppmext;
 							File rrfile = new File(rfile);
 							if(!rrfile.exists()){
@@ -877,7 +877,7 @@ class JbgsPdf extends JbgsDefault {
 				String gsmsg = "Cannot use external pdf renderer:\n" + est + "\nFalling back on internal renderer" + additionalMsg;
 				if(!silentGS){
 					useGS = false;
-					Jarnal.getJrnlTimerListener().setMessage(gsmsg, "PDF External Renderer Warning");
+					Jarnal.getInstance().getJrnlTimerListener().setMessage(gsmsg, "PDF External Renderer Warning");
 				}
 				else {	
 					System.out.println("In silent external renderer mode. Cannot translate current page. Will try again with other pages." + gsmsg);
@@ -886,7 +886,7 @@ class JbgsPdf extends JbgsDefault {
 			//gs failed, try using jpedal for rendering
 			Image res = null;
 			try {
-				if(!Jarnal.isApplet){
+				if(!Jarnal.getInstance().isApplet){
 					Runtime rt = Runtime.getRuntime();
 					float test = (float)rt.freeMemory() + (float)Tools.maxMemory() - (float)rt.totalMemory();
 					test = 100.0f - (100.0f *test/(float) Tools.maxMemory());
@@ -903,7 +903,7 @@ class JbgsPdf extends JbgsDefault {
 				ex.printStackTrace();
 				res = null; 
 				if(!isWarned)
-					Jarnal.getJrnlTimerListener().setMessage("An error occured during the loading of a pdf file.\nThe pdf background will not display.", "PDF Load Warning");
+					Jarnal.getInstance().getJrnlTimerListener().setMessage("An error occured during the loading of a pdf file.\nThe pdf background will not display.", "PDF Load Warning");
 				isWarned = true;
 			}
 			BufferedImage g = rewriteBI(res, 1.0f, 1, bgfade, cc);
@@ -919,7 +919,7 @@ class JbgsPdf extends JbgsDefault {
 				//Runtime rt = Runtime.getRuntime();
 				long test = Tools.maxMemory();
 				if(test < 68000000)
-					Jarnal.getJrnlTimerListener().setMessage("Your virtual machine has only " + (test/1000000) + "M of memory.\nIf your PDF background does not display you will need to\nincrease the memory allocated to your java virtual machine: use\njava -Xmx256m -jar jarnal.jar\nto run a 256 meg virtual machine.\nYou can use a larger number if necessary.", "PDF Memory Warning");
+					Jarnal.getInstance().getJrnlTimerListener().setMessage("Your virtual machine has only " + (test/1000000) + "M of memory.\nIf your PDF background does not display you will need to\nincrease the memory allocated to your java virtual machine: use\njava -Xmx256m -jar jarnal.jar\nto run a 256 meg virtual machine.\nYou can use a larger number if necessary.", "PDF Memory Warning");
 			}
 			return g;
 		}
