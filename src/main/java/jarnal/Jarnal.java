@@ -8,21 +8,8 @@ import java.awt.event.*;
 import java.awt.print.*;
 import java.awt.datatransfer.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.*;
-
-import jarnal.TabButtons;
-import jarnal.Pages;
-import jarnal.Tools;
-import jarnal.Parameter;
-import jarnal.Communicator;
-import jarnal.Analyze;
-import jarnal.Jarnbox;
-import jarnal.Out;
-import jarnal.SendMail;
 
 public class Jarnal extends JApplet {
 
