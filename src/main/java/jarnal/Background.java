@@ -1,7 +1,5 @@
 package jarnal;
 
-import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
@@ -11,16 +9,12 @@ import javax.imageio.*;
 import javax.imageio.stream.*;
 import java.awt.image.BufferedImage;
 
-import jarnal.Pages;
-import jarnal.Out;
-
 //To compile without jpedal
 //comment out the next three lines
 //remove or comment out the JbgsPdf class at the bottom of the file
 //uncomment the dummy JbgsPdf class immediately above it
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
-import org.jpedal.utils.LogWriter;
 
 /**
  * This class represents the source of a backround image sequence.

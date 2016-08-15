@@ -1,16 +1,9 @@
 package jarnal;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
-import java.awt.datatransfer.*;
 import java.net.*;
-import jarnal.Pages;
-import jarnal.Jarnal;
 
 // each client is connected to the server by two pipes
 // one pipe sends data and one recieves data

@@ -1,17 +1,9 @@
 package jarnal;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
-import java.util.*;
-import java.io.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.*;
-
-import jarnal.Jarnal;
-
 
 public class Screen extends JPanel implements Runnable{
 

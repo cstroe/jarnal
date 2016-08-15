@@ -3,14 +3,10 @@ package jarnal;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.awt.datatransfer.*;
 import java.net.*;
-import jarnal.Pages;
 
 public class Tools{
 

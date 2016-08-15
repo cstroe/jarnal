@@ -1,19 +1,13 @@
 package jarnal;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.zip.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.text.*;
 import java.awt.datatransfer.*;
 import java.io.*;
-
-import jarnal.Jarnal;
 
 public class Jarnbox {	
 

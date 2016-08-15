@@ -1,16 +1,10 @@
 package jarnal;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
-import java.text.*;
-import java.io.*;
-
-import jarnal.Jarnal;
-import jarnal.Jarnbox;
 
 public class Out {
 
