@@ -2230,216 +2230,82 @@ public class Jarnal extends JApplet {
 	JButton jbmm;
 
 	private boolean addTool(JToolBar jtb, String action) {
-
 		ImageIcon ico = null;
-		if (action.equals("Browse")) {
-			if (isApplet)
-				return false;
-			ico = browse;
-		}
-		if (action.equals("separator")) {
-			jtb.addSeparator();
-			return false;
-		}
-		if (action.equals("Request Control")) {
-			if (RQ)
-				return false;
-			jtb.add(handButton);
-			handButton.setVisible(false);
-			RQ = true;
-			return true;
-		}
-		if (action.equals("Page Number")) {
-			jtb.add(pageLabel);
-			return true;
-		}
-		if (action.equals("Clock")) {
-			jtb.add(clockLabel);
-			setClock();
-			return true;
-		}
-		if (action.equals("Network Save")) {
-			if (SB)
-				return false;
-			SB = true;
-			saveButton = bjb("Network Save", fsave);
-			jtb.add(saveButton);
-			isNetSave = true;
-			return true;
-		}
-		if (action.equals("Save")) {
-			if (SB)
-				return false;
-			SB = true;
-			jtb.add(saveButton);
-			return true;
-		}
-		if (action.equals("Undo")) {
-			undoButton = bjb("Undo", undo);
-			jtb.add(undoButton);
-			return true;
-		}
-		if (action.equals("Redo")) {
-			redoButton = bjb("Redo", redo);
-			jtb.add(redoButton);
-			return true;
-		}
-		if (action.equals("First Page")) {
-			firstPageButton = bjb("First Page", leftleft);
-			jtb.add(firstPageButton);
-			return true;
-		}
-		if (action.equals("Previous Page")) {
-			prevPageButton = bjb("Previous Page", left);
-			jtb.add(prevPageButton);
-			return true;
-		}
-		if (action.equals("Last Page")) {
-			lastPageButton = bjb("Last Page", rightright);
-			jtb.add(lastPageButton);
-			return true;
-		}
-		if (action.equals("Next Page"))
-			ico = right;
-		else if (action.equals("Next Frame"))
-			ico = right;
-		else if (action.equals("New"))
-			ico = newdoc;
-		else if (action.equals("New On Background") && !isApplet)
-			ico = newdoc;
-		else if (action.equals("Network Save and Close"))
-			ico = fsave;
-		else if (action.equals("Save Text"))
-			ico = fsave;
-		else if (action.equals("Save and Close"))
-			ico = fsave;
-		else if (action.equals("Save Dictionaries"))
-			ico = fsave;
-		else if (action.equals("Zoom Out"))
-			ico = minus;
-		else if (action.equals("Fit Width"))
-			ico = fit;
-		else if (action.equals("Zoom In"))
-			ico = plus;
-		else if (action.equals("Thumbs"))
-			ico = thumbsico;
-		else if (action.equals("Overlay Pages"))
-			ico = opico;
-		else if (action.equals("Continuous"))
-			ico = threePages;
-		else if (action.equals("New Page"))
-			ico = newpage;
-		else if (action.equals("Default Pen"))
-			ico = def;
-		else if (action.equals("Fine"))
-			ico = fin;
-		else if (action.equals("Medium"))
-			ico = med;
-		else if (action.equals("Heavy"))
-			ico = hev;
-		else if (action.equals("Fat"))
-			ico = fat;
-		else if (action.equals("green")) {
-			ico = grn;
-			action = "Green";
-		} else if (action.equals("magenta")) {
-			ico = mgn;
-			action = "Magenta";
-		} else if (action.equals("black")) {
-			ico = blk;
-			action = "Black";
-		} else if (action.equals("blue")) {
-			ico = blu;
-			action = "Blue";
-		} else if (action.equals("red")) {
-			ico = red;
-			action = "Red";
-		} else if (action.equals("multi")) {
-			ico = multi;
-			action = "Choose Instrument Color";
-			jbo = bjb(action, ico);
-			jtb.add(jbo);
-			return true;
-		} else if (action.equals("iwidth")) {
-			ico = iwidth;
-			action = "Choose Instrument Width";
-			jbw = bjb(action, ico);
-			jtb.add(jbw);
-			return true;
-		} else if (action.equals("wrench")) {
-			ico = wrench;
-			action = "Main Menu";
-			jbmm = bjb(action, ico);
-			jtb.add(jbmm);
-			hideMenu = true;
-			return true;
-		} else if (action.equals("Default Highlighter"))
-			ico = highdef;
-		else if (action.equals("Yellow Highlighter"))
-			ico = highyel;
-		else if (action.equals("Magenta Highlighter"))
-			ico = highmag;
-		else if (action.equals("White Out"))
-			ico = white;
-		else if (action.equals("Draw Arrow"))
-			ico = arrow;
-		else if (action.equals("Razor"))
-			ico = razor;
-		else if (action.equals("Ruler"))
-			ico = ruler;
-		else if (action.equals("Select"))
-			ico = select;
-		else if (action.equals("Select Rectangle"))
-			ico = selectrect;
-		else if (action.equals("Cut"))
-			ico = editcut;
-		else if (action.equals("Copy"))
-			ico = editcopy;
-		else if (action.equals("Paste"))
-			ico = editpaste;
-		else if (action.equals("Paste Out"))
-			ico = editpaste;
-		else if (action.equals("Eraser"))
-			ico = eraser;
-		else if (action.equals("Clear"))
-			ico = bigeraser;
-		else if (action.equals("Clear Out"))
-			ico = bigeraser;
-		else if (action.equals("Duplicate Page"))
-			ico = clonedoc;
-		else if (action.equals("Top Eraser"))
-			ico = erasetop;
-		else if (action.equals("Bottom Eraser"))
-			ico = erasebot;
-		else if (action.equals("Stamp Date"))
-			ico = clock;
-		else if (action.equals("Text"))
-			ico = text;
-		else if (action.equals("Capitalize"))
-			ico = cap;
-		else if (action.equals("Number Lock"))
-			ico = num;
-		else if (action.equals("Symbol"))
-			ico = sym;
-		else if (action.equals("Calculate"))
-			ico = calc;
-		else if (action.equals("Space"))
-			ico = Spc;
-		else if (action.equals("Backspace"))
-			ico = Bsp;
-		else if (action.equals("Clear"))
-			ico = bigeraser;
-		else if (action.equals("Full Screen"))
-			ico = fullscreen;
-		else if (action.equals("Return"))
-			ico = returnico;
-		else if (action.equals("User"))
-			ico = userico;
+        switch(action){
+            case "Browse": {if (isApplet) return false; ico = browse; break;}
+            case "separator":{ jtb.addSeparator(); return false; }
+            case "Request Control": { if (RQ) return false; jtb.add(handButton); handButton.setVisible(false); RQ = true; return true; }
+            case "Page Number": { jtb.add(pageLabel); return true; }
+            case "Clock": { jtb.add(clockLabel); setClock(); return true; }
+            case "Network Save": { if (SB) return false; SB = true; saveButton = bjb("Network Save", fsave); jtb.add(saveButton); isNetSave = true; return true; }
+            case "Save": { if (SB) return false; SB = true; jtb.add(saveButton); return true; }
+            case "Undo": { undoButton = bjb("Undo", undo); jtb.add(undoButton); return true; }
+            case "Redo": { redoButton = bjb("Redo", redo); jtb.add(redoButton); return true; }
+            case "First Page": { firstPageButton = bjb("First Page", leftleft); jtb.add(firstPageButton); return true; }
+            case "Previous Page": { prevPageButton = bjb("Previous Page", left); jtb.add(prevPageButton); return true; }
+            case "Last Page": { lastPageButton = bjb("Last Page", rightright); jtb.add(lastPageButton); return true; }
+            case "Next Page": {ico = right; break;}
+            case "Next Frame": {ico = right; break;}
+            case "New": {ico = newdoc; break;}
+            case "New On Background": {if(!isApplet) ico = newdoc; break;}
+            case "Network Save and Close": {ico = fsave; break;}
+            case "Save Text": {ico = fsave; break;}
+            case "Save and Close": {ico = fsave; break;}
+            case "Save Dictionaries": {ico = fsave; break;}
+            case "Zoom Out": {ico = minus; break;}
+            case "FitW Width": {ico = fit; break;}
+            case "Zoom In": {ico = plus; break;}
+            case "Thumbs": {ico = thumbsico; break;}
+            case "Overlay Pages": {ico = opico; break;}
+            case "Continuous": {ico = threePages; break;}
+            case "New Page": {ico = newpage; break;}
+            case "Default Pen": {ico = def; break;}
+            case "Fine": {ico = fin; break;}
+            case "Medium": {ico = med; break;}
+            case "Heavy": {ico = hev; break;}
+            case "Fat": {ico = fat; break;}
+            case "green":   {ico = grn; action = "Green"; break;}
+            case "magenta": {ico = mgn; action = "Magenta"; break;}
+            case "breen":   {ico = blk; action = "Black"; break;}
+            case "red":     {ico = grn; action = "Red"; break;}
+            case "multi":   {ico = multi; action = "Choose Instrument Color"; jbo = bjb(action, ico); jtb.add(jbo); return true;}
+            case "iwidth":  {ico = iwidth; action = "Choose Instrument Width"; jbw = bjb(action, ico); jtb.add(jbw); return true; }
+            case "wrench": { ico = wrench; action = "Main Menu"; jbmm = bjb(action, ico); jtb.add(jbmm); hideMenu = true; return true; }
+            case "Default Highlighter": {ico = highdef; break;}
+            case "Yellow Highlighter":  {ico = highyel; break;}
+            case "Magenta Highlighter": {ico = highmag; break;}
+            case "White Out":           {ico = white; break;}
+            case "Draw Arrow":          {ico = arrow; break;}
+            case "Razor":               {ico = razor; break;}
+            case "Ruler":               {ico = ruler; break;}
+            case "Select":              {ico = select; break;}
+            case "Select Rectangle":    {ico = selectrect; break;}
+            case "Cut":                 {ico = editcut; break;}
+            case "Copy":                {ico = editcopy; break;}
+            case "Paste":               {ico = editpaste; break;}
+            case "Paste Out":           {ico = editpaste; break;}
+            case "Eraser":              {ico = eraser; break;}
+            case "Clear":               {ico = bigeraser; break;}
+            case "Clear Out":           {ico = bigeraser; break;}
+            case "Duplicate":           {ico = clonedoc; break;}
+            case "Top Eraser":          {ico = erasetop; break;}
+            case "Bottom Eraser":       {ico = erasebot; break;}
+            case "Stamp Date":          {ico = clock; break;}
+            case "Text":                {ico = text; break;}
+            case "Capitalize":          {ico = cap; break;}
+            case "Number Lock":         {ico = num; break;}
+            case "Symbol":              {ico = sym; break;}
+            case "Space":               {ico = Spc; break;}
+            case "Backspace":           {ico = Bsp; break;}
+            case "Full Screen":         {ico = fullscreen; break;}
+            case "Return":              {ico = returnico; break;}
+            case "User":                {ico = userico; break;}
+        }
+
 		if (ico != null) {
 			jtb.add(bjb(action, ico));
 			return true;
 		}
-
 		return false;
 	}
 
