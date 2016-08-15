@@ -12,6 +12,7 @@ repositories {
 dependencies {
     compile name: 'jpedalt'  // jPedal is commercial-nonfree, and maven only contains branch projects
     compile name: 'itext-1.2'// iText maven doesn'ct support this low of a version
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
 }
 
 apply plugin: 'idea'; apply plugin: 'eclipse'

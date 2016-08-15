@@ -221,47 +221,38 @@ public class Jarnal extends JApplet {
 		hlang = null;
 
 		System.out.println(language);
-		InputStream in = Jarnal.class.getResourceAsStream("languages/"
-				+ language + ".txt");
+		InputStream in = Jarnal.class.getResourceAsStream("languages/" + language + ".txt");
+		if (in == null) return;
 
-		if (in == null) {
-			return;
-		}
-		String s = null;
+		String s;
 		try {
 			s = new String(Pages.streamToByteArray(in));
 		} catch (Exception ex) {
 			System.err.println(ex);
-			s = null;
+			s = "";
 		}
-		if (s == null) {
-			return;
-		}
+		if (s == null) return;
+
 		hlang = new Hashtable();
 		s = Tools.replaceAll(s, "\r\n", "\n");
 		s = Tools.replaceAll(s, "\r", "\n");
-		// s.replace("\r\n", "\n");
-		// s.replace("\r", "\n");
-		boolean done = false;
+
+        boolean done = false;
 		int pos = 0;
 		while (!done) {
 			pos = s.indexOf("\n");
-			if (pos < 0)
-				pos = s.length();
+			if (pos < 0) pos = s.length();
 			String t = s.substring(0, pos);
 			pos++;
-			if (pos < s.length())
-				s = s.substring(pos);
-			else
-				done = true;
+			if (pos < s.length()) s = s.substring(pos);
+			else                  done = true;
 			pos = t.indexOf("===");
 			if ((pos >= 0) && !(t.substring(0, 1).equals("#"))) {
 				String key = t.substring(0, pos).trim();
 				t = t.substring(pos + 3);
 				pos = t.indexOf("===");
 				String value = t.substring(0, pos).trim();
-				if ((pos >= 0) && (!key.equals("")) && (!value.equals("")))
-					hlang.put(key, value);
+				if ((pos >= 0) && (!key.equals("")) && (!value.equals(""))) hlang.put(key, value);
 			}
 		}
 	}
