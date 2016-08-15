@@ -2164,7 +2164,7 @@ class selectionDialogListener implements ActionListener {
 			jarn.jrnlPane.doAction("Redraw Page");
 		}
 		if(action.startsWith("Arrow Weight")){
-			jarn.markerweight = model3.getNumber().intValue();
+			jarn.markerWeight = model3.getNumber().intValue();
 			jarn.jrnlPane.doAction("Arrow Weight");
 		}
 		if(action.equals("Highlighter Width")){

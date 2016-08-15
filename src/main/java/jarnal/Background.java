@@ -160,10 +160,10 @@ abstract class Background {
 				int ev = 0;
 				try{
 					Runtime rt = Runtime.getRuntime();
-					String est = Jarnal.pdfconverter;
+					String est = Jarnal.pdfConverter;
 					String trg = src + ".pdf";
 					String estev[] = new String[3];
-					estev[0] = Jarnal.pdfconverter;
+					estev[0] = Jarnal.pdfConverter;
 					estev[1] = "-invisible";
 					estev[2] = "macro:///Standard.Convert.ConvertToPdf(" + src + "," + trg +")";
 					Process ps = rt.exec(estev);

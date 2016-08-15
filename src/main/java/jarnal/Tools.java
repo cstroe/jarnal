@@ -423,7 +423,7 @@ public class Tools{
 			else combo3.setSelectedIndex(0);
 			model1.setValue(new Double(bWidth));
 			model2.setValue(new Double(fatWidth));
-			model3.setValue(new Integer(jarn.markerweight));
+			model3.setValue(new Integer(jarn.markerWeight));
 			model4.setValue(new Double(hTrans));
 		}
 
@@ -609,7 +609,7 @@ public class Tools{
 				curPen.hTrans = x;
 				defBut.hTrans = x;
 				parent.hTrans = x;				
-				jarn.markerweight = model3.getNumber().intValue();
+				jarn.markerWeight = model3.getNumber().intValue();
 				setWidth((String)combo1.getSelectedItem());
 				boolean setHigh = false;
 				if(highlighter || (transparency != 255)) setHigh = true;

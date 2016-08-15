@@ -36,10 +36,10 @@ public class Jarnal extends JApplet {
 
 	static String ext = ".jaj";
 	
-	static String openfile = "", openmfile = "", openbgfile = "";
-	static String opentextfile = "", savefile = "", pdffile ="";
+	static String openFile = "", openmfile = "", openbgfile = "";
+	static String opentextfile = "", saveFile = "", pdffile ="";
 	
-	static String confdir = "";
+	static String confDir = "";
 	static String meta = "", meta2 = "";
 	
 	static boolean javagui = false;
@@ -65,16 +65,16 @@ public class Jarnal extends JApplet {
 	boolean embed = false;
 	static public boolean miniDic = false;
 	static public String defaultConf;
-	static public String memoryerrorstring = "";
+	static public String memoryErrorString = "";
 
-	static String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	static String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	static String jarnalShell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	static String jarnalShellWindows = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
 	
 	static String firefox;
 	
-	static String ps2pdf;
-	static String printpdf;
-	static String pdfconverter;
+	static String ps2PDF;
+	static String printPDF;
+	static String pdfConverter;
 	
 	static String gs;
 	
@@ -140,13 +140,13 @@ public class Jarnal extends JApplet {
 	Tools jtbu = new Tools();
 	String middleButton = "Eraser";
 	String rightButton = "Context Menu";
-	String old_color = "black";
-	float old_width = -1.0f;
+	String oldColor = "black";
+	float oldWidth = -1.0f;
 	float fatWidth = 11.0f;
 	boolean stickyRuler = false;
 	boolean arrowhead = false;
 	boolean temparrow = false;
-	int markerweight = 10;
+	int markerWeight = 10;
 	boolean hideCursor = true;
 	boolean textMode = false;
 	boolean makeOverlay = false;
@@ -156,8 +156,8 @@ public class Jarnal extends JApplet {
 	boolean saveBg = false;
 	boolean promptForNetSaveName = false;
 	boolean oldPromptForNetSaveName;
-	boolean urlencoded = false;
-	boolean oldurlencoded;
+	boolean urlEncoded = false;
+	boolean oldUrlEncoded;
 	boolean saveSelfexecuting;
 	boolean smoothStrokes = true;
 	String email = "";
@@ -281,122 +281,122 @@ public class Jarnal extends JApplet {
 	}
 
 	public static int setarg(String[] args, int iarg, int len) {
-		String oldopenfile = openfile;
-		openfile = args[iarg];
+		String oldopenfile = openFile;
+		openFile = args[iarg];
 		int ret = iarg + 1;
 		if (args[iarg].trim().equals("")) {
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 			return ret;
 		}
-		if (openfile.equals("-t")) {
+		if (openFile.equals("-t")) {
 			if (iarg >= len - 1)
-				openfile = "";
+				openFile = "";
 			else {
 				template = true;
-				openfile = args[iarg + 1];
+				openFile = args[iarg + 1];
 				ret++;
 			}
 			return ret;
 		}
-		if (openfile.equals("-b")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-b")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				openbgfile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-bb")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-bb")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				openbgfile = args[iarg + 1];
 			bfilter bf = new bfilter(openbgfile);
 			String bdir = (new File(openbgfile)).getAbsoluteFile().getParent();
 			String fls[] = (new File(bdir)).list(bf);
 			if (fls.length > 0) {
-				openfile = bdir + File.separator + fls[0];
+				openFile = bdir + File.separator + fls[0];
 				openbgfile = "";
 				template = false;
 			}
 			ret++;
 		}
-		if (openfile.equals("-s")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-s")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				savefile = args[iarg + 1];
+				saveFile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-connect")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-connect")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				startconnect = "server:/" + args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-text")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-text")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				opentextfile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-pdf")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-pdf")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				pdffile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-confdir")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-confdir")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				confdir = args[iarg + 1];
+				confDir = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-m")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-m")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				openmfile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-lang")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-lang")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				language = args[iarg + 1];
 			ret++;
 			initTrans();
 		}
-		if (openfile.equals("-startServer")){
-			openfile = oldopenfile;
+		if (openFile.equals("-startServer")){
+			openFile = oldopenfile;
 			beginServer = true;
 		}
-		if (openfile.equals("-connectPresentation")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-connectPresentation")) {
+			openFile = oldopenfile;
 			connectPresentation = true;
 			if(startconnect == null) startconnect = "server:/localhost";
 		}
-		if (openfile.equals("-large")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-large")) {
+			openFile = oldopenfile;
 			loadImagesLarge();
 		}
-		if (openfile.equals("-mousecursor")){
-			openfile = oldopenfile;
+		if (openFile.equals("-mousecursor")){
+			openFile = oldopenfile;
 			botpCf = true;
 		}
-		if (openfile.equals("-multitouch")){
-			openfile = oldopenfile;
+		if (openFile.equals("-multitouch")){
+			openFile = oldopenfile;
 			multitouch = true;
 		}
-		if (openfile.equals("-javagui")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-javagui")) {
+			openFile = oldopenfile;
 			javagui = true;
 		}
-		if (openfile.startsWith("-mini")) {
-			openfile = oldopenfile;
+		if (openFile.startsWith("-mini")) {
+			openFile = oldopenfile;
 			startMini = true;
 		}
-		if (openfile.startsWith("-fs")) {
-			openfile = oldopenfile;
+		if (openFile.startsWith("-fs")) {
+			openFile = oldopenfile;
 			startfs = true;
 		}
-		if (openfile.startsWith("-p")) {
-			if (!openfile.equals("-p")) {
-				String s = openfile.substring(2);
+		if (openFile.startsWith("-p")) {
+			if (!openFile.equals("-p")) {
+				String s = openFile.substring(2);
 				int n = s.indexOf("x");
 				if (n >= 0) {
 					int y = Integer.parseInt(s.substring(n + 1));
@@ -405,30 +405,30 @@ public class Jarnal extends JApplet {
 					locationSet = true;
 				}
 			}
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 			setLocation = true;
 		}
-		if (openfile.equals("-n")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-n")) {
+			openFile = oldopenfile;
 			showMenu = false;
 		}
-		if (openfile.equals("-g")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-g")) {
+			openFile = oldopenfile;
 			Background.useGS = true;
 		}
-		if (openfile.equals("-sg")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-sg")) {
+			openFile = oldopenfile;
 			Background.silentGS = true;
 		}
-		if (openfile.equals("-pen")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-pen")) {
+			openFile = oldopenfile;
 			//pencentric = true;
 		}
-		if (openfile.equals("-l")) {
+		if (openFile.equals("-l")) {
 			if (iarg < len - 1)
 				loadFiles.add(args[iarg + 1]);
 			ret++;
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 		}
 		return ret;
 	}
@@ -456,9 +456,9 @@ public class Jarnal extends JApplet {
 	}
 
 	public static void pipe() {
-		if (HtmlPost.checkURL(openfile) && !isApplet) {
-			HtmlPost hp = new HtmlPost(openfile, null, null, null, null, false);
-			openfile = hp.pipe(".jaj");
+		if (HtmlPost.checkURL(openFile) && !isApplet) {
+			HtmlPost hp = new HtmlPost(openFile, null, null, null, null, false);
+			openFile = hp.pipe(".jaj");
 		}
 		if (HtmlPost.checkURL(openbgfile) && !isApplet) {
 			HtmlPost hp = new HtmlPost(openbgfile, null, null, null, null,
@@ -471,15 +471,15 @@ public class Jarnal extends JApplet {
 			openmfile = "";
 		}
 		try {
-			if (openfile == null)
-				openfile = "";
+			if (openFile == null)
+				openFile = "";
 			if (openbgfile == null)
 				openbgfile = "";
 			if (openmfile == null)
 				openmfile = "";
 			if (!isApplet) {
-				if (!openfile.equals(""))
-					openfile = (new File(openfile)).getCanonicalPath();
+				if (!openFile.equals(""))
+					openFile = (new File(openFile)).getCanonicalPath();
 				if (!openbgfile.equals(""))
 					openbgfile = (new File(openbgfile)).getCanonicalPath();
 				if (!openmfile.equals(""))
@@ -564,20 +564,20 @@ public class Jarnal extends JApplet {
 		s = s + "pdfrenderer=" + gs + "\n";
 		z = Tools.getLine(shell, "ps2pdf");
 		if (z != null)
-			ps2pdf = z;
-		s = s + "ps2pdf=" + ps2pdf + "\n";
+			ps2PDF = z;
+		s = s + "ps2pdf=" + ps2PDF + "\n";
 		z = Tools.getLine(shell, "firefox");
 		if (z != null)
 			firefox = z;
 		s = s + "firefox=" + firefox + "\n";
 		z = Tools.getLine(shell, "pdfconverter");
 		if (z != null)
-			pdfconverter = z;
-		s = s + "pdfconverter=" + pdfconverter + "\n";
+			pdfConverter = z;
+		s = s + "pdfconverter=" + pdfConverter + "\n";
 		z = Tools.getLine(shell, "printpdf");
 		if (z != null)
-			printpdf = z;
-		s = s + "printpdf=" + printpdf + "\n";
+			printPDF = z;
+		s = s + "printpdf=" + printPDF + "\n";
 		z = Tools.getLine(shell, "pdftotext");
 		if (z != null)
 			Pages.pdftotext = z;
@@ -592,9 +592,9 @@ public class Jarnal extends JApplet {
 
 	private static File getConfDir() {
 		String userhome = System.getProperty("user.home");
-		if (confdir.equals(""))
+		if (confDir.equals(""))
 			return new File(userhome);
-		return new File(userhome + File.separator + confdir);
+		return new File(userhome + File.separator + confDir);
 	}
 
 	private static void writeShell() {
@@ -614,9 +614,9 @@ public class Jarnal extends JApplet {
 	}
 
 	private static void loadShell(boolean writeShell) {
-		String shell = jarnalshell;
+		String shell = jarnalShell;
 		if (Tools.checkMSWindows()) {
-			shell = jarnalshellwin;
+			shell = jarnalShellWindows;
 			shell = Tools.replaceAll(shell, "basepathlib", "\""
 					+ Tools.getBasepath() + "lib/pdftotext\" ");
 		}
@@ -659,14 +659,14 @@ public class Jarnal extends JApplet {
 				}
 			}
 			if(!writeShell) {
-				String oldopenfile=openfile;
-				openfile = getConfDir().getAbsolutePath() + File.separator + "jarnalbook.conf";
+				String oldopenfile=openFile;
+				openFile = getConfDir().getAbsolutePath() + File.separator + "jarnalbook.conf";
 				invisible = true;
 				ttitle = "Jarnalbook.conf";
 				if(keepbookmarks > 0) jarnalbook = newJarnal("");
 				ttitle = "";
 				invisible = false;
-				openfile=oldopenfile;
+				openFile=oldopenfile;
 			}
 			if ((!oldshell.equals(shell)) && writeShell) {
 				try {
@@ -689,7 +689,7 @@ public class Jarnal extends JApplet {
 	public void init() {
 		loadImages();
 		meta = "";
-		openfile = "";
+		openFile = "";
 		openbgfile = "";
 		openmfile = "";
 		doneMeta = false;
@@ -722,13 +722,13 @@ public class Jarnal extends JApplet {
 			isApplet = true;
 		parm = getParameter("jarnalFile");
 		if (parm != null)
-			openfile = parm;
+			openFile = parm;
 		parm = getParameter("backgroundFile");
 		if (parm != null)
 			openbgfile = parm;
 		parm = getParameter("templateFile");
 		if (parm != null) {
-			openfile = parm;
+			openFile = parm;
 			template = true;
 		}
 		parm = getParameter("metaFile");
@@ -778,8 +778,8 @@ public class Jarnal extends JApplet {
 
 	public static Jarnal initJ() {
 		String title = "Jarnal";
-		if (!openfile.equals("") && !template) {
-			File temp = new File(openfile);
+		if (!openFile.equals("") && !template) {
+			File temp = new File(openFile);
 			ttitle = temp.getName();
 		}
 		else if(!openbgfile.equals("")){
@@ -938,7 +938,7 @@ public class Jarnal extends JApplet {
 
 	public static Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
 			Toolkit tk) {
-		openfile = ofile;
+		openFile = ofile;
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
 		controller.jarn = controller;
@@ -1146,6 +1146,7 @@ public class Jarnal extends JApplet {
 	public void setMeta() {
 		String s = meta;
 		String z;
+		
 		s = s + "\n";
 		String y = Tools.getEntry(s, "[Globals]");
 		z = Tools.getLine(y, "backgroundFile");
@@ -1154,12 +1155,12 @@ public class Jarnal extends JApplet {
 		}
 		z = Tools.getLine(y, "jarnalFile");
 		if (z != null) {
-			openfile = z;
+			openFile = z;
 		}
 		z = Tools.getLine(y, "templateFile");
 		if (z != null) {
 			template = true;
-			openfile = z;
+			openFile = z;
 		}
 		z = Tools.getLine(y, "setLocation");
 		if (z != null) {
@@ -1184,9 +1185,11 @@ public class Jarnal extends JApplet {
 		}
 		pipe();
 	}
-
+	
+	/***************
 	// UI Definition
-
+	/***************/
+	
 	// build menu items
 	public JMenuItem bmi(String action) {
 		JMenuItem item;
@@ -1250,9 +1253,9 @@ public class Jarnal extends JApplet {
 	JCheckBoxMenuItem genQuality2;
 	JCheckBoxMenuItem genQuality1;
 	JCheckBoxMenuItem genQuality0;
-	JCheckBoxMenuItem backQuality0;
-	JCheckBoxMenuItem backQuality1;
-	JCheckBoxMenuItem backQuality2;
+	JCheckBoxMenuItem backgroundQuality0;
+	JCheckBoxMenuItem backgroundQuality1;
+	JCheckBoxMenuItem backgroundQuality2;
 	JCheckBoxMenuItem backSilentGS;
 	JCheckBoxMenuItem backUseGS;
 	JCheckBoxMenuItem jcbSaveSelfexecuting;
@@ -1295,9 +1298,9 @@ public class Jarnal extends JApplet {
 		genQuality2 = bcm("High Quality");
 		genQuality1 = bcm("Normal Quality");
 		genQuality0 = bcm("Low Quality");
-		backQuality0 = bcm("Default Quality");
-		backQuality1 = bcm("Good Quality");
-		backQuality2 = bcm("Highest Quality");
+		backgroundQuality0 = bcm("Default Quality");
+		backgroundQuality1 = bcm("Good Quality");
+		backgroundQuality2 = bcm("Highest Quality");
 		backSilentGS = bcm("Silent External Renderer");
 		backUseGS = bcm("Use External Renderer");
 		jcbSaveSelfexecuting = bcm("Save Self Executing");
@@ -1736,9 +1739,9 @@ public class Jarnal extends JApplet {
 		genQuality.add(genQuality1);
 		genQuality.add(genQuality0);
 		JMenu backQuality = new JMenu(trans("Background Quality"));
-		backQuality.add(backQuality0);
-		backQuality.add(backQuality1);
-		backQuality.add(backQuality2);
+		backQuality.add(backgroundQuality0);
+		backQuality.add(backgroundQuality1);
+		backQuality.add(backgroundQuality2);
 		backQuality.add(backUseGS);
 		backQuality.add(backSilentGS);
 		if (Background.silentGS) {
@@ -1979,56 +1982,46 @@ public class Jarnal extends JApplet {
 	}
 
 	JMenu connectMenu;
-	JMenuItem startServer;
-	JMenuItem connectServer;
-	JMenuItem disconnectServer;
+	JMenuItem startServer, connectServer, disconnectServer;
+	
 	JMenuItem disconnectActiveClient;
 	JMenuItem serverFullScreen;
 	JMenuItem serverLockPage;
-	JButton saveButton;
-	JButton undoButton;
-	JButton redoButton;
-	JButton prevPageButton;
-	JButton firstPageButton;
-	JButton lastPageButton;
+	
+	JButton saveButton, undoButton, redoButton;
+	
+	JButton prevPageButton, firstPageButton, lastPageButton;
+	
 	public JButton handButton = null;
 	public JLabel pageLabel = new JLabel();
 	public JLabel clockLabel = new JLabel();
 	JButton memoryButton;
 
-	static ImageIcon hand;
-	static ImageIcon handstop;
-	static ImageIcon handyellow;
-	static ImageIcon handmixed;
-	static ImageIcon handmixed2;
+	static ImageIcon hand, handstop, handyellow, handmixed, handmixed2;
+	
+	
+	static ImageIcon undo, redo;
+	static ImageIcon minus, plus;
+
+	
+	static ImageIcon eraser, eraseTop, eraseBot;
+	static ImageIcon bigEraser;
+	
+	static ImageIcon red, black, blue, magenta, green;
+	static ImageIcon highlighterYellow, highmag, highlighterDefinition;
+	static ImageIcon white;
+	
+	
+	static ImageIcon left, leftLeft, right, rightRight;
+	static ImageIcon select, selectRect;
+	static ImageIcon editCut, editCopy, editPaste;
+	
 	static ImageIcon fsave;
 	static ImageIcon newdoc;
-	static ImageIcon undo;
-	static ImageIcon redo;
-	static ImageIcon minus;
-	static ImageIcon plus;
-	static ImageIcon fit;
-	static ImageIcon eraser;
-	static ImageIcon erasetop;
-	static ImageIcon erasebot;
-	static ImageIcon bigeraser;
+	
 	static ImageIcon clonedoc;
-	static ImageIcon red;
-	static ImageIcon blk;
-	static ImageIcon blu;
-	static ImageIcon mgn;
-	static ImageIcon grn;
-	static ImageIcon highyel;
-	static ImageIcon highmag;
-	static ImageIcon highdef;
-	static ImageIcon white;
-	static ImageIcon left;
-	static ImageIcon leftleft;
-	static ImageIcon right;
-	static ImageIcon rightright;
-	static ImageIcon select;
-	static ImageIcon selectrect;
 	static ImageIcon newpage;
+	static ImageIcon fit;
 	static ImageIcon def;
 	static ImageIcon fin;
 	static ImageIcon med;
@@ -2041,9 +2034,9 @@ public class Jarnal extends JApplet {
 	static ImageIcon text;
 	static ImageIcon clock;
 	static ImageIcon threePages;
-	static ImageIcon editcut;
-	static ImageIcon editcopy;
-	static ImageIcon editpaste;
+	
+
+
 	static ImageIcon cap;
 	static ImageIcon num;
 	static ImageIcon sym;
@@ -2071,35 +2064,34 @@ public class Jarnal extends JApplet {
 		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+-l.png"));
 		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit-l.png"));
 		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser-l.png"));
-		erasetop = new ImageIcon(Jarnal.class
-				.getResource("images/erasetop-l.png"));
-		erasebot = new ImageIcon(Jarnal.class
+		eraseTop = new ImageIcon(Jarnal.class.getResource("images/erasetop-l.png"));
+		eraseBot = new ImageIcon(Jarnal.class
 				.getResource("images/erasebot-l.png"));
-		bigeraser = new ImageIcon(Jarnal.class
+		bigEraser = new ImageIcon(Jarnal.class
 				.getResource("images/bigeraser-l.png"));
 		clonedoc = new ImageIcon(Jarnal.class
 				.getResource("images/clonedoc-l.png"));
 		red = new ImageIcon(Jarnal.class.getResource("images/pencilred-l.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk-l.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu-l.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn-l.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn-l.png"));
-		highyel = new ImageIcon(Jarnal.class
+		black = new ImageIcon(Jarnal.class.getResource("images/pencilblk-l.png"));
+		blue = new ImageIcon(Jarnal.class.getResource("images/pencilblu-l.png"));
+		green = new ImageIcon(Jarnal.class.getResource("images/pencilgrn-l.png"));
+		magenta = new ImageIcon(Jarnal.class.getResource("images/pencilmgn-l.png"));
+		highlighterYellow = new ImageIcon(Jarnal.class
 				.getResource("images/highlighteryel-l.png"));
 		highmag = new ImageIcon(Jarnal.class
 				.getResource("images/highlightermag-l.png"));
-		highdef = new ImageIcon(Jarnal.class
+		highlighterDefinition = new ImageIcon(Jarnal.class
 				.getResource("images/highlighterdef-l.png"));
 		white = new ImageIcon(Jarnal.class.getResource("images/whiteout-l.png"));
 		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow-l.png"));
-		leftleft = new ImageIcon(Jarnal.class
+		leftLeft = new ImageIcon(Jarnal.class
 				.getResource("images/2leftarrow-l.png"));
 		right = new ImageIcon(Jarnal.class
 				.getResource("images/1rightarrow-l.png"));
-		rightright = new ImageIcon(Jarnal.class
+		rightRight = new ImageIcon(Jarnal.class
 				.getResource("images/2rightarrow-l.png"));
 		select = new ImageIcon(Jarnal.class.getResource("images/select-l.png"));
-		selectrect = new ImageIcon(Jarnal.class
+		selectRect = new ImageIcon(Jarnal.class
 				.getResource("images/selectrect-l.png"));
 		newpage = new ImageIcon(Jarnal.class.getResource("images/new-l.png"));
 		def = new ImageIcon(Jarnal.class.getResource("images/default-l.png"));
@@ -2124,10 +2116,10 @@ public class Jarnal extends JApplet {
 				.getResource("images/handmixed-l.png"));
 		handmixed2 = new ImageIcon(Jarnal.class
 				.getResource("images/handmixed2-l.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut-l.png"));
-		editcopy = new ImageIcon(Jarnal.class
+		editCut = new ImageIcon(Jarnal.class.getResource("images/editcut-l.png"));
+		editCopy = new ImageIcon(Jarnal.class
 				.getResource("images/editcopy-l.png"));
-		editpaste = new ImageIcon(Jarnal.class
+		editPaste = new ImageIcon(Jarnal.class
 				.getResource("images/editpaste-l.png"));
 		cap = new ImageIcon(Jarnal.class.getResource("images/cap-l.png"));
 		num = new ImageIcon(Jarnal.class.getResource("images/num-l.png"));
@@ -2159,35 +2151,35 @@ public class Jarnal extends JApplet {
 		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+.png"));
 		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit.png"));
 		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser.png"));
-		erasetop = new ImageIcon(Jarnal.class
+		eraseTop = new ImageIcon(Jarnal.class
 				.getResource("images/erasetop.png"));
-		erasebot = new ImageIcon(Jarnal.class
+		eraseBot = new ImageIcon(Jarnal.class
 				.getResource("images/erasebot.png"));
-		bigeraser = new ImageIcon(Jarnal.class
+		bigEraser = new ImageIcon(Jarnal.class
 				.getResource("images/bigeraser.png"));
 		clonedoc = new ImageIcon(Jarnal.class
 				.getResource("images/clonedoc.png"));
 		red = new ImageIcon(Jarnal.class.getResource("images/pencilred.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn.png"));
-		highyel = new ImageIcon(Jarnal.class
+		black = new ImageIcon(Jarnal.class.getResource("images/pencilblk.png"));
+		blue = new ImageIcon(Jarnal.class.getResource("images/pencilblu.png"));
+		green = new ImageIcon(Jarnal.class.getResource("images/pencilgrn.png"));
+		magenta = new ImageIcon(Jarnal.class.getResource("images/pencilmgn.png"));
+		highlighterYellow = new ImageIcon(Jarnal.class
 				.getResource("images/highlighteryel.png"));
 		highmag = new ImageIcon(Jarnal.class
 				.getResource("images/highlightermag.png"));
-		highdef = new ImageIcon(Jarnal.class
+		highlighterDefinition = new ImageIcon(Jarnal.class
 				.getResource("images/highlighterdef.png"));
 		white = new ImageIcon(Jarnal.class.getResource("images/whiteout.png"));
 		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow.png"));
-		leftleft = new ImageIcon(Jarnal.class
+		leftLeft = new ImageIcon(Jarnal.class
 				.getResource("images/2leftarrow.png"));
 		right = new ImageIcon(Jarnal.class
 				.getResource("images/1rightarrow.png"));
-		rightright = new ImageIcon(Jarnal.class
+		rightRight = new ImageIcon(Jarnal.class
 				.getResource("images/2rightarrow.png"));
 		select = new ImageIcon(Jarnal.class.getResource("images/select.png"));
-		selectrect = new ImageIcon(Jarnal.class
+		selectRect = new ImageIcon(Jarnal.class
 				.getResource("images/selectrect.png"));
 		newpage = new ImageIcon(Jarnal.class.getResource("images/new.png"));
 		def = new ImageIcon(Jarnal.class.getResource("images/default.png"));
@@ -2212,10 +2204,10 @@ public class Jarnal extends JApplet {
 				.getResource("images/handmixed.png"));
 		handmixed2 = new ImageIcon(Jarnal.class
 				.getResource("images/handmixed2.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut.png"));
-		editcopy = new ImageIcon(Jarnal.class
+		editCut = new ImageIcon(Jarnal.class.getResource("images/editcut.png"));
+		editCopy = new ImageIcon(Jarnal.class
 				.getResource("images/editcopy.png"));
-		editpaste = new ImageIcon(Jarnal.class
+		editPaste = new ImageIcon(Jarnal.class
 				.getResource("images/editpaste.png"));
 		cap = new ImageIcon(Jarnal.class.getResource("images/cap.png"));
 		num = new ImageIcon(Jarnal.class.getResource("images/num.png"));
@@ -2225,8 +2217,7 @@ public class Jarnal extends JApplet {
 		Spc = new ImageIcon(Jarnal.class.getResource("images/spc.png"));
 		Bsp = new ImageIcon(Jarnal.class.getResource("images/bsp.png"));
 		browse = new ImageIcon(Jarnal.class.getResource("images/browser.png"));
-		fullscreen = new ImageIcon(Jarnal.class
-				.getResource("images/fullscreen.png"));
+		fullscreen = new ImageIcon(Jarnal.class.getResource("images/fullscreen.png"));
 		returnico = new ImageIcon(Jarnal.class.getResource("images/rtn.png"));
 		userico = new ImageIcon(Jarnal.class.getResource("images/user.png"));
 		multi = new ImageIcon(Jarnal.class.getResource("images/multi.png"));
@@ -2299,7 +2290,7 @@ public class Jarnal extends JApplet {
 			return true;
 		}
 		if (action.equals("First Page")) {
-			firstPageButton = bjb("First Page", leftleft);
+			firstPageButton = bjb("First Page", leftLeft);
 			jtb.add(firstPageButton);
 			return true;
 		}
@@ -2309,7 +2300,7 @@ public class Jarnal extends JApplet {
 			return true;
 		}
 		if (action.equals("Last Page")) {
-			lastPageButton = bjb("Last Page", rightright);
+			lastPageButton = bjb("Last Page", rightRight);
 			jtb.add(lastPageButton);
 			return true;
 		}
@@ -2354,16 +2345,16 @@ public class Jarnal extends JApplet {
 		else if (action.equals("Fat"))
 			ico = fat;
 		else if (action.equals("green")) {
-			ico = grn;
+			ico = green;
 			action = "Green";
 		} else if (action.equals("magenta")) {
-			ico = mgn;
+			ico = magenta;
 			action = "Magenta";
 		} else if (action.equals("black")) {
-			ico = blk;
+			ico = black;
 			action = "Black";
 		} else if (action.equals("blue")) {
-			ico = blu;
+			ico = blue;
 			action = "Blue";
 		} else if (action.equals("red")) {
 			ico = red;
@@ -2388,9 +2379,9 @@ public class Jarnal extends JApplet {
 			hideMenu = true;
 			return true;
 		} else if (action.equals("Default Highlighter"))
-			ico = highdef;
+			ico = highlighterDefinition;
 		else if (action.equals("Yellow Highlighter"))
-			ico = highyel;
+			ico = highlighterYellow;
 		else if (action.equals("Magenta Highlighter"))
 			ico = highmag;
 		else if (action.equals("White Out"))
@@ -2404,27 +2395,27 @@ public class Jarnal extends JApplet {
 		else if (action.equals("Select"))
 			ico = select;
 		else if (action.equals("Select Rectangle"))
-			ico = selectrect;
+			ico = selectRect;
 		else if (action.equals("Cut"))
-			ico = editcut;
+			ico = editCut;
 		else if (action.equals("Copy"))
-			ico = editcopy;
+			ico = editCopy;
 		else if (action.equals("Paste"))
-			ico = editpaste;
+			ico = editPaste;
 		else if (action.equals("Paste Out"))
-			ico = editpaste;
+			ico = editPaste;
 		else if (action.equals("Eraser"))
 			ico = eraser;
 		else if (action.equals("Clear"))
-			ico = bigeraser;
+			ico = bigEraser;
 		else if (action.equals("Clear Out"))
-			ico = bigeraser;
+			ico = bigEraser;
 		else if (action.equals("Duplicate Page"))
 			ico = clonedoc;
 		else if (action.equals("Top Eraser"))
-			ico = erasetop;
+			ico = eraseTop;
 		else if (action.equals("Bottom Eraser"))
-			ico = erasebot;
+			ico = eraseBot;
 		else if (action.equals("Stamp Date"))
 			ico = clock;
 		else if (action.equals("Text"))
@@ -2442,7 +2433,7 @@ public class Jarnal extends JApplet {
 		else if (action.equals("Backspace"))
 			ico = Bsp;
 		else if (action.equals("Clear"))
-			ico = bigeraser;
+			ico = bigEraser;
 		else if (action.equals("Full Screen"))
 			ico = fullscreen;
 		else if (action.equals("Return"))
@@ -3711,7 +3702,7 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("cancel")) {
 				jw.setVisible(false);
-				urlencoded = oldurlencoded;
+				urlEncoded = oldUrlEncoded;
 				promptForNetSaveName = oldPromptForNetSaveName;
 			}
 			if (action.equals("ok")) {
@@ -3735,13 +3726,13 @@ public class Jarnal extends JApplet {
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.DESELECTED) {
 				if (action.equals("urlencoded"))
-					urlencoded = false;
+					urlEncoded = false;
 				if (action.equals("promptForNetSaveName"))
 					promptForNetSaveName = false;
 			}
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				if (action.equals("urlencoded"))
-					urlencoded = true;
+					urlEncoded = true;
 				if (action.equals("promptForNetSaveName"))
 					promptForNetSaveName = true;
 			}
@@ -3903,8 +3894,8 @@ public class Jarnal extends JApplet {
 		public void setMemoryError() {
 			setMessage(
 					"Insufficient Memory to Display\nScale Has Been Reduced\nPlease Save Your Work\nSee Help for Increasing Memory"
-							+ memoryerrorstring, "Memory Error");
-			memoryerrorstring = "";
+							+ memoryErrorString, "Memory Error");
+			memoryErrorString = "";
 		}
 
 		public void setClockCursor(JDialog jw) {
@@ -4218,7 +4209,7 @@ public class Jarnal extends JApplet {
 		}
 
 		public void setArrow() {
-			pages.setArrow(markerweight);
+			pages.setArrow(markerWeight);
 		}
 
 		public void stroke(Point2D.Double endL) {
@@ -5262,7 +5253,7 @@ public class Jarnal extends JApplet {
 		}
 
 		private void netSaveDialog(Point p, Rectangle r) {
-			oldurlencoded = urlencoded;
+			oldUrlEncoded = urlEncoded;
 			oldPromptForNetSaveName = promptForNetSaveName;
 			JDialog jw = new JDialog(gJrnlFrame, "Network Save Options");
 			JPanel top = new JPanel(new GridBagLayout());
@@ -5324,7 +5315,7 @@ public class Jarnal extends JApplet {
 			gbc.weightx = 1.0;
 			JCheckBox urle = new JCheckBox();
 			urle.addItemListener(new JrnlDialogBoxListener("urlencoded"));
-			if (urlencoded)
+			if (urlEncoded)
 				urle.setSelected(true);
 			JCheckBox pfnsn = new JCheckBox();
 			pfnsn.addItemListener(new JrnlDialogBoxListener(
@@ -5505,11 +5496,11 @@ public class Jarnal extends JApplet {
 			s = s + "absoluteScale=" + absoluteScale + "\n";
 			s = s + "showPageNumbers=" + showPageNumbers + "\n";
 			s = s + "withBorders=" + withBorders + "\n";
-			s = s + "URLEncode=" + urlencoded + "\n";
+			s = s + "URLEncode=" + urlEncoded + "\n";
 			s = s + "promptForNetSaveName=" + promptForNetSaveName + "\n";
 			s = s + "stickyRuler=" + stickyRuler + "\n";
 			s = s + "arrowhead=" + arrowhead + "\n";
-			s = s + "markerweight=" + markerweight + "\n";
+			s = s + "markerweight=" + markerWeight + "\n";
 			s = s + "middleButton=" + middleButton + "\n";
 			s = s + "rightButton=" + rightButton + "\n";
 			s = s + "\n";
@@ -5713,13 +5704,13 @@ public class Jarnal extends JApplet {
 			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
-					urlencoded = true;
+					urlEncoded = true;
 				else
-					urlencoded = false;
+					urlEncoded = false;
 			}
 			z = Tools.getLine(y, "markerweight");
 			if (z != null) {
-				markerweight = Integer.parseInt(z);
+				markerWeight = Integer.parseInt(z);
 			}
 			z = Tools.getLine(y, "arrowhead");
 			if (z != null) {
@@ -5962,9 +5953,9 @@ public class Jarnal extends JApplet {
 			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
-					urlencoded = true;
+					urlEncoded = true;
 				else
-					urlencoded = false;
+					urlEncoded = false;
 			}
 			z = Tools.getLine(y, "promptForNetSaveName");
 			if (z != null) {
@@ -6319,10 +6310,10 @@ public class Jarnal extends JApplet {
 		public void open() {
 			String obgfile = bgfile;
 			boolean setSizeToBg = false;
-			if (!openfile.equals("")) {
-				File temp = new File(openfile);
+			if (!openFile.equals("")) {
+				File temp = new File(openFile);
 				if (template)
-					templateFile = openfile;
+					templateFile = openFile;
 				if (!template) {
 					fname = temp.getName();
 					cwd = temp.getParent();
@@ -6332,9 +6323,9 @@ public class Jarnal extends JApplet {
 					doOpen = temp.exists();
 				}
 				if (doOpen) {
-					setConf(pages.open(openfile));
+					setConf(pages.open(openFile));
 					if(obgfile.equals("") && !template)
-						addBookmarkAll(openfile);
+						addBookmarkAll(openFile);
 					if (pages.recordingOn())
 						recbox.setState(true);
 					// new fitwidth: keep the scale on an existing file
@@ -6344,7 +6335,7 @@ public class Jarnal extends JApplet {
 				setSizeToBg = true;
 			if (template && (pages.getPages() == 1))
 				setSizeToBg = true;
-			openfile = "";
+			openFile = "";
 			if (!obgfile.equals("")) {
 				pages.openBg(new JbgsSource(obgfile, null));
 				addBookmarkAll("BG: " + obgfile + "::" + templateFile);
@@ -6361,11 +6352,11 @@ public class Jarnal extends JApplet {
 			pages.openLoad(loadFiles);
 			loadFiles = new LinkedList();
 			template = false;
-			if (!savefile.equals("")) {
-				File temp = new File(savefile);
+			if (!saveFile.equals("")) {
+				File temp = new File(saveFile);
 				fname = temp.getName();
 				cwd = temp.getParent();
-				savefile = "";
+				saveFile = "";
 			}
 		}
 
@@ -6388,7 +6379,7 @@ public class Jarnal extends JApplet {
 					cwdt = cwdt.substring(4);
 					int ncolon = cwdt.indexOf("::");
 					if(ncolon > 0){
-						openfile = cwdt.substring(ncolon + 2) + File.separator + temp;
+						openFile = cwdt.substring(ncolon + 2) + File.separator + temp;
 						cwdt = cwdt.substring(0,ncolon);
 						File ftemp = new File(cwdt);
 						cwdt = ftemp.getParent();
@@ -6398,10 +6389,10 @@ public class Jarnal extends JApplet {
 					}
 					else {
 						openbgfile = cwdt + File.separator + temp;
-						openfile = "";
+						openFile = "";
 					}
 				}
-				else openfile = cwdt + File.separator + temp;
+				else openFile = cwdt + File.separator + temp;
 				ttitle = temp;
 				if(beginServer){
 					if (pages.communicator != null) {
@@ -7063,7 +7054,7 @@ public class Jarnal extends JApplet {
 					return;
 				if (src.equals(""))
 					return;
-				String est = printpdf;
+				String est = printPDF;
 				try {
 					est = Tools.replaceAll(est, "%1", Tools.cmdQuote(src));
 					System.out.println(est);
@@ -7211,7 +7202,7 @@ public class Jarnal extends JApplet {
 					} else {
 						// jbcancel.msg.setText("Spooling ps to pdf");
 						jbcancelmsg("Spooling ps to pdf");
-						String est = ps2pdf;
+						String est = ps2PDF;
 						est = Tools.replaceAll(est, "%1", Tools
 								.cmdQuote(tfilename));
 						est = Tools.replaceAll(est, "%2", Tools
@@ -7233,7 +7224,7 @@ public class Jarnal extends JApplet {
 				}
 
 				if (action.equals("zPrint via PDF")) {
-					String est = printpdf;
+					String est = printPDF;
 					try {
 						est = Tools.replaceAll(est, "%1", pdfFile);
 						System.out.println(est);
@@ -7387,7 +7378,7 @@ public class Jarnal extends JApplet {
 				ht.put("$u", uniqueID);
 				ht.put("$g", nname);
 				HtmlPost hp = new HtmlPost(netServer, netOptions, pages, ht,
-						getConf(), urlencoded);
+						getConf(), urlEncoded);
 				hp.setJarnal(jarn);
 				hp.withBorders = withBorders;
 				hp.post();
@@ -8252,7 +8243,7 @@ public class Jarnal extends JApplet {
 						.showDialog(gJrnlFrame, jt, jarn);
 
 			if (action.equals("Arrow Weight")) {
-				pages.applyArrow(markerweight);
+				pages.applyArrow(markerWeight);
 				dirty = true;
 			}
 
@@ -8822,8 +8813,8 @@ public class Jarnal extends JApplet {
 			boolean penChanged = false;
 			if ((jt.transparency == 255) && !jt.highlighter
 					&& !(jt.color.equals("white") && jt.type.equals("Fat"))) {
-				old_color = jt.color;
-				old_width = jt.width;
+				oldColor = jt.color;
+				oldWidth = jt.width;
 			}
 
 			if (action.equals("Choose Instrument Color")) {
@@ -8938,38 +8929,38 @@ public class Jarnal extends JApplet {
 				jt.setOpaque();
 				jt.color = action.toLowerCase();
 				if (isHigh) {
-					if (old_width == 1.0f)
+					if (oldWidth == 1.0f)
 						jt.width = jtd.width;
 					else
-						jt.width = old_width;
+						jt.width = oldWidth;
 				}
 				penChanged = true;
 			}
 			if (action.equals("Fine")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Fine");
 				penChanged = true;
 			}
 			if (action.equals("Medium")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Medium");
 				penChanged = true;
 			}
 			if (action.equals("Heavy")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Heavy");
 				penChanged = true;
 			}
 			if (action.equals("Fat")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Fat");
 				penChanged = true;
 			}
@@ -8999,7 +8990,7 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("White Out")) {
 				if (!jt.highlighter)
-					old_color = jt.color;
+					oldColor = jt.color;
 				jt.highlighter = false;
 				jt.setOpaque();
 				jt.color = "white";
@@ -9048,7 +9039,7 @@ public class Jarnal extends JApplet {
 			}
 			if ((jt.transparency == 255) && !jt.highlighter
 					&& !(jt.color.equals("white") && jt.type.equals("Fat")))
-				old_color = jt.color;
+				oldColor = jt.color;
 			if (penChanged) {
 				textMode = false;
 				setStatus("");
@@ -9204,8 +9195,7 @@ public class Jarnal extends JApplet {
 								jtype = "image";
 							}
 							if (data == null)
-								System.out
-										.println("no usable data on clipboard");
+								System.out.println("no usable data on clipboard");
 						}
 					} catch (IOException ex) {
 						System.err.println("IOException");
@@ -9419,17 +9409,17 @@ public class Jarnal extends JApplet {
 			genQuality0.setState(false);
 			genQuality1.setState(false);
 			genQuality2.setState(false);
-			backQuality0.setState(false);
-			backQuality1.setState(false);
-			backQuality2.setState(false);
+			backgroundQuality0.setState(false);
+			backgroundQuality1.setState(false);
+			backgroundQuality2.setState(false);
 			int bq = viewQuality % 16;
 			int fq = 16 * (viewQuality / 16);
 			if (bq == 0)
-				backQuality0.setState(true);
+				backgroundQuality0.setState(true);
 			if (bq == 1)
-				backQuality1.setState(true);
+				backgroundQuality1.setState(true);
 			if (bq == 2)
-				backQuality2.setState(true);
+				backgroundQuality2.setState(true);
 			if (fq == 0)
 				genQuality0.setState(true);
 			if (fq == 0x40)
@@ -9806,7 +9796,7 @@ public class Jarnal extends JApplet {
 				try {
 					hmg = (BufferedImage) createImage(w, h);
 				} catch (Error er) {
-					memoryerrorstring = "\n" + mymemory();
+					memoryErrorString = "\n" + mymemory();
 					pages.setScale(pages.getScale() / 2);
 					hmg = (BufferedImage) createImage(1, 1);
 					jtm.setMemoryError();
