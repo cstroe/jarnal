@@ -4471,14 +4471,6 @@ public class Jarnal extends JApplet {
 				saveDics();
 				action = "none";
 			}
-			if (action.equals("Calculate")) {
-				String test = "" + (new Calculator(input)).calc();
-				input = "";
-				strokes = new LinkedList();
-				miniadd(test);
-				strokes = new LinkedList();
-				action = "none";
-			}
 			if (action.equals("Space")) {
 				miniadd(" ");
 				action = "none";
