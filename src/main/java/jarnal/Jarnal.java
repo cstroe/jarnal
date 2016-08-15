@@ -1,5 +1,7 @@
 package jarnal;
 
+import org.apache.commons.cli.Options;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -9923,7 +9925,7 @@ public class Jarnal extends JApplet {
 			pages.writeTIFFGraphicFile(f, null, withBorders);
 		}
 	}
-
+    
     public static Jarnal getInstance() {
         return INSTANCE;
     }
