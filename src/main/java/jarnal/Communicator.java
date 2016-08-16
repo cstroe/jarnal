@@ -1,16 +1,9 @@
 package jarnal;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
-import java.awt.datatransfer.*;
 import java.net.*;
-import jarnal.Pages;
-import jarnal.Jarnal;
 
 // each client is connected to the server by two pipes
 // one pipe sends data and one recieves data
@@ -188,7 +181,7 @@ class JarnalClient extends Thread {
 		try{
 			os.write(("getfile" + terminator).getBytes());
 			String ffname = readString();
-			fname = File.createTempFile(ffname + "." + Jarnal.jarnalTmp, ".jaj");
+			fname = File.createTempFile(ffname + "." + Jarnal.getInstance().jarnalTmp, ".jaj");
 			FileOutputStream out = new FileOutputStream(fname);
 			byte[] ba = read();
 			out.write(ba, 0, ba.length - terminator.length());
@@ -541,7 +534,7 @@ class JarnalServer extends Thread {
 
 	public synchronized void getfile(JarnalClient jcl){
 		freeze = true;
-		if(jc.active) jarn.handButton.setIcon(jarn.handyellow);
+		if(jc.active) jarn.handButton.setIcon(Images.handyellow);
 		if(anymodify()) {
 			try {wait();} 
 			catch (InterruptedException ie) {}

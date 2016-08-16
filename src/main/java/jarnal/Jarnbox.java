@@ -1,19 +1,13 @@
 package jarnal;
 
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.zip.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.text.*;
 import java.awt.datatransfer.*;
 import java.io.*;
-
-import jarnal.Jarnal;
 
 public class Jarnbox {	
 
@@ -526,8 +520,8 @@ class dialogListener implements ActionListener {
 		}
 		if(action.equals("Internal Link")){
 			String target = jb.text1.getText();
-			target = Jarnal.getAbsoluteName(jb.jarn.cwd, target);
-			String url[] = Jarnal.parseURL(target);
+			target = Jarnal.getInstance().getAbsoluteName(jb.jarn.cwd, target);
+			String url[] = Jarnal.getInstance().parseURL(target);
 			String name = url[1];
 			String fname = name;
 			int n = name.lastIndexOf("/");
@@ -547,12 +541,12 @@ class dialogListener implements ActionListener {
 		if(action.equals("Rel")){
 			String test = jb.text1.getText();
 			if(test.startsWith("..")){
-				String url[] = Jarnal.parseURL(test);
-				String path = Jarnal.getAbsoluteName(jb.jarn.cwd, url[1]);
+				String url[] = Jarnal.getInstance().parseURL(test);
+				String path = Jarnal.getInstance().getAbsoluteName(jb.jarn.cwd, url[1]);
 				jb.text1.setText("file://" + path + url[2]);
 			}
 			if(test.startsWith("file://")){
-				String url[] = Jarnal.parseURL(test);
+				String url[] = Jarnal.getInstance().parseURL(test);
 				String path = "../" + Background.relativePath(jb.jarn.cwd, url[1]);
 				jb.text1.setText(path + url[2]);
 			}				
@@ -563,7 +557,7 @@ class dialogListener implements ActionListener {
 			String lfile = "";
 			if(temp != null){
 				lfile = jb.jarn.cwd + File.separator + temp;
-				String url[] = Jarnal.parseURL(lfile);
+				String url[] = Jarnal.getInstance().parseURL(lfile);
 				String path = "../" + Background.relativePath(jb.jarn.cwd, url[1]);
 				jb.text1.setText(path + url[2]);
 			}

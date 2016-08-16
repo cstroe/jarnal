@@ -2,28 +2,16 @@ package jarnal;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.font.*;
 import java.awt.geom.*;
 import java.awt.event.*;
-import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.util.*;
 import java.net.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.util.zip.*;
 import javax.imageio.*;
 import javax.imageio.stream.*;
 import java.awt.image.BufferedImage;
-
-import jarnal.Tools;
-import jarnal.Parameter;
-import jarnal.Analyze;
-import jarnal.BrushStroke;
-import jarnal.Page;
-import jarnal.Background;
-import jarnal.Out;
 
 public class Pages{
 
@@ -553,7 +541,7 @@ public class Pages{
 	}
 
 	public void addExtra(String name, byte[] data){
-		if(Jarnal.isApplet) extras.put(name,data);
+		if(Jarnal.getInstance().isApplet) extras.put(name,data);
 		else {
 			int n = name.lastIndexOf('.');
 			String suffix = ".tmp";
@@ -2682,7 +2670,7 @@ public class Pages{
 			}
 			catch(Exception ex){ex.printStackTrace();}
 		}
-		if((in == null) && !Jarnal.isApplet) {
+		if((in == null) && !Jarnal.getInstance().isApplet) {
 			try{
 				in = new FileInputStream(fname);
 			}
@@ -2740,7 +2728,7 @@ public class Pages{
 					if(bghandle.startsWith("background")){
 						if(c.length > 0){
 							String bgfname = "none";
-							if(!Jarnal.isApplet){
+							if(!Jarnal.getInstance().isApplet){
 								File tfile = File.createTempFile("jarnalBg", ".tmp");
 								bgfname = tfile.getPath();
 								System.out.println(bgfname);
@@ -2818,7 +2806,7 @@ public class Pages{
 	}
 
 	public void insert(String fname, String action){
-		if(Jarnal.isApplet) return;
+		if(Jarnal.getInstance().isApplet) return;
 		exitPage();
 		clearRedoList();
 		setStartMark();
@@ -2978,7 +2966,7 @@ class memoryMan{
 	}
 
 	static void testMem(){
-		if(Jarnal.isApplet) return;
+		if(Jarnal.getInstance().isApplet) return;
 		//System.out.println("bgCache=" + Jbgs.globalbgCache.size() + " pgCache=" + Jpages.globalGraphics.size());
 		Runtime rt = Runtime.getRuntime();
 		float test = (float)rt.freeMemory() + (float)Tools.maxMemory() - (float)rt.totalMemory();

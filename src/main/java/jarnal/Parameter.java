@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.font.*;
 import java.awt.geom.*;
 import java.util.*;
-import java.io.*;
-import java.awt.datatransfer.*;
 import java.awt.image.BufferedImage;
 
 class Jchar{

@@ -1,7 +1,6 @@
 package jarnal;
 
 import java.io.*;
-import java.net.*;
 import java.util.zip.*;
 import java.util.jar.*;
 

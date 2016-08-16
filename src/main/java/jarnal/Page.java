@@ -1,27 +1,8 @@
 package jarnal;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.font.*;
 import java.awt.geom.*;
-import java.awt.event.*;
-import java.awt.datatransfer.*;
 import java.util.*;
-import java.net.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
-import java.io.*;
-import java.util.zip.*;
-import javax.imageio.*;
-import javax.imageio.stream.*;
-import java.awt.image.BufferedImage;
-
-import jarnal.Tools;
-import jarnal.Parameter;
-import jarnal.Analyze;
-import jarnal.BrushStroke;
-import jarnal.Background;
-import jarnal.Pages;
 
 class Jpaper{
 	public static int WHITE = Color.white.getRGB();

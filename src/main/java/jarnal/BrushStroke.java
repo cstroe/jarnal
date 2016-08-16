@@ -5,11 +5,6 @@ import java.awt.geom.*;
 import java.util.*;
 import java.awt.image.BufferedImage;
 
-import jarnal.Tools;
-import jarnal.Parameter;
-import jarnal.Analyze;
-import jarnal.Pages;
-
 class BrushStroke{
 
 	static private float cwidth = 1.8f;
@@ -708,7 +703,7 @@ class Jscrap extends BrushStroke {
 		width = gg.getWidth();
 		height = gg.getHeight();
 		updateRectangle();
-		Jarnal.nextScrap = save(null);
+		Jarnal.getInstance().nextScrap = save(null);
 	}
 
 	public Jscrap(Page parent, String str){

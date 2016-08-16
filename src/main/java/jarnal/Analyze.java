@@ -2,8 +2,6 @@ package jarnal;
 
 import javax.swing.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.geom.*;

@@ -3,14 +3,10 @@ package jarnal;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.awt.geom.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.awt.datatransfer.*;
 import java.net.*;
-import jarnal.Pages;
 
 public class Tools{
 
@@ -1072,7 +1068,7 @@ class HtmlPost {
 			URL url = new URL(server);
       			conn = (HttpURLConnection) url.openConnection();
 			InputStream is = conn.getInputStream();	
-			File tfile = File.createTempFile(Jarnal.jarnalTmp, ext);
+			File tfile = File.createTempFile(Jarnal.getInstance().jarnalTmp, ext);
 			nfile = tfile.getPath();
 			FileOutputStream tout = new FileOutputStream(tfile);
 			int nmax = 10000; 

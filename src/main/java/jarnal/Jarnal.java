@@ -1,5 +1,7 @@
 package jarnal;
 
+import org.apache.commons.cli.Options;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -8,149 +10,137 @@ import java.awt.event.*;
 import java.awt.print.*;
 import java.awt.datatransfer.*;
 import java.util.*;
-import java.lang.Math.*;
-import java.lang.Number.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.*;
-
-import jarnal.TabButtons;
-import jarnal.Pages;
-import jarnal.Tools;
-import jarnal.Parameter;
-import jarnal.Communicator;
-import jarnal.Analyze;
-import jarnal.Jarnbox;
-import jarnal.Out;
-import jarnal.SendMail;
 
 public class Jarnal extends JApplet {
 
-	static Dimension frameSize = new Dimension(738, 992);
-	static Point frameLocation = new Point(0, 0);
-	static int nWins = 0;
+    public static Jarnal INSTANCE = new Jarnal();
+    public Jarnal parentJarn = null;
 
-	static float guiSize = 14.0f;
+	public Dimension frameSize = new Dimension(738, 992);
+    public Point frameLocation = new Point(0, 0);
+	public int nWins = 0;
 
-	static JFrame sJrnlFrame = null;
+    public float guiSize = 14.0f;
 
-	static String ext = ".jaj";
-	
-	static String openfile = "", openmfile = "", openbgfile = "";
-	static String opentextfile = "", savefile = "", pdffile ="";
-	
-	static String confdir = "";
-	static String meta = "", meta2 = "";
-	
-	static boolean javagui = false;
-	static boolean multitouch = false;
-	static boolean doneMeta = false;
-	
-	static boolean setLocation = false;
-	static boolean locationSet = false;
-	
-	static boolean showMenu = true, showGUI = false;
+    public JFrame sJrnlFrame = null;
 
-	static boolean template = false;
-	static boolean isApplet = false;
-	static boolean startfs = false;
-	
-	
-	static LinkedList loadFiles = new LinkedList();
-	
-	static HashSet wins = new HashSet();
-	
-	public static String nextScrap = null;
-	public static Transferable internalClipboard;
+    public String ext = ".jaj";
+
+    public String openfile = "", openmfile = "", openbgfile = "";
+    public String opentextfile = "", savefile = "", pdffile ="";
+
+    public String confdir = "";
+    public String meta = "", meta2 = "";
+
+    public boolean javagui = false;
+    public boolean multitouch = false;
+    public boolean doneMeta = false;
+
+    public boolean setLocation = false;
+    public boolean locationSet = false;
+
+	public boolean showMenu = true, showGUI = false;
+
+	public boolean template = false;
+	public boolean isApplet = false;
+	public boolean startfs = false;
+
+	public LinkedList loadFiles = new LinkedList();
+
+	public HashSet wins = new HashSet();
+
+	public String nextScrap = null;
+	public Transferable internalClipboard;
 	boolean embed = false;
-	static public boolean miniDic = false;
-	static public String defaultConf;
-	static public String memoryerrorstring = "";
+	public boolean miniDic = false;
+	public String defaultConf;
+	public String memoryerrorstring = "";
 
-	static String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	static String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	
-	static String firefox;
-	
-	static String ps2pdf;
-	static String printpdf;
-	static String pdfconverter;
-	
-	static String gs;
-	
-	
-	static int tzadjust = 0;
-	static boolean printaround = false;
-	static int keepbookmarks = 0;
-	static int defmarks = 12;
-	static boolean tabs = false;
+	public String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	public String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
 
-	static Jarnal jarnalbook = null;
+	public String firefox;
 
-	static String homeserver = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
-	static String verserver = "http://www.dklevine.com/general/software/tc1000/";
-	static String startconnect = null;
+	public String ps2pdf;
+	public String printpdf;
+	public String pdfconverter;
 
-	static String language = Locale.getDefault().toString().substring(0, 2);
-	static Hashtable hlang = null;
+	public String gs;
 
-	static boolean toppCf = false;
-	static boolean botpCf = false;
+	public int tzadjust = 0;
+	public boolean printaround = false;
+	public int keepbookmarks = 0;
+	public int defmarks = 12;
+	public boolean tabs = false;
 
-	JrnlPane jrnlPane;
-	Out outline;
-	JScrollPane sp;
-	SLabel statusBar;
-	static final Color slabelgray = new Color(0xf5f5f5);
-	static final Color slabelblue = new Color(0xe0ffff);
+	public Jarnal jarnalbook = null;
+
+	public String homeserver = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
+	public String verserver = "http://www.dklevine.com/general/software/tc1000/";
+	public String startconnect = null;
+
+	public String language = Locale.getDefault().toString().substring(0, 2);
+	public Hashtable hlang = null;
+
+	public boolean toppCf = false;
+	public boolean botpCf = false;
+
+    public JrnlPane jrnlPane;
+    public Out outline;
+    public JScrollPane sp;
+    public SLabel statusBar;
+	public final Color slabelgray = new Color(0xf5f5f5);
+	public final Color slabelblue = new Color(0xe0ffff);
 	boolean slset = false;
-	JFrame gJrnlFrame;
-	JPanel gJrnlPanel;
-	Toolkit toolkit;
+    public JFrame gJrnlFrame;
+    public JPanel gJrnlPanel;
+    public Toolkit toolkit;
 
-	public static String ttitle = "";
+	public String ttitle = "";
 	public String tttitle = "";
-	public static int tnum = 1;
+	public int tnum = 1;
 	public String templateFile = null;
 	public String fname = "";
 	public String internalName = "";
 	public String nname = "unsaved.jaj";
 	public String textfile = null;
 	public OutputStream netsaveos;
-	String cwd = "";
-	String iwd = null;
-	String bwd = null;
-	String bgfile = "";
+    public String cwd = "";
+    public String iwd = null;
+    public String bwd = null;
+    public String bgfile = "";
 
-	static LinkedList allBookmarks = new LinkedList();
-	static LinkedList allServermarks = new LinkedList();
-	static public String jarnalTmp = "jarnalTmp";
+	public LinkedList allBookmarks = new LinkedList();
+	public LinkedList allServermarks = new LinkedList();
+	public String jarnalTmp = "jarnalTmp";
 
-	static boolean pencentric = false;
-	static boolean startMini = false;
-	static boolean connectPresentation = false;
+	public boolean pencentric = false;
+	public boolean startMini = false;
+	public boolean connectPresentation = false;
 	boolean mini = false;
 	boolean micro = false;
 	boolean barjarnal = false;
 	boolean showOutline = false;
 
-	Tools jt = new Tools();
-	Tools jtd = new Tools();
-	Tools jth = new Tools();
-	Tools jtbu = new Tools();
-	String middleButton = "Eraser";
-	String rightButton = "Context Menu";
-	String old_color = "black";
-	float old_width = -1.0f;
-	float fatWidth = 11.0f;
+    public Tools jt = new Tools();
+    public Tools jtd = new Tools();
+    public Tools jth = new Tools();
+    public Tools jtbu = new Tools();
+    public String middleButton = "Eraser";
+    public String rightButton = "Context Menu";
+    public String old_color = "black";
+    public float old_width = -1.0f;
+    public float fatWidth = 11.0f;
 	boolean stickyRuler = false;
 	boolean arrowhead = false;
 	boolean temparrow = false;
-	int markerweight = 10;
-	boolean hideCursor = true;
-	boolean textMode = false;
-	boolean makeOverlay = false;
-	boolean saveOnExit = false;
+    public int markerweight = 10;
+    public boolean hideCursor = true;
+    public boolean textMode = false;
+    public boolean makeOverlay = false;
+    public boolean saveOnExit = false;
 	boolean saveBookmarks = false;
 	boolean updateBookmarks = true;
 	boolean saveBg = false;
@@ -160,69 +150,67 @@ public class Jarnal extends JApplet {
 	boolean oldurlencoded;
 	boolean saveSelfexecuting;
 	boolean smoothStrokes = true;
-	String email = "";
-	String netServer = "";
-	String netOptions = "";
-	String uniqueID;
-	String serverMessage = "<html><body>Nothing saved to server</body></html>";
-	int viewQuality = 0x40;
-	String highlighterStyle = "translucent";
-	String lastAction = null;
-	String userColor = null;
-	int divwidth = 90;
-	int outheight = 90;
+	public String email = "";
+	public String netServer = "";
+	public String netOptions = "";
+	public String uniqueID;
+	public String serverMessage = "<html><body>Nothing saved to server</body></html>";
+	public int viewQuality = 0x40;
+	public String highlighterStyle = "translucent";
+	public String lastAction = null;
+	public String userColor = null;
+	public int divwidth = 90;
+	public int outheight = 90;
 
-	boolean alignToMargins = true;
-	boolean bestFit = true;
-	boolean absoluteScale = false;
-	boolean showPageNumbers = true;
-	boolean withBorders = false;
+	public boolean alignToMargins = true;
+	public boolean bestFit = true;
+	public boolean absoluteScale = false;
+	public boolean showPageNumbers = true;
+	public boolean withBorders = false;
 
-	boolean analyze = false;
-	boolean trainrecog = false;
-	boolean mscr = true;
-	boolean ascr = false;
+	public boolean analyze = false;
+	public boolean trainrecog = false;
+	public boolean mscr = true;
+	public boolean ascr = false;
 
-	boolean fullScreen = false;
+	public boolean fullScreen = false;
 
-	public Jarnal parentJarn = null;
-
-	JarnalClient jcom;
-	JarnalServer jserver;
-	Jarnal jarn;
-	int serverPort = -1 ;
-	static public int defaultServerPort = 1189;
-	public static boolean beginServer = false;
+	public JarnalClient jcom;
+	public JarnalServer jserver;
+	public Jarnal jarn;
+	public int serverPort = -1 ;
+	public int defaultServerPort = 1189;
+	public boolean beginServer = false;
 	public String serverMsg = "";
 
-	boolean dirty = false; // file changed; used for save/exit dialogs
-	boolean isNetSave = false;
-	boolean fitWidth = true; // should the width of the page be sized to the
+    public boolean dirty = false; // file changed; used for save/exit dialogs
+    public boolean isNetSave = false;
+    public boolean fitWidth = true; // should the width of the page be sized to the
 								// display area?
-	int dragOp = 0;
-	boolean thumbs = true; // flag for multi-page views
-	boolean threeup = true; // if true multi-page view is three in a row, if
+    public int dragOp = 0;
+    public boolean thumbs = true; // flag for multi-page views
+    public boolean threeup = true; // if true multi-page view is three in a row, if
 							// false, multi-page view is 2x2
-	boolean poverlay = false; // if true pages are truncated by a factor of PO
-	double PO = 0.25;
-	boolean locked = false; // is the display locked? see also dragOp = 100
-	boolean replayActive = false;
-	int activePage = 0; // in a multipage view, which of the pages on the
+    public boolean poverlay = false; // if true pages are truncated by a factor of PO
+    public double PO = 0.25;
+    public boolean locked = false; // is the display locked? see also dragOp = 100
+    public boolean replayActive = false;
+    public int activePage = 0; // in a multipage view, which of the pages on the
 						// display is actually being used
 	// jpages.getPage() is one-based, activePage is zero based
 	// in the current implementation activePage should always be
 	// jpages.getPage()-1
-	String actionMsg = ""; // status bar message reflecting choice of a
+    public String actionMsg = ""; // status bar message reflecting choice of a
 							// drag-drop tool
 
-	int sbarSize = 20;
+    public int sbarSize = 20;
 
-	Number previewZoom = null;
-	Number gotopage = null;
+    public Number previewZoom = null;
+    public Number gotopage = null;
 
-	Hashtable usersList = new Hashtable();
+    public Hashtable usersList = new Hashtable();
 
-	public static String trans(String label) {
+	public String trans(String label) {
 		if (hlang == null)
 			return label;
 		String lbl = (String) hlang.get(label);
@@ -231,56 +219,47 @@ public class Jarnal extends JApplet {
 		return lbl;
 	}
 
-	public static void initTrans() {
+	public void initTrans() {
 		hlang = null;
 
 		System.out.println(language);
-		InputStream in = Jarnal.class.getResourceAsStream("languages/"
-				+ language + ".txt");
+		InputStream in = Jarnal.class.getResourceAsStream("languages/" + language + ".txt");
+		if (in == null) return;
 
-		if (in == null) {
-			return;
-		}
-		String s = null;
+		String s;
 		try {
 			s = new String(Pages.streamToByteArray(in));
 		} catch (Exception ex) {
 			System.err.println(ex);
-			s = null;
+			s = "";
 		}
-		if (s == null) {
-			return;
-		}
+		if (s == null) return;
+
 		hlang = new Hashtable();
 		s = Tools.replaceAll(s, "\r\n", "\n");
 		s = Tools.replaceAll(s, "\r", "\n");
-		// s.replace("\r\n", "\n");
-		// s.replace("\r", "\n");
-		boolean done = false;
+
+        boolean done = false;
 		int pos = 0;
 		while (!done) {
 			pos = s.indexOf("\n");
-			if (pos < 0)
-				pos = s.length();
+			if (pos < 0) pos = s.length();
 			String t = s.substring(0, pos);
 			pos++;
-			if (pos < s.length())
-				s = s.substring(pos);
-			else
-				done = true;
+			if (pos < s.length()) s = s.substring(pos);
+			else                  done = true;
 			pos = t.indexOf("===");
 			if ((pos >= 0) && !(t.substring(0, 1).equals("#"))) {
 				String key = t.substring(0, pos).trim();
 				t = t.substring(pos + 3);
 				pos = t.indexOf("===");
 				String value = t.substring(0, pos).trim();
-				if ((pos >= 0) && (!key.equals("")) && (!value.equals("")))
-					hlang.put(key, value);
+				if ((pos >= 0) && (!key.equals("")) && (!value.equals(""))) hlang.put(key, value);
 			}
 		}
 	}
 
-	public static int setarg(String[] args, int iarg, int len) {
+	public int setarg(String[] args, int iarg, int len) {
 		String oldopenfile = openfile;
 		openfile = args[iarg];
 		int ret = iarg + 1;
@@ -372,7 +351,7 @@ public class Jarnal extends JApplet {
 		}
 		if (openfile.equals("-large")) {
 			openfile = oldopenfile;
-			loadImagesLarge();
+			Images.loadImagesLarge();
 		}
 		if (openfile.equals("-mousecursor")){
 			openfile = oldopenfile;
@@ -433,7 +412,7 @@ public class Jarnal extends JApplet {
 		return ret;
 	}
 
-	public static boolean closeWin(){
+	public boolean closeWin(){
 		Jarnal jarn = null;
 		for (Iterator i = wins.iterator(); i.hasNext();) {
 			jarn = (Jarnal) i.next();
@@ -442,11 +421,11 @@ public class Jarnal extends JApplet {
 		return jarn.jrnlPane.winDone();
 	}
 
-	public static void closeAll(){
+	public void closeAll(){
 		while(closeWin());
 	}		
 
-	public static jrnlTimerListener getJrnlTimerListener() {
+	public jrnlTimerListener getJrnlTimerListener() {
 		Jarnal jarn = null;
 		for (Iterator i = wins.iterator(); i.hasNext();) {
 			jarn = (Jarnal) i.next();
@@ -455,7 +434,7 @@ public class Jarnal extends JApplet {
 		return jarn.jtm;
 	}
 
-	public static void pipe() {
+	public void pipe() {
 		if (HtmlPost.checkURL(openfile) && !isApplet) {
 			HtmlPost hp = new HtmlPost(openfile, null, null, null, null, false);
 			openfile = hp.pipe(".jaj");
@@ -490,7 +469,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	private static void getMeta() {
+	private void getMeta() {
 		if (!openmfile.equals("")) {
 			try {
 				FileInputStream fin = new FileInputStream(openmfile);
@@ -506,16 +485,16 @@ public class Jarnal extends JApplet {
 	}
 
 	public static void main(String[] args) {
-		initTrans();
-		loadImages();
-		loadShell(false);
+		getInstance().initTrans();
+        Images.loadImages();
+        getInstance().loadShell(false);
 		int len = java.lang.reflect.Array.getLength(args);
 		int iarg = 0;
 		// for(int ioi = 0; ioi < len; ioi++) System.out.println(args[ioi]);
 		while (iarg < len) {
-			iarg = setarg(args, iarg, len);
+			iarg = getInstance().setarg(args, iarg, len);
 		}
-		if (!javagui) {
+		if (!getInstance().javagui) {
 			try {
 				System.out.println(UIManager
 						.getSystemLookAndFeelClassName());
@@ -525,13 +504,13 @@ public class Jarnal extends JApplet {
 				e.printStackTrace();
 			}
 		}
-		loadShell(true);
-		pipe();
-		getMeta();
-		initJ();
+        getInstance().loadShell(true);
+        getInstance().pipe();
+        getInstance().getMeta();
+        getInstance().initJ();
 	}
 
-	private static String parseShell(String shell) {
+	private String parseShell(String shell) {
 		String z;
 		shell = shell.trim();
 		shell = shell + "\n";
@@ -590,14 +569,14 @@ public class Jarnal extends JApplet {
 		return s;
 	}
 
-	private static File getConfDir() {
+	private File getConfDir() {
 		String userhome = System.getProperty("user.home");
 		if (confdir.equals(""))
 			return new File(userhome);
 		return new File(userhome + File.separator + confdir);
 	}
 
-	private static void writeShell() {
+	private void writeShell() {
 		if (isApplet)
 			return;
 		String shell = parseShell("");
@@ -613,7 +592,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	private static void loadShell(boolean writeShell) {
+	private void loadShell(boolean writeShell) {
 		String shell = jarnalshell;
 		if (Tools.checkMSWindows()) {
 			shell = jarnalshellwin;
@@ -687,7 +666,7 @@ public class Jarnal extends JApplet {
 	}
 
 	public void init() {
-		loadImages();
+		Images.loadImages();
 		meta = "";
 		openfile = "";
 		openbgfile = "";
@@ -776,7 +755,7 @@ public class Jarnal extends JApplet {
 		}
 	}
 
-	public static Jarnal initJ() {
+	public Jarnal initJ() {
 		String title = "Jarnal";
 		if (!openfile.equals("") && !template) {
 			File temp = new File(openfile);
@@ -815,15 +794,15 @@ public class Jarnal extends JApplet {
 
 	static boolean invisible = false;
 
-	public static JTabbedPane tp = new JTabbedPane();
+	public JTabbedPane tp = new JTabbedPane();
 
-	public static boolean firstFrame = true;
+	public boolean firstFrame = true;
 
-	public static Jarnal newJarnal(String title) {
+	public Jarnal newJarnal(String title) {
 		return newJarnal(title, null);
 	}
 
-	public static Jarnal newJarnal(String title, String conf) {
+	public Jarnal newJarnal(String title, String conf) {
 		JFrame jrnlFrame = null;
 		if(!invisible && tabs && (sJrnlFrame == null))			tp.addTab("", null);
 		if(!invisible && (sJrnlFrame != null)) firstFrame = false;
@@ -898,17 +877,17 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal miniJarnal(String title) {
+	public Jarnal miniJarnal(String title) {
 		JFrame jrnlFrame = new JFrame(title);
 		return miniJarnal(jrnlFrame, jrnlFrame.getContentPane(), jrnlFrame
 				.getToolkit());
 	}
 
-	public static Jarnal miniJarnal(JFrame jrnlFrame, Container cp, Toolkit tk) {
+	public Jarnal miniJarnal(JFrame jrnlFrame, Container cp, Toolkit tk) {
 		return miniJarnal(true, jrnlFrame, cp, tk);
 	}
 
-	public static Jarnal miniJarnal(boolean rtmenu, JFrame jrnlFrame,
+	public Jarnal miniJarnal(boolean rtmenu, JFrame jrnlFrame,
 			Container cp, Toolkit tk) {
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
@@ -936,7 +915,7 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
+	public Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
 			Toolkit tk) {
 		openfile = ofile;
 		final Jarnal controller = new Jarnal();
@@ -951,7 +930,7 @@ public class Jarnal extends JApplet {
 		return controller;
 	}
 
-	public static Jarnal microJarnal(Container cp, Toolkit tk) {
+	public Jarnal microJarnal(Container cp, Toolkit tk) {
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
 		controller.jarn = controller;
@@ -1085,7 +1064,7 @@ public class Jarnal extends JApplet {
 		return "file://" + cwd + File.separator + fname;
 	}
 
-	public static String getAbsoluteName(String cwd, String target) {
+	public String getAbsoluteName(String cwd, String target) {
 		if (target.startsWith("..")) {
 			target = target.substring(2);
 			target = cwd + target;
@@ -1103,7 +1082,7 @@ public class Jarnal extends JApplet {
 		return target;
 	}
 
-	public static String[] parseURL(String url) {
+	public String[] parseURL(String url) {
 		String ans[] = new String[3];
 		ans[0] = "";
 		ans[1] = "";
@@ -1571,7 +1550,7 @@ public class Jarnal extends JApplet {
 
 	public void buildMenu(JFrame jf) {
 		if (jf != null)
-			jf.setIconImage(jarnalIcon.getImage());
+			jf.setIconImage(Images.jarnalIcon.getImage());
 		JMenu file = new JMenu(trans("File"));
 		file.add(bmi("New"));
 		if (!isApplet)
@@ -1994,248 +1973,6 @@ public class Jarnal extends JApplet {
 	public JButton handButton = null;
 	public JLabel pageLabel = new JLabel();
 	public JLabel clockLabel = new JLabel();
-	JButton memoryButton;
-
-	static ImageIcon hand;
-	static ImageIcon handstop;
-	static ImageIcon handyellow;
-	static ImageIcon handmixed;
-	static ImageIcon handmixed2;
-	static ImageIcon fsave;
-	static ImageIcon newdoc;
-	static ImageIcon undo;
-	static ImageIcon redo;
-	static ImageIcon minus;
-	static ImageIcon plus;
-	static ImageIcon fit;
-	static ImageIcon eraser;
-	static ImageIcon erasetop;
-	static ImageIcon erasebot;
-	static ImageIcon bigeraser;
-	static ImageIcon clonedoc;
-	static ImageIcon red;
-	static ImageIcon blk;
-	static ImageIcon blu;
-	static ImageIcon mgn;
-	static ImageIcon grn;
-	static ImageIcon highyel;
-	static ImageIcon highmag;
-	static ImageIcon highdef;
-	static ImageIcon white;
-	static ImageIcon left;
-	static ImageIcon leftleft;
-	static ImageIcon right;
-	static ImageIcon rightright;
-	static ImageIcon select;
-	static ImageIcon selectrect;
-	static ImageIcon newpage;
-	static ImageIcon def;
-	static ImageIcon fin;
-	static ImageIcon med;
-	static ImageIcon hev;
-	static ImageIcon fat;
-	static ImageIcon razor;
-	static ImageIcon ruler;
-	static ImageIcon thumbsico;
-	static ImageIcon opico;
-	static ImageIcon text;
-	static ImageIcon clock;
-	static ImageIcon threePages;
-	static ImageIcon editcut;
-	static ImageIcon editcopy;
-	static ImageIcon editpaste;
-	static ImageIcon cap;
-	static ImageIcon num;
-	static ImageIcon sym;
-	static ImageIcon calc;
-	static ImageIcon LC;
-	static ImageIcon Spc;
-	static ImageIcon Bsp;
-	static ImageIcon browse;
-	static ImageIcon fullscreen;
-	static ImageIcon returnico;
-	static ImageIcon userico;
-	static ImageIcon multi;
-	static ImageIcon iwidth;
-	static ImageIcon wrench;
-	static ImageIcon arrow;
-	static ImageIcon jarnalIcon;
-
-	static private void loadImagesLarge() {
-
-		fsave = new ImageIcon(Jarnal.class.getResource("images/filesave-l.png"));
-		newdoc = new ImageIcon(Jarnal.class.getResource("images/newdoc-l.png"));
-		undo = new ImageIcon(Jarnal.class.getResource("images/undo-l.png"));
-		redo = new ImageIcon(Jarnal.class.getResource("images/redo-l.png"));
-		minus = new ImageIcon(Jarnal.class.getResource("images/viewmag--l.png"));
-		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+-l.png"));
-		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit-l.png"));
-		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser-l.png"));
-		erasetop = new ImageIcon(Jarnal.class
-				.getResource("images/erasetop-l.png"));
-		erasebot = new ImageIcon(Jarnal.class
-				.getResource("images/erasebot-l.png"));
-		bigeraser = new ImageIcon(Jarnal.class
-				.getResource("images/bigeraser-l.png"));
-		clonedoc = new ImageIcon(Jarnal.class
-				.getResource("images/clonedoc-l.png"));
-		red = new ImageIcon(Jarnal.class.getResource("images/pencilred-l.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk-l.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu-l.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn-l.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn-l.png"));
-		highyel = new ImageIcon(Jarnal.class
-				.getResource("images/highlighteryel-l.png"));
-		highmag = new ImageIcon(Jarnal.class
-				.getResource("images/highlightermag-l.png"));
-		highdef = new ImageIcon(Jarnal.class
-				.getResource("images/highlighterdef-l.png"));
-		white = new ImageIcon(Jarnal.class.getResource("images/whiteout-l.png"));
-		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow-l.png"));
-		leftleft = new ImageIcon(Jarnal.class
-				.getResource("images/2leftarrow-l.png"));
-		right = new ImageIcon(Jarnal.class
-				.getResource("images/1rightarrow-l.png"));
-		rightright = new ImageIcon(Jarnal.class
-				.getResource("images/2rightarrow-l.png"));
-		select = new ImageIcon(Jarnal.class.getResource("images/select-l.png"));
-		selectrect = new ImageIcon(Jarnal.class
-				.getResource("images/selectrect-l.png"));
-		newpage = new ImageIcon(Jarnal.class.getResource("images/new-l.png"));
-		def = new ImageIcon(Jarnal.class.getResource("images/default-l.png"));
-		fin = new ImageIcon(Jarnal.class.getResource("images/fine-l.png"));
-		med = new ImageIcon(Jarnal.class.getResource("images/medium-l.png"));
-		hev = new ImageIcon(Jarnal.class.getResource("images/heavy-l.png"));
-		fat = new ImageIcon(Jarnal.class.getResource("images/fat-l.png"));
-		razor = new ImageIcon(Jarnal.class.getResource("images/razor-l.png"));
-		ruler = new ImageIcon(Jarnal.class.getResource("images/ruler-l.png"));
-		thumbsico = new ImageIcon(Jarnal.class.getResource("images/thumbs-l.png"));
-		opico = new ImageIcon(Jarnal.class.getResource("images/opico-l.png"));
-		threePages = new ImageIcon(Jarnal.class
-				.getResource("images/threepages-l.png"));
-		text = new ImageIcon(Jarnal.class.getResource("images/text-l.png"));
-		clock = new ImageIcon(Jarnal.class.getResource("images/clock-l.png"));
-		hand = new ImageIcon(Jarnal.class.getResource("images/hand-l.png"));
-		handstop = new ImageIcon(Jarnal.class
-				.getResource("images/handstop-l.png"));
-		handyellow = new ImageIcon(Jarnal.class
-				.getResource("images/handyellow-l.png"));
-		handmixed = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed-l.png"));
-		handmixed2 = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed2-l.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut-l.png"));
-		editcopy = new ImageIcon(Jarnal.class
-				.getResource("images/editcopy-l.png"));
-		editpaste = new ImageIcon(Jarnal.class
-				.getResource("images/editpaste-l.png"));
-		cap = new ImageIcon(Jarnal.class.getResource("images/cap-l.png"));
-		num = new ImageIcon(Jarnal.class.getResource("images/num-l.png"));
-		sym = new ImageIcon(Jarnal.class.getResource("images/sym-l.png"));
-		calc = new ImageIcon(Jarnal.class.getResource("images/calc-l.png"));
-		LC = new ImageIcon(Jarnal.class.getResource("images/lc-l.png"));
-		Spc = new ImageIcon(Jarnal.class.getResource("images/spc-l.png"));
-		Bsp = new ImageIcon(Jarnal.class.getResource("images/bsp-l.png"));
-		browse = new ImageIcon(Jarnal.class.getResource("images/browser-l.png"));
-		fullscreen = new ImageIcon(Jarnal.class
-				.getResource("images/fullscreen-l.png"));
-		returnico = new ImageIcon(Jarnal.class.getResource("images/rtn-l.png"));
-		userico = new ImageIcon(Jarnal.class.getResource("images/user-l.png"));
-		multi = new ImageIcon(Jarnal.class.getResource("images/multi-l.png"));
-		iwidth = new ImageIcon(Jarnal.class.getResource("images/iwidth-l.png"));
-		wrench = new ImageIcon(Jarnal.class.getResource("images/wrench-l.png"));
-		arrow = new ImageIcon(Jarnal.class.getResource("images/arrow-l.png"));
-		jarnalIcon = new ImageIcon(Jarnal.class
-				.getResource("images/jarnal.png"));
-	}
-
-	static private void loadImages() {
-
-		fsave = new ImageIcon(Jarnal.class.getResource("images/filesave.png"));
-		newdoc = new ImageIcon(Jarnal.class.getResource("images/newdoc.png"));
-		undo = new ImageIcon(Jarnal.class.getResource("images/undo.png"));
-		redo = new ImageIcon(Jarnal.class.getResource("images/redo.png"));
-		minus = new ImageIcon(Jarnal.class.getResource("images/viewmag-.png"));
-		plus = new ImageIcon(Jarnal.class.getResource("images/viewmag+.png"));
-		fit = new ImageIcon(Jarnal.class.getResource("images/viewmagfit.png"));
-		eraser = new ImageIcon(Jarnal.class.getResource("images/eraser.png"));
-		erasetop = new ImageIcon(Jarnal.class
-				.getResource("images/erasetop.png"));
-		erasebot = new ImageIcon(Jarnal.class
-				.getResource("images/erasebot.png"));
-		bigeraser = new ImageIcon(Jarnal.class
-				.getResource("images/bigeraser.png"));
-		clonedoc = new ImageIcon(Jarnal.class
-				.getResource("images/clonedoc.png"));
-		red = new ImageIcon(Jarnal.class.getResource("images/pencilred.png"));
-		blk = new ImageIcon(Jarnal.class.getResource("images/pencilblk.png"));
-		blu = new ImageIcon(Jarnal.class.getResource("images/pencilblu.png"));
-		grn = new ImageIcon(Jarnal.class.getResource("images/pencilgrn.png"));
-		mgn = new ImageIcon(Jarnal.class.getResource("images/pencilmgn.png"));
-		highyel = new ImageIcon(Jarnal.class
-				.getResource("images/highlighteryel.png"));
-		highmag = new ImageIcon(Jarnal.class
-				.getResource("images/highlightermag.png"));
-		highdef = new ImageIcon(Jarnal.class
-				.getResource("images/highlighterdef.png"));
-		white = new ImageIcon(Jarnal.class.getResource("images/whiteout.png"));
-		left = new ImageIcon(Jarnal.class.getResource("images/1leftarrow.png"));
-		leftleft = new ImageIcon(Jarnal.class
-				.getResource("images/2leftarrow.png"));
-		right = new ImageIcon(Jarnal.class
-				.getResource("images/1rightarrow.png"));
-		rightright = new ImageIcon(Jarnal.class
-				.getResource("images/2rightarrow.png"));
-		select = new ImageIcon(Jarnal.class.getResource("images/select.png"));
-		selectrect = new ImageIcon(Jarnal.class
-				.getResource("images/selectrect.png"));
-		newpage = new ImageIcon(Jarnal.class.getResource("images/new.png"));
-		def = new ImageIcon(Jarnal.class.getResource("images/default.png"));
-		fin = new ImageIcon(Jarnal.class.getResource("images/fine.png"));
-		med = new ImageIcon(Jarnal.class.getResource("images/medium.png"));
-		hev = new ImageIcon(Jarnal.class.getResource("images/heavy.png"));
-		fat = new ImageIcon(Jarnal.class.getResource("images/fat.png"));
-		razor = new ImageIcon(Jarnal.class.getResource("images/razor.png"));
-		ruler = new ImageIcon(Jarnal.class.getResource("images/ruler.png"));
-		thumbsico = new ImageIcon(Jarnal.class.getResource("images/thumbs.png"));
-		opico = new ImageIcon(Jarnal.class.getResource("images/opico.png"));
-		threePages = new ImageIcon(Jarnal.class
-				.getResource("images/threepages.png"));
-		text = new ImageIcon(Jarnal.class.getResource("images/text.png"));
-		clock = new ImageIcon(Jarnal.class.getResource("images/clock.png"));
-		hand = new ImageIcon(Jarnal.class.getResource("images/hand.png"));
-		handstop = new ImageIcon(Jarnal.class
-				.getResource("images/handstop.png"));
-		handyellow = new ImageIcon(Jarnal.class
-				.getResource("images/handyellow.png"));
-		handmixed = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed.png"));
-		handmixed2 = new ImageIcon(Jarnal.class
-				.getResource("images/handmixed2.png"));
-		editcut = new ImageIcon(Jarnal.class.getResource("images/editcut.png"));
-		editcopy = new ImageIcon(Jarnal.class
-				.getResource("images/editcopy.png"));
-		editpaste = new ImageIcon(Jarnal.class
-				.getResource("images/editpaste.png"));
-		cap = new ImageIcon(Jarnal.class.getResource("images/cap.png"));
-		num = new ImageIcon(Jarnal.class.getResource("images/num.png"));
-		sym = new ImageIcon(Jarnal.class.getResource("images/sym.png"));
-		calc = new ImageIcon(Jarnal.class.getResource("images/calc.png"));
-		LC = new ImageIcon(Jarnal.class.getResource("images/lc.png"));
-		Spc = new ImageIcon(Jarnal.class.getResource("images/spc.png"));
-		Bsp = new ImageIcon(Jarnal.class.getResource("images/bsp.png"));
-		browse = new ImageIcon(Jarnal.class.getResource("images/browser.png"));
-		fullscreen = new ImageIcon(Jarnal.class
-				.getResource("images/fullscreen.png"));
-		returnico = new ImageIcon(Jarnal.class.getResource("images/rtn.png"));
-		userico = new ImageIcon(Jarnal.class.getResource("images/user.png"));
-		multi = new ImageIcon(Jarnal.class.getResource("images/multi.png"));
-		iwidth = new ImageIcon(Jarnal.class.getResource("images/iwidth.png"));
-		wrench = new ImageIcon(Jarnal.class.getResource("images/wrench.png"));
-		arrow = new ImageIcon(Jarnal.class.getResource("images/arrow.png"));
-		jarnalIcon = new ImageIcon(Jarnal.class
-				.getResource("images/jarnal.png"));
-	}
 
 	boolean RQ = false;
 	boolean SB = false;
@@ -2244,216 +1981,82 @@ public class Jarnal extends JApplet {
 	JButton jbmm;
 
 	private boolean addTool(JToolBar jtb, String action) {
-
 		ImageIcon ico = null;
-		if (action.equals("Browse")) {
-			if (isApplet)
-				return false;
-			ico = browse;
-		}
-		if (action.equals("separator")) {
-			jtb.addSeparator();
-			return false;
-		}
-		if (action.equals("Request Control")) {
-			if (RQ)
-				return false;
-			jtb.add(handButton);
-			handButton.setVisible(false);
-			RQ = true;
-			return true;
-		}
-		if (action.equals("Page Number")) {
-			jtb.add(pageLabel);
-			return true;
-		}
-		if (action.equals("Clock")) {
-			jtb.add(clockLabel);
-			setClock();
-			return true;
-		}
-		if (action.equals("Network Save")) {
-			if (SB)
-				return false;
-			SB = true;
-			saveButton = bjb("Network Save", fsave);
-			jtb.add(saveButton);
-			isNetSave = true;
-			return true;
-		}
-		if (action.equals("Save")) {
-			if (SB)
-				return false;
-			SB = true;
-			jtb.add(saveButton);
-			return true;
-		}
-		if (action.equals("Undo")) {
-			undoButton = bjb("Undo", undo);
-			jtb.add(undoButton);
-			return true;
-		}
-		if (action.equals("Redo")) {
-			redoButton = bjb("Redo", redo);
-			jtb.add(redoButton);
-			return true;
-		}
-		if (action.equals("First Page")) {
-			firstPageButton = bjb("First Page", leftleft);
-			jtb.add(firstPageButton);
-			return true;
-		}
-		if (action.equals("Previous Page")) {
-			prevPageButton = bjb("Previous Page", left);
-			jtb.add(prevPageButton);
-			return true;
-		}
-		if (action.equals("Last Page")) {
-			lastPageButton = bjb("Last Page", rightright);
-			jtb.add(lastPageButton);
-			return true;
-		}
-		if (action.equals("Next Page"))
-			ico = right;
-		else if (action.equals("Next Frame"))
-			ico = right;
-		else if (action.equals("New"))
-			ico = newdoc;
-		else if (action.equals("New On Background") && !isApplet)
-			ico = newdoc;
-		else if (action.equals("Network Save and Close"))
-			ico = fsave;
-		else if (action.equals("Save Text"))
-			ico = fsave;
-		else if (action.equals("Save and Close"))
-			ico = fsave;
-		else if (action.equals("Save Dictionaries"))
-			ico = fsave;
-		else if (action.equals("Zoom Out"))
-			ico = minus;
-		else if (action.equals("Fit Width"))
-			ico = fit;
-		else if (action.equals("Zoom In"))
-			ico = plus;
-		else if (action.equals("Thumbs"))
-			ico = thumbsico;
-		else if (action.equals("Overlay Pages"))
-			ico = opico;
-		else if (action.equals("Continuous"))
-			ico = threePages;
-		else if (action.equals("New Page"))
-			ico = newpage;
-		else if (action.equals("Default Pen"))
-			ico = def;
-		else if (action.equals("Fine"))
-			ico = fin;
-		else if (action.equals("Medium"))
-			ico = med;
-		else if (action.equals("Heavy"))
-			ico = hev;
-		else if (action.equals("Fat"))
-			ico = fat;
-		else if (action.equals("green")) {
-			ico = grn;
-			action = "Green";
-		} else if (action.equals("magenta")) {
-			ico = mgn;
-			action = "Magenta";
-		} else if (action.equals("black")) {
-			ico = blk;
-			action = "Black";
-		} else if (action.equals("blue")) {
-			ico = blu;
-			action = "Blue";
-		} else if (action.equals("red")) {
-			ico = red;
-			action = "Red";
-		} else if (action.equals("multi")) {
-			ico = multi;
-			action = "Choose Instrument Color";
-			jbo = bjb(action, ico);
-			jtb.add(jbo);
-			return true;
-		} else if (action.equals("iwidth")) {
-			ico = iwidth;
-			action = "Choose Instrument Width";
-			jbw = bjb(action, ico);
-			jtb.add(jbw);
-			return true;
-		} else if (action.equals("wrench")) {
-			ico = wrench;
-			action = "Main Menu";
-			jbmm = bjb(action, ico);
-			jtb.add(jbmm);
-			hideMenu = true;
-			return true;
-		} else if (action.equals("Default Highlighter"))
-			ico = highdef;
-		else if (action.equals("Yellow Highlighter"))
-			ico = highyel;
-		else if (action.equals("Magenta Highlighter"))
-			ico = highmag;
-		else if (action.equals("White Out"))
-			ico = white;
-		else if (action.equals("Draw Arrow"))
-			ico = arrow;
-		else if (action.equals("Razor"))
-			ico = razor;
-		else if (action.equals("Ruler"))
-			ico = ruler;
-		else if (action.equals("Select"))
-			ico = select;
-		else if (action.equals("Select Rectangle"))
-			ico = selectrect;
-		else if (action.equals("Cut"))
-			ico = editcut;
-		else if (action.equals("Copy"))
-			ico = editcopy;
-		else if (action.equals("Paste"))
-			ico = editpaste;
-		else if (action.equals("Paste Out"))
-			ico = editpaste;
-		else if (action.equals("Eraser"))
-			ico = eraser;
-		else if (action.equals("Clear"))
-			ico = bigeraser;
-		else if (action.equals("Clear Out"))
-			ico = bigeraser;
-		else if (action.equals("Duplicate Page"))
-			ico = clonedoc;
-		else if (action.equals("Top Eraser"))
-			ico = erasetop;
-		else if (action.equals("Bottom Eraser"))
-			ico = erasebot;
-		else if (action.equals("Stamp Date"))
-			ico = clock;
-		else if (action.equals("Text"))
-			ico = text;
-		else if (action.equals("Capitalize"))
-			ico = cap;
-		else if (action.equals("Number Lock"))
-			ico = num;
-		else if (action.equals("Symbol"))
-			ico = sym;
-		else if (action.equals("Calculate"))
-			ico = calc;
-		else if (action.equals("Space"))
-			ico = Spc;
-		else if (action.equals("Backspace"))
-			ico = Bsp;
-		else if (action.equals("Clear"))
-			ico = bigeraser;
-		else if (action.equals("Full Screen"))
-			ico = fullscreen;
-		else if (action.equals("Return"))
-			ico = returnico;
-		else if (action.equals("User"))
-			ico = userico;
+        switch(action){
+            case "Browse": {if (isApplet) return false; ico = Images.browse; break;}
+            case "separator":{ jtb.addSeparator(); return false; }
+            case "Request Control": { if (RQ) return false; jtb.add(handButton); handButton.setVisible(false); RQ = true; return true; }
+            case "Page Number": { jtb.add(pageLabel); return true; }
+            case "Clock": { jtb.add(clockLabel); setClock(); return true; }
+            case "Network Save": { if (SB) return false; SB = true; saveButton = bjb("Network Save", Images.fsave); jtb.add(saveButton); isNetSave = true; return true; }
+            case "Save": { if (SB) return false; SB = true; jtb.add(saveButton); return true; }
+            case "Undo": { undoButton = bjb("Undo", Images.undo); jtb.add(undoButton); return true; }
+            case "Redo": { redoButton = bjb("Redo", Images.redo); jtb.add(redoButton); return true; }
+            case "First Page": { firstPageButton = bjb("First Page", Images.leftleft); jtb.add(firstPageButton); return true; }
+            case "Previous Page": { prevPageButton = bjb("Previous Page", Images.left); jtb.add(prevPageButton); return true; }
+            case "Last Page": { lastPageButton = bjb("Last Page", Images.rightright); jtb.add(lastPageButton); return true; }
+            case "Next Page": {ico = Images.right; break;}
+            case "Next Frame": {ico = Images.right; break;}
+            case "New": {ico = Images.newdoc; break;}
+            case "New On Background": {if(!isApplet) ico = Images.newdoc; break;}
+            case "Network Save and Close": {ico = Images.fsave; break;}
+            case "Save Text": {ico = Images.fsave; break;}
+            case "Save and Close": {ico = Images.fsave; break;}
+            case "Save Dictionaries": {ico = Images.fsave; break;}
+            case "Zoom Out": {ico = Images.minus; break;}
+            case "FitW Width": {ico = Images.fit; break;}
+            case "Zoom In": {ico = Images.plus; break;}
+            case "Thumbs": {ico = Images.thumbsico; break;}
+            case "Overlay Pages": {ico = Images.opico; break;}
+            case "Continuous": {ico = Images.threePages; break;}
+            case "New Page": {ico = Images.newpage; break;}
+            case "Default Pen": {ico = Images.def; break;}
+            case "Fine": {ico = Images.fin; break;}
+            case "Medium": {ico = Images.med; break;}
+            case "Heavy": {ico = Images.hev; break;}
+            case "Fat": {ico = Images.fat; break;}
+            case "green":   {ico = Images.grn; action = "Green"; break;}
+            case "magenta": {ico = Images.mgn; action = "Magenta"; break;}
+            case "breen":   {ico = Images.blk; action = "Black"; break;}
+            case "red":     {ico = Images.grn; action = "Red"; break;}
+            case "multi":   {ico = Images.multi; action = "Choose Instrument Color"; jbo = bjb(action, ico); jtb.add(jbo); return true;}
+            case "iwidth":  {ico = Images.iwidth; action = "Choose Instrument Width"; jbw = bjb(action, ico); jtb.add(jbw); return true; }
+            case "wrench": { ico = Images.wrench; action = "Main Menu"; jbmm = bjb(action, ico); jtb.add(jbmm); hideMenu = true; return true; }
+            case "Default Highlighter": {ico = Images.highdef; break;}
+            case "Yellow Highlighter":  {ico = Images.highyel; break;}
+            case "Magenta Highlighter": {ico = Images.highmag; break;}
+            case "White Out":           {ico = Images.white; break;}
+            case "Draw Arrow":          {ico = Images.arrow; break;}
+            case "Razor":               {ico = Images.razor; break;}
+            case "Ruler":               {ico = Images.ruler; break;}
+            case "Select":              {ico = Images.select; break;}
+            case "Select Rectangle":    {ico = Images.selectrect; break;}
+            case "Cut":                 {ico = Images.editcut; break;}
+            case "Copy":                {ico = Images.editcopy; break;}
+            case "Paste":               {ico = Images.editpaste; break;}
+            case "Paste Out":           {ico = Images.editpaste; break;}
+            case "Eraser":              {ico = Images.eraser; break;}
+            case "Clear":               {ico = Images.bigeraser; break;}
+            case "Clear Out":           {ico = Images.bigeraser; break;}
+            case "Duplicate":           {ico = Images.clonedoc; break;}
+            case "Top Eraser":          {ico = Images.erasetop; break;}
+            case "Bottom Eraser":       {ico = Images.erasebot; break;}
+            case "Stamp Date":          {ico = Images.clock; break;}
+            case "Text":                {ico = Images.text; break;}
+            case "Capitalize":          {ico = Images.cap; break;}
+            case "Number Lock":         {ico = Images.num; break;}
+            case "Symbol":              {ico = Images.sym; break;}
+            case "Space":               {ico = Images.Spc; break;}
+            case "Backspace":           {ico = Images.Bsp; break;}
+            case "Full Screen":         {ico = Images.fullscreen; break;}
+            case "Return":              {ico = Images.returnico; break;}
+            case "User":                {ico = Images.userico; break;}
+        }
+
 		if (ico != null) {
 			jtb.add(bjb(action, ico));
 			return true;
 		}
-
 		return false;
 	}
 
@@ -2497,24 +2100,15 @@ public class Jarnal extends JApplet {
 
 		if(outline == null) outline = new Out(this);
 
-		Image cursorD = toolkit.getImage(Jarnal.class
-				.getResource("images/dotblk.png"));
-		Image cursorB = toolkit.getImage(Jarnal.class
-				.getResource("images/blank.png"));
-		Image cursorX = toolkit.getImage(Jarnal.class
-				.getResource("images/box.png"));
-		Image cursorW = toolkit.getImage(Jarnal.class
-				.getResource("images/whitecursor.png"));
-		Image cursorH = toolkit.getImage(Jarnal.class
-				.getResource("images/highcursor.png"));
-		Image cursorHa = toolkit.getImage(Jarnal.class
-				.getResource("images/handcursor.png"));
-		Image cursorCl = toolkit.getImage(Jarnal.class
-				.getResource("images/clockcursor.png"));
-		Image cursorTc = toolkit.getImage(Jarnal.class
-				.getResource("images/toppencursor.png"));
-		Image cursorBc = toolkit.getImage(Jarnal.class
-				.getResource("images/botpencursor.png"));
+		Image cursorD = toolkit.getImage(Jarnal.class.getResource("images/dotblk.png"));
+		Image cursorB = toolkit.getImage(Jarnal.class.getResource("images/blank.png"));
+		Image cursorX = toolkit.getImage(Jarnal.class.getResource("images/box.png"));
+		Image cursorW = toolkit.getImage(Jarnal.class.getResource("images/whitecursor.png"));
+		Image cursorH = toolkit.getImage(Jarnal.class.getResource("images/highcursor.png"));
+		Image cursorHa = toolkit.getImage(Jarnal.class.getResource("images/handcursor.png"));
+		Image cursorCl = toolkit.getImage(Jarnal.class.getResource("images/clockcursor.png"));
+		Image cursorTc = toolkit.getImage(Jarnal.class.getResource("images/toppencursor.png"));
+		Image cursorBc = toolkit.getImage(Jarnal.class.getResource("images/botpencursor.png"));
 
 		JPanel x = new JPanel(new BorderLayout());
 		jpt = x;
@@ -2551,23 +2145,16 @@ public class Jarnal extends JApplet {
 
 		if(gJrnlFrame != null) gJrnlFrame.setTitle("Jarnal - " + tttitle);
 
-		//JTabbedPane tp = new JTabbedPane();
-        	//tp.addTab(tttitle, null);
-        	//tp.setMnemonicAt(0, KeyEvent.VK_1);
-		//if(tabs) x.add(tp, BorderLayout.NORTH);
-		//tp.setPreferredSize(new Dimension(10000,20));
-
-		if (!doneMeta)
-			jrnlPane.setMeta();
+		if (!doneMeta) jrnlPane.setMeta();
 		doneMeta = true;
 
-		handButton = bjb("Request Control", hand);
+		handButton = bjb("Request Control", Images.hand);
 		handButton.setVisible(false);
 		if (isApplet) {
-			saveButton = bjb("Network Save", fsave);
+			saveButton = bjb("Network Save", Images.fsave);
 			isNetSave = true;
 		} else
-			saveButton = bjb("Save", fsave);
+			saveButton = bjb("Save", Images.fsave);
 
 		int orient = javax.swing.SwingConstants.HORIZONTAL;
 		if (mini)
@@ -2575,7 +2162,6 @@ public class Jarnal extends JApplet {
 		jtb1 = new JToolBar(orient);
 		if (parseTB(jtb1, tb1)) {
 			if (!mini)
-				//x.add(jtb1, BorderLayout.NORTH);
 				x.add(jtb1, BorderLayout.CENTER);
 			else
 				container.add(jtb1, BorderLayout.WEST);
@@ -2592,12 +2178,6 @@ public class Jarnal extends JApplet {
 			else
 				container.add(jtb2, BorderLayout.EAST);
 		}
-
-		//if (jmb != null) {
-		//	if (RQ && !isApplet)
-		//		jmb.add(connectMenu);
-		//	jmb.add(helpMenu);
-		//}
 
 		jrnlPane.setCursor();
 		sp = new JScrollPane(jrnlPane);
@@ -2636,8 +2216,8 @@ public class Jarnal extends JApplet {
 		return jrnlPane;
 	}
 
-	public static int BOOKMARKS = 1;
-	public static int SERVERS = 2;
+	public int BOOKMARKS = 1;
+	public int SERVERS = 2;
 
 	public boolean addToList(LinkedList list, String str){
 		for(ListIterator j = list.listIterator(); j.hasNext();)
@@ -4485,14 +4065,6 @@ public class Jarnal extends JApplet {
 				saveDics();
 				action = "none";
 			}
-			if (action.equals("Calculate")) {
-				String test = "" + (new Calculator(input)).calc();
-				input = "";
-				strokes = new LinkedList();
-				miniadd(test);
-				strokes = new LinkedList();
-				action = "none";
-			}
 			if (action.equals("Space")) {
 				miniadd(" ");
 				action = "none";
@@ -6092,21 +5664,21 @@ public class Jarnal extends JApplet {
 				dragOp = 0;
 			}
 			handButton.setToolTipText(trans("Release Control"));
-			handButton.setIcon(handstop);
+			handButton.setIcon(Images.handstop);
 			handButton.setVisible(true);
 			pages.active = true;
 		}
 
 		public void setWarning() {
-			if (handButton.getIcon() != handmixed)
-				handButton.setIcon(handmixed2);
+			if (handButton.getIcon() != Images.handmixed)
+				handButton.setIcon(Images.handmixed2);
 		}
 
 		public void setStart() {
 			locked = true;
 			dragOp = 100;
 			handButton.setToolTipText(trans("Request Control"));
-			handButton.setIcon(hand);
+			handButton.setIcon(Images.hand);
 			handButton.setVisible(true);
 			pages.active = false;
 			pages.wantscontrol = false;
@@ -6409,7 +5981,7 @@ public class Jarnal extends JApplet {
 						pages.communicator = null;
 					}
 				}
-				Jarnal newJ = Jarnal.newJarnal("Jarnal - " + temp);
+				Jarnal newJ = newJarnal("Jarnal - " + temp);
 				if ((fname == "") && !dirty) {
 					if(!tabs){
 						newJ.gJrnlFrame.setLocation(gJrnlFrame.getLocation());
@@ -6792,7 +6364,7 @@ public class Jarnal extends JApplet {
 				if ((!pages.active) && pages.wantscontrol) {
 					setStart();
 				} else if (!pages.active) {
-					handButton.setIcon(handmixed);
+					handButton.setIcon(Images.handmixed);
 					handButton.setToolTipText(trans("Cancel Control Request"));
 					pages.wantscontrol = true;
 					pages.communicator.requestactive();
@@ -7329,7 +6901,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("New")) {
 				pages.invalidateGraphics();
-				Jarnal jrnl = Jarnal.newJarnal("Jarnal", getConf());
+				Jarnal jrnl = newJarnal("Jarnal", getConf());
 				//jrnl.jrnlPane.setConf(getConf());
 				//jrnl.jrnlPane.setToolbars(tb1, tb2);
 				String spp = pages.getDefaultPaper();
@@ -9995,7 +9567,7 @@ public class Jarnal extends JApplet {
 		}
 
 		public void checkMemory() {
-			if (Jarnal.isApplet)
+			if (isApplet)
 				return;
 			Runtime rt = Runtime.getRuntime();
 			float test = (float) rt.freeMemory() + (float) Tools.maxMemory()
@@ -10353,4 +9925,8 @@ public class Jarnal extends JApplet {
 			pages.writeTIFFGraphicFile(f, null, withBorders);
 		}
 	}
+    
+    public static Jarnal getInstance() {
+        return INSTANCE;
+    }
 }
