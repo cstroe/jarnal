@@ -1,7 +1,5 @@
 package jarnal;
 
-import org.apache.commons.cli.Options;
-
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
