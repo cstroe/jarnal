@@ -553,7 +553,7 @@ class JarnalServer extends Thread {
 	public synchronized void putfile(JarnalClient jcl){
 		System.out.println("Putting file");
 		try{
-			String fname = jarn.fname;
+			String fname = jarn.fName;
 			if(fname.equals("")) fname = "new_file";
 			jcl.os.write((fname + JarnalClient.terminator).getBytes());
 			ByteArrayOutputStream bas = new ByteArrayOutputStream();

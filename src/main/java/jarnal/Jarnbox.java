@@ -604,7 +604,7 @@ class dialogListener implements ActionListener {
 		if(action.equals("GoToPage")){
 			if(jb.jarn != null){
 				jb.jarn.jtm.setClockCursor(jb.jw);
-				jb.jarn.gotopage = jb.model.getNumber();
+				jb.jarn.goToPage = jb.model.getNumber();
 				jb.jarn.jrnlPane.doAction("GoToPage");
 			}
 		}
@@ -2158,7 +2158,7 @@ class selectionDialogListener implements ActionListener {
 			jarn.jrnlPane.doAction("Redraw Page");
 		}
 		if(action.startsWith("Arrow Weight")){
-			jarn.markerweight = model3.getNumber().intValue();
+			jarn.markerWeight = model3.getNumber().intValue();
 			jarn.jrnlPane.doAction("Arrow Weight");
 		}
 		if(action.equals("Highlighter Width")){

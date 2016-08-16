@@ -515,7 +515,7 @@ public class Out {
 
 	private class OutSizeListener implements ComponentListener{
 		public void componentResized(ComponentEvent e){
-			jarn.outheight = jarn.jrnlPane.tpanel.getDividerLocation();
+			jarn.outHeight = jarn.jrnlPane.tpanel.getDividerLocation();
 		}
 		public void componentMoved(ComponentEvent e){
 		}

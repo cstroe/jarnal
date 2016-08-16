@@ -26,14 +26,14 @@ public class Jarnal extends JApplet {
 
     public String ext = ".jaj";
 
-    public String openfile = "", openmfile = "", openbgfile = "";
-    public String opentextfile = "", savefile = "", pdffile ="";
+    public String openFile = "", openMFile = "", openBGFile = "";
+    public String openTextFile = "", saveFile = "", pdffile ="";
 
-    public String confdir = "";
+    public String confDir = "";
     public String meta = "", meta2 = "";
 
-    public boolean javagui = false;
-    public boolean multitouch = false;
+    public boolean javaGUI = false;
+    public boolean multiTouch = false;
     public boolean doneMeta = false;
 
     public boolean setLocation = false;
@@ -54,30 +54,30 @@ public class Jarnal extends JApplet {
 	boolean embed = false;
 	public boolean miniDic = false;
 	public String defaultConf;
-	public String memoryerrorstring = "";
+	public String memoryErrorString = "";
 
-	public String jarnalshell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
-	public String jarnalshellwin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	public String jarnalShell = "pdfrenderer=pdftoppm -f %1 -l %2 -r %4 %5 %3\nps2pdf=ps2pdf %1 %2\nbrowser=firefox %1\nprintpdf=lpr %1\npdftotext=pdftotext -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
+	public String jarnalShellWin = "pdfrenderer=C:/gs/gs8.50/bin/gswin32c -dNOPAUSE -dBATCH -d  -dGraphicsAlphaBits=4 -dTextAlphaBits=4 -dFirstPage=%1 -dLastPage=%2  -sDEVICE=png16m -sOutputFile=%3 -r%4 -f \"%5\"\nps2pdf=ps2pdf %1 %2\nbrowser=\"c:\\program files\\internet explorer\\iexplore.exe\" %1\nprintpdf=lpr %1\npdftotext=basepathlib -eol unix -layout -f %1 -l %2 %3 %4\npdfconverter=soffice";
 
 	public String firefox;
 
 	public String ps2pdf;
-	public String printpdf;
-	public String pdfconverter;
+	public String printPDF;
+	public String pdfConverter;
 
 	public String gs;
 
 	public int tzadjust = 0;
-	public boolean printaround = false;
-	public int keepbookmarks = 0;
+	public boolean printAround = false;
+	public int keepBookmarks = 0;
 	public int defmarks = 12;
 	public boolean tabs = false;
 
-	public Jarnal jarnalbook = null;
+	public Jarnal jarnalBook = null;
 
-	public String homeserver = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
+	public String homeServer = "http://www.dklevine.com/general/software/tc1000/jarnal.htm";
 	public String verserver = "http://www.dklevine.com/general/software/tc1000/";
-	public String startconnect = null;
+	public String startConnect = null;
 
 	public String language = Locale.getDefault().toString().substring(0, 2);
 	public Hashtable hlang = null;
@@ -89,26 +89,26 @@ public class Jarnal extends JApplet {
     public Out outline;
     public JScrollPane sp;
     public SLabel statusBar;
-	public final Color slabelgray = new Color(0xf5f5f5);
-	public final Color slabelblue = new Color(0xe0ffff);
+	public final Color sLabelGray = new Color(0xf5f5f5);
+	public final Color sLabelBlue = new Color(0xe0ffff);
 	boolean slset = false;
     public JFrame gJrnlFrame;
     public JPanel gJrnlPanel;
     public Toolkit toolkit;
 
-	public String ttitle = "";
-	public String tttitle = "";
-	public int tnum = 1;
+	public String tTitle = ""; //geez what is this
+	public String tTTitle = ""; // fix it l8r we got work to do
+	public int tNum = 1;
 	public String templateFile = null;
-	public String fname = "";
+	public String fName = "";
 	public String internalName = "";
-	public String nname = "unsaved.jaj";
-	public String textfile = null;
+	public String nName = "unsaved.jaj";
+	public String textFile = null;
 	public OutputStream netsaveos;
     public String cwd = "";
     public String iwd = null;
     public String bwd = null;
-    public String bgfile = "";
+    public String bgFile = "";
 
 	public LinkedList allBookmarks = new LinkedList();
 	public LinkedList allServermarks = new LinkedList();
@@ -119,7 +119,7 @@ public class Jarnal extends JApplet {
 	public boolean connectPresentation = false;
 	boolean mini = false;
 	boolean micro = false;
-	boolean barjarnal = false;
+	boolean barJarnal = false;
 	boolean showOutline = false;
 
     public Tools jt = new Tools();
@@ -128,13 +128,13 @@ public class Jarnal extends JApplet {
     public Tools jtbu = new Tools();
     public String middleButton = "Eraser";
     public String rightButton = "Context Menu";
-    public String old_color = "black";
-    public float old_width = -1.0f;
+    public String oldColor = "black";
+    public float oldWidth = -1.0f;
     public float fatWidth = 11.0f;
 	boolean stickyRuler = false;
-	boolean arrowhead = false;
-	boolean temparrow = false;
-    public int markerweight = 10;
+	boolean arrowHead = false;
+	boolean tempArrow = false;
+    public int markerWeight = 10;
     public boolean hideCursor = true;
     public boolean textMode = false;
     public boolean makeOverlay = false;
@@ -144,8 +144,8 @@ public class Jarnal extends JApplet {
 	boolean saveBg = false;
 	boolean promptForNetSaveName = false;
 	boolean oldPromptForNetSaveName;
-	boolean urlencoded = false;
-	boolean oldurlencoded;
+	boolean urlEncoded = false;
+	boolean oldURLEncoded;
 	boolean saveSelfexecuting;
 	boolean smoothStrokes = true;
 	public String email = "";
@@ -157,8 +157,8 @@ public class Jarnal extends JApplet {
 	public String highlighterStyle = "translucent";
 	public String lastAction = null;
 	public String userColor = null;
-	public int divwidth = 90;
-	public int outheight = 90;
+	public int divWidth = 90;
+	public int outHeight = 90;
 
 	public boolean alignToMargins = true;
 	public boolean bestFit = true;
@@ -167,7 +167,7 @@ public class Jarnal extends JApplet {
 	public boolean withBorders = false;
 
 	public boolean analyze = false;
-	public boolean trainrecog = false;
+	public boolean trainRecog = false;
 	public boolean mscr = true;
 	public boolean ascr = false;
 
@@ -187,9 +187,9 @@ public class Jarnal extends JApplet {
 								// display area?
     public int dragOp = 0;
     public boolean thumbs = true; // flag for multi-page views
-    public boolean threeup = true; // if true multi-page view is three in a row, if
+    public boolean threeUp = true; // if true multi-page view is three in a row, if
 							// false, multi-page view is 2x2
-    public boolean poverlay = false; // if true pages are truncated by a factor of PO
+    public boolean pOverlay = false; // if true pages are truncated by a factor of PO
     public double PO = 0.25;
     public boolean locked = false; // is the display locked? see also dragOp = 100
     public boolean replayActive = false;
@@ -204,7 +204,7 @@ public class Jarnal extends JApplet {
     public int sbarSize = 20;
 
     public Number previewZoom = null;
-    public Number gotopage = null;
+    public Number goToPage = null;
 
     public Hashtable usersList = new Hashtable();
 
@@ -258,122 +258,122 @@ public class Jarnal extends JApplet {
 	}
 
 	public int setarg(String[] args, int iarg, int len) {
-		String oldopenfile = openfile;
-		openfile = args[iarg];
+		String oldopenfile = openFile;
+		openFile = args[iarg];
 		int ret = iarg + 1;
 		if (args[iarg].trim().equals("")) {
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 			return ret;
 		}
-		if (openfile.equals("-t")) {
+		if (openFile.equals("-t")) {
 			if (iarg >= len - 1)
-				openfile = "";
+				openFile = "";
 			else {
 				template = true;
-				openfile = args[iarg + 1];
+				openFile = args[iarg + 1];
 				ret++;
 			}
 			return ret;
 		}
-		if (openfile.equals("-b")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-b")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				openbgfile = args[iarg + 1];
+				openBGFile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-bb")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-bb")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				openbgfile = args[iarg + 1];
-			bfilter bf = new bfilter(openbgfile);
-			String bdir = (new File(openbgfile)).getAbsoluteFile().getParent();
+				openBGFile = args[iarg + 1];
+			bfilter bf = new bfilter(openBGFile);
+			String bdir = (new File(openBGFile)).getAbsoluteFile().getParent();
 			String fls[] = (new File(bdir)).list(bf);
 			if (fls.length > 0) {
-				openfile = bdir + File.separator + fls[0];
-				openbgfile = "";
+				openFile = bdir + File.separator + fls[0];
+				openBGFile = "";
 				template = false;
 			}
 			ret++;
 		}
-		if (openfile.equals("-s")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-s")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				savefile = args[iarg + 1];
+				saveFile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-connect")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-connect")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				startconnect = "server:/" + args[iarg + 1];
+				startConnect = "server:/" + args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-text")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-text")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				opentextfile = args[iarg + 1];
+				openTextFile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-pdf")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-pdf")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				pdffile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-confdir")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-confdir")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				confdir = args[iarg + 1];
+				confDir = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-m")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-m")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
-				openmfile = args[iarg + 1];
+				openMFile = args[iarg + 1];
 			ret++;
 		}
-		if (openfile.equals("-lang")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-lang")) {
+			openFile = oldopenfile;
 			if (iarg < len - 1)
 				language = args[iarg + 1];
 			ret++;
 			initTrans();
 		}
-		if (openfile.equals("-startServer")){
-			openfile = oldopenfile;
+		if (openFile.equals("-startServer")){
+			openFile = oldopenfile;
 			beginServer = true;
 		}
-		if (openfile.equals("-connectPresentation")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-connectPresentation")) {
+			openFile = oldopenfile;
 			connectPresentation = true;
-			if(startconnect == null) startconnect = "server:/localhost";
+			if(startConnect == null) startConnect = "server:/localhost";
 		}
-		if (openfile.equals("-large")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-large")) {
+			openFile = oldopenfile;
 			Images.loadImagesLarge();
 		}
-		if (openfile.equals("-mousecursor")){
-			openfile = oldopenfile;
+		if (openFile.equals("-mousecursor")){
+			openFile = oldopenfile;
 			botpCf = true;
 		}
-		if (openfile.equals("-multitouch")){
-			openfile = oldopenfile;
-			multitouch = true;
+		if (openFile.equals("-multitouch")){
+			openFile = oldopenfile;
+			multiTouch = true;
 		}
-		if (openfile.equals("-javagui")) {
-			openfile = oldopenfile;
-			javagui = true;
+		if (openFile.equals("-javagui")) {
+			openFile = oldopenfile;
+			javaGUI = true;
 		}
-		if (openfile.startsWith("-mini")) {
-			openfile = oldopenfile;
+		if (openFile.startsWith("-mini")) {
+			openFile = oldopenfile;
 			startMini = true;
 		}
-		if (openfile.startsWith("-fs")) {
-			openfile = oldopenfile;
+		if (openFile.startsWith("-fs")) {
+			openFile = oldopenfile;
 			startfs = true;
 		}
-		if (openfile.startsWith("-p")) {
-			if (!openfile.equals("-p")) {
-				String s = openfile.substring(2);
+		if (openFile.startsWith("-p")) {
+			if (!openFile.equals("-p")) {
+				String s = openFile.substring(2);
 				int n = s.indexOf("x");
 				if (n >= 0) {
 					int y = Integer.parseInt(s.substring(n + 1));
@@ -382,30 +382,30 @@ public class Jarnal extends JApplet {
 					locationSet = true;
 				}
 			}
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 			setLocation = true;
 		}
-		if (openfile.equals("-n")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-n")) {
+			openFile = oldopenfile;
 			showMenu = false;
 		}
-		if (openfile.equals("-g")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-g")) {
+			openFile = oldopenfile;
 			Background.useGS = true;
 		}
-		if (openfile.equals("-sg")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-sg")) {
+			openFile = oldopenfile;
 			Background.silentGS = true;
 		}
-		if (openfile.equals("-pen")) {
-			openfile = oldopenfile;
+		if (openFile.equals("-pen")) {
+			openFile = oldopenfile;
 			//pencentric = true;
 		}
-		if (openfile.equals("-l")) {
+		if (openFile.equals("-l")) {
 			if (iarg < len - 1)
 				loadFiles.add(args[iarg + 1]);
 			ret++;
-			openfile = oldopenfile;
+			openFile = oldopenfile;
 		}
 		return ret;
 	}
@@ -433,34 +433,33 @@ public class Jarnal extends JApplet {
 	}
 
 	public void pipe() {
-		if (HtmlPost.checkURL(openfile) && !isApplet) {
-			HtmlPost hp = new HtmlPost(openfile, null, null, null, null, false);
-			openfile = hp.pipe(".jaj");
+		if (HtmlPost.checkURL(openFile) && !isApplet) {
+			HtmlPost hp = new HtmlPost(openFile, null, null, null, null, false);
+			openFile = hp.pipe(".jaj");
 		}
-		if (HtmlPost.checkURL(openbgfile) && !isApplet) {
-			HtmlPost hp = new HtmlPost(openbgfile, null, null, null, null,
+		if (HtmlPost.checkURL(openBGFile) && !isApplet) {
+			HtmlPost hp = new HtmlPost(openBGFile, null, null, null, null,
 					false);
-			openbgfile = hp.pipe(".jbg");
+			openBGFile = hp.pipe(".jbg");
 		}
-		if (HtmlPost.checkURL(openmfile)) {
-			HtmlPost hp = new HtmlPost(openmfile, null, null, null, null, false);
+		if (HtmlPost.checkURL(openMFile)) {
+			HtmlPost hp = new HtmlPost(openMFile, null, null, null, null, false);
 			meta = new String(hp.pipeBytes());
-			openmfile = "";
+			openMFile = "";
 		}
 		try {
-			if (openfile == null)
-				openfile = "";
-			if (openbgfile == null)
-				openbgfile = "";
-			if (openmfile == null)
-				openmfile = "";
+			
+			if (openFile == null)  openFile = "";
+			if (openBGFile == null) openBGFile = "";
+			if (openMFile == null) openMFile = "";
+			
 			if (!isApplet) {
-				if (!openfile.equals(""))
-					openfile = (new File(openfile)).getCanonicalPath();
-				if (!openbgfile.equals(""))
-					openbgfile = (new File(openbgfile)).getCanonicalPath();
-				if (!openmfile.equals(""))
-					openmfile = (new File(openmfile)).getCanonicalPath();
+				if (!openFile.equals(""))
+					openFile = (new File(openFile)).getCanonicalPath();
+				if (!openBGFile.equals(""))
+					openBGFile = (new File(openBGFile)).getCanonicalPath();
+				if (!openMFile.equals(""))
+					openMFile = (new File(openMFile)).getCanonicalPath();
 			}
 		} catch (java.io.IOException ex) {
 			ex.printStackTrace();
@@ -468,9 +467,9 @@ public class Jarnal extends JApplet {
 	}
 
 	private void getMeta() {
-		if (!openmfile.equals("")) {
+		if (!openMFile.equals("")) {
 			try {
-				FileInputStream fin = new FileInputStream(openmfile);
+				FileInputStream fin = new FileInputStream(openMFile);
 				int nmax = 10000;
 				byte b[] = new byte[nmax + 1];
 				int nread = 0;
@@ -492,7 +491,7 @@ public class Jarnal extends JApplet {
 		while (iarg < len) {
 			iarg = getInstance().setarg(args, iarg, len);
 		}
-		if (!getInstance().javagui) {
+		if (!getInstance().javaGUI) {
 			try {
 				System.out.println(UIManager
 						.getSystemLookAndFeelClassName());
@@ -524,15 +523,15 @@ public class Jarnal extends JApplet {
 		z = Tools.getLine(shell, "keepbookmarks");
 		if (z != null) {
 			if (z.equals("true")) 
-				keepbookmarks = defmarks;
-			else keepbookmarks = Integer.parseInt(z);
+				keepBookmarks = defmarks;
+			else keepBookmarks = Integer.parseInt(z);
 		}
 		s = s + "keepbookmarks=" + defmarks + "\n";		
 		z = Tools.getLine(shell, "printaround");
 		if (z != null) {
 			if (z.equals("true")) {
 				s = s + "printaround=true\n";
-				printaround = true;
+				printAround = true;
 			}
 		}
 		z = Tools.getLine(shell, "pdfrenderer");
@@ -549,12 +548,12 @@ public class Jarnal extends JApplet {
 		s = s + "firefox=" + firefox + "\n";
 		z = Tools.getLine(shell, "pdfconverter");
 		if (z != null)
-			pdfconverter = z;
-		s = s + "pdfconverter=" + pdfconverter + "\n";
+			pdfConverter = z;
+		s = s + "pdfconverter=" + pdfConverter + "\n";
 		z = Tools.getLine(shell, "printpdf");
 		if (z != null)
-			printpdf = z;
-		s = s + "printpdf=" + printpdf + "\n";
+			printPDF = z;
+		s = s + "printpdf=" + printPDF + "\n";
 		z = Tools.getLine(shell, "pdftotext");
 		if (z != null)
 			Pages.pdftotext = z;
@@ -569,9 +568,9 @@ public class Jarnal extends JApplet {
 
 	private File getConfDir() {
 		String userhome = System.getProperty("user.home");
-		if (confdir.equals(""))
+		if (confDir.equals(""))
 			return new File(userhome);
-		return new File(userhome + File.separator + confdir);
+		return new File(userhome + File.separator + confDir);
 	}
 
 	private void writeShell() {
@@ -591,9 +590,9 @@ public class Jarnal extends JApplet {
 	}
 
 	private void loadShell(boolean writeShell) {
-		String shell = jarnalshell;
+		String shell = jarnalShell;
 		if (Tools.checkMSWindows()) {
-			shell = jarnalshellwin;
+			shell = jarnalShellWin;
 			shell = Tools.replaceAll(shell, "basepathlib", "\""
 					+ Tools.getBasepath() + "lib/pdftotext\" ");
 		}
@@ -636,14 +635,14 @@ public class Jarnal extends JApplet {
 				}
 			}
 			if(!writeShell) {
-				String oldopenfile=openfile;
-				openfile = getConfDir().getAbsolutePath() + File.separator + "jarnalbook.conf";
+				String oldopenfile=openFile;
+				openFile = getConfDir().getAbsolutePath() + File.separator + "jarnalbook.conf";
 				invisible = true;
-				ttitle = "Jarnalbook.conf";
-				if(keepbookmarks > 0) jarnalbook = newJarnal("");
-				ttitle = "";
+				tTitle = "Jarnalbook.conf";
+				if(keepBookmarks > 0) jarnalBook = newJarnal("");
+				tTitle = "";
 				invisible = false;
-				openfile=oldopenfile;
+				openFile=oldopenfile;
 			}
 			if ((!oldshell.equals(shell)) && writeShell) {
 				try {
@@ -666,9 +665,9 @@ public class Jarnal extends JApplet {
 	public void init() {
 		Images.loadImages();
 		meta = "";
-		openfile = "";
-		openbgfile = "";
-		openmfile = "";
+		openFile = "";
+		openBGFile = "";
+		openMFile = "";
 		doneMeta = false;
 		setLocation = false;
 		showMenu = true;
@@ -699,18 +698,18 @@ public class Jarnal extends JApplet {
 			isApplet = true;
 		parm = getParameter("jarnalFile");
 		if (parm != null)
-			openfile = parm;
+			openFile = parm;
 		parm = getParameter("backgroundFile");
 		if (parm != null)
-			openbgfile = parm;
+			openBGFile = parm;
 		parm = getParameter("templateFile");
 		if (parm != null) {
-			openfile = parm;
+			openFile = parm;
 			template = true;
 		}
 		parm = getParameter("metaFile");
 		if (parm != null) {
-			openmfile = parm;
+			openMFile = parm;
 			pipe();
 		}
 		parm = getParameter("lang");
@@ -755,15 +754,15 @@ public class Jarnal extends JApplet {
 
 	public Jarnal initJ() {
 		String title = "Jarnal";
-		if (!openfile.equals("") && !template) {
-			File temp = new File(openfile);
-			ttitle = temp.getName();
+		if (!openFile.equals("") && !template) {
+			File temp = new File(openFile);
+			tTitle = temp.getName();
 		}
-		else if(!openbgfile.equals("")){
-			File temp = new File(openbgfile);
-			ttitle = temp.getName();
+		else if(!openBGFile.equals("")){
+			File temp = new File(openBGFile);
+			tTitle = temp.getName();
 		}
-		title = title + " - " + ttitle;
+		title = title + " - " + tTitle;
 		if (!startMini)
 			return newJarnal(title);
 		return miniJarnal("miniJarnal");
@@ -778,10 +777,10 @@ public class Jarnal extends JApplet {
 		System.gc();
 		if (nWins == 0)
 			try {
-				if(!isApplet && (jarnalbook != null) && (keepbookmarks > 0)){
-					jarnalbook.saveBookmarks = true;
-					jarnalbook.dirty = true;
-					jarnalbook.jrnlPane.doAction("Save");
+				if(!isApplet && (jarnalBook != null) && (keepBookmarks > 0)){
+					jarnalBook.saveBookmarks = true;
+					jarnalBook.dirty = true;
+					jarnalBook.jrnlPane.doAction("Save");
 				}
 				System.out.println("Exiting...");
 				System.exit(0);
@@ -862,9 +861,9 @@ public class Jarnal extends JApplet {
 		jp.requestFocus();
 		jp.repaint();
 		nWins++;
-		if (!beginServer && (startconnect != null)) {
-			String action = startconnect;
-			startconnect = null;
+		if (!beginServer && (startConnect != null)) {
+			String action = startConnect;
+			startConnect = null;
 			controller.jrnlPane.doAction(action);
 		}
 		if (beginServer) {
@@ -915,14 +914,14 @@ public class Jarnal extends JApplet {
 
 	public Jarnal barJarnal(String ofile, Jarnal parent, Container cp,
 			Toolkit tk) {
-		openfile = ofile;
+		openFile = ofile;
 		final Jarnal controller = new Jarnal();
 		controller.initNames();
 		controller.jarn = controller;
 		controller.fitWidth = true;
 		JrnlPane jp = controller.buildBarUI(parent, cp, tk);
 		controller.thumbs = true;
-		controller.threeup = true;
+		controller.threeUp = true;
 		controller.activePage = jp.pages.getPage() - 1;
 		jp.setup();
 		return controller;
@@ -956,7 +955,7 @@ public class Jarnal extends JApplet {
 	}
 
 	public JrnlPane buildBarUI(Jarnal parent, Container cp, Toolkit tk) {
-		barjarnal = true;
+		barJarnal = true;
 		toolkit = tk;
 		tb1 = "";
 		tb2 = "";
@@ -1003,8 +1002,8 @@ public class Jarnal extends JApplet {
 	public JrnlPane buildUI(JFrame jf) {
 		if (!doneMeta)
 			setMeta();
-		bgfile = openbgfile;
-		openbgfile = "";
+		bgFile = openBGFile;
+		openBGFile = "";
 		if (!embed) {
 			jf.addWindowListener(new JrnlClosing());
 			jf.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -1017,12 +1016,12 @@ public class Jarnal extends JApplet {
 		else
 			toolkit = this.getToolkit();
 		JrnlPane newJP = null;
-		if(ttitle.equals("")){
-			tttitle = "Untitled " + tnum;
-			tnum++;
+		if(tTitle.equals("")){
+			tTTitle = "Untitled " + tNum;
+			tNum++;
 		}
-		else tttitle = ttitle;
-		ttitle = "";
+		else tTTitle = tTitle;
+		tTitle = "";
 		if (embed)
 			newJP = buildContainer(getContentPane());
 		else if(!tabs) newJP = buildContainer(jf.getContentPane());
@@ -1031,7 +1030,7 @@ public class Jarnal extends JApplet {
 			gJrnlPanel = new JPanel(new BorderLayout());	
         		//tp.addTab(tttitle, gJrnlPanel);
 			int ntab = tp.getTabCount() - 1;
-			tp.insertTab(tttitle, null, gJrnlPanel, null, ntab);
+			tp.insertTab(tTTitle, null, gJrnlPanel, null, ntab);
 			newJP = buildContainer(gJrnlPanel);
 		}
 		buildMenu(jf);
@@ -1053,13 +1052,13 @@ public class Jarnal extends JApplet {
 	public String getFileName() {
 		if (!internalName.equals(""))
 			return internalName;
-		if (fname.equals(""))
+		if (fName.equals(""))
 			return null;
-		return "file://" + cwd + File.separator + fname;
+		return "file://" + cwd + File.separator + fName;
 	}
 
 	public String getFileLoc() {
-		return "file://" + cwd + File.separator + fname;
+		return "file://" + cwd + File.separator + fName;
 	}
 
 	public String getAbsoluteName(String cwd, String target) {
@@ -1127,16 +1126,16 @@ public class Jarnal extends JApplet {
 		String y = Tools.getEntry(s, "[Globals]");
 		z = Tools.getLine(y, "backgroundFile");
 		if (z != null) {
-			openbgfile = z;
+			openBGFile = z;
 		}
 		z = Tools.getLine(y, "jarnalFile");
 		if (z != null) {
-			openfile = z;
+			openFile = z;
 		}
 		z = Tools.getLine(y, "templateFile");
 		if (z != null) {
 			template = true;
-			openfile = z;
+			openFile = z;
 		}
 		z = Tools.getLine(y, "setLocation");
 		if (z != null) {
@@ -1527,7 +1526,7 @@ public class Jarnal extends JApplet {
 	public void setContextMenu() {
 		if (mini)
 			return;
-		if (barjarnal)
+		if (barJarnal)
 			return;
 		if (analyze) {
 			penundorecogb.setVisible(true);
@@ -2141,7 +2140,7 @@ public class Jarnal extends JApplet {
 
 		jrnlPane.open();
 
-		if(gJrnlFrame != null) gJrnlFrame.setTitle("Jarnal - " + tttitle);
+		if(gJrnlFrame != null) gJrnlFrame.setTitle("Jarnal - " + tTTitle);
 
 		if (!doneMeta) jrnlPane.setMeta();
 		doneMeta = true;
@@ -2188,7 +2187,7 @@ public class Jarnal extends JApplet {
 
 		statusBar = new SLabel(trans("Edit"));
 		statusBar.setOpaque(true);
-		statusBar.setBackground(slabelgray);
+		statusBar.setBackground(sLabelGray);
 		if (!mini) {
 			container.add(statusBar, BorderLayout.SOUTH);
 			jrnlPane.addKeyListener(new Jarnalkey());
@@ -2202,8 +2201,8 @@ public class Jarnal extends JApplet {
 
 		dirty = false;
 
-		if (!opentextfile.equals("")) {
-			opentextfile = "";
+		if (!openTextFile.equals("")) {
+			openTextFile = "";
 			jrnlPane.opentext();
 		}
 
@@ -2225,7 +2224,7 @@ public class Jarnal extends JApplet {
 		if (str.indexOf("jarnalbook.conf") >= 0) doit = false;
 		if (str.equals("none")) doit = false;
 		if(doit) list.add(str);
-		int nmarks = defmarks + (2 * keepbookmarks);
+		int nmarks = defmarks + (2 * keepBookmarks);
 		while(list.size() > nmarks) list.removeFirst();
 		return true;
 	}
@@ -2252,7 +2251,7 @@ public class Jarnal extends JApplet {
 			JMenuItem item = new JMenuItem(bname);
 			item.addActionListener(new JrnlActionListener(prefix + bname));
 			showAll.add(item);
-			if(nmarks >= keepbookmarks) break;
+			if(nmarks >= keepBookmarks) break;
 			nmarks++;
 		}
 	}
@@ -2366,7 +2365,7 @@ public class Jarnal extends JApplet {
 			if(sjarn == null) return;
 			if (!hideMenu && showMenu && !embed) sjarn.gJrnlFrame.setJMenuBar(sjarn.jmb);
 			else sjarn.gJrnlFrame.setJMenuBar(null);
-			sjarn.sJrnlFrame.setTitle(sjarn.tttitle);
+			sjarn.sJrnlFrame.setTitle(sjarn.tTTitle);
 			int is = tp.getSelectedIndex();
 			for(int jj = 0; jj < tp.getTabCount() - 1; jj++ ){
 				if(jj != is) tp.setBackgroundAt(jj, Color.lightGray);
@@ -2381,9 +2380,9 @@ public class Jarnal extends JApplet {
 
 	private class JrnlSizeListener implements ComponentListener {
 		public void componentResized(ComponentEvent e) {
-			if (barjarnal) {
+			if (barJarnal) {
 				fitWidth = true;
-				parentJarn.divwidth = jrnlPane.tpanel.getDividerLocation();
+				parentJarn.divWidth = jrnlPane.tpanel.getDividerLocation();
 			}
 			if (fitWidth)
 				jrnlPane.resize();
@@ -2520,7 +2519,7 @@ public class Jarnal extends JApplet {
 			int Y = e.getY();
 			if(X < 100){
 				slset = false;
-				this.setBackground(slabelgray);
+				this.setBackground(sLabelGray);
 				jrnlPane.choosepage(true, false);
 				return;
 			}
@@ -2528,11 +2527,11 @@ public class Jarnal extends JApplet {
 			else{
 				if(slset){
 					slset = false;
-					this.setBackground(slabelgray);
+					this.setBackground(sLabelGray);
 				}
 				else {
 					slset = true;
-					this.setBackground(slabelblue);
+					this.setBackground(sLabelBlue);
 				}
 			}			
 		}
@@ -2611,7 +2610,7 @@ public class Jarnal extends JApplet {
 				isContext = true;
 				rightAction = "Context Menu";
 				slset = false;
-				statusBar.setBackground(slabelgray);
+				statusBar.setBackground(sLabelGray);
 			}
 			if (isContext) {
 				if (rightAction.equals("No Action")) {
@@ -2867,14 +2866,14 @@ public class Jarnal extends JApplet {
 					return;
 				}
 				drawState = 1;
-				if((cnt == 0) && multitouch) oldCnt = 0;
+				if((cnt == 0) && multiTouch) oldCnt = 0;
 				for (int i = 0; i < cnt; i++)
 					jrnlPane.stroke(x[i]);
-				if ((dragOp == -1) && arrowhead) {
+				if ((dragOp == -1) && arrowHead) {
 					jrnlPane.setArrow();
-					if (temparrow) {
-						arrowhead = false;
-						temparrow = false;
+					if (tempArrow) {
+						arrowHead = false;
+						tempArrow = false;
 					}
 				}
 				if ((dragOp == 0) && smoothStrokes) {
@@ -3289,13 +3288,13 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("cancel")) {
 				jw.setVisible(false);
-				urlencoded = oldurlencoded;
+				urlEncoded = oldURLEncoded;
 				promptForNetSaveName = oldPromptForNetSaveName;
 			}
 			if (action.equals("ok")) {
 				netServer = server.getText();
 				netOptions = options.getText();
-				nname = saveName.getText();
+				nName = saveName.getText();
 				jw.setVisible(false);
 				dirty = true;
 				jrnlPane.setStatus("");
@@ -3313,13 +3312,13 @@ public class Jarnal extends JApplet {
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.DESELECTED) {
 				if (action.equals("urlencoded"))
-					urlencoded = false;
+					urlEncoded = false;
 				if (action.equals("promptForNetSaveName"))
 					promptForNetSaveName = false;
 			}
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				if (action.equals("urlencoded"))
-					urlencoded = true;
+					urlEncoded = true;
 				if (action.equals("promptForNetSaveName"))
 					promptForNetSaveName = true;
 			}
@@ -3481,8 +3480,8 @@ public class Jarnal extends JApplet {
 		public void setMemoryError() {
 			setMessage(
 					"Insufficient Memory to Display\nScale Has Been Reduced\nPlease Save Your Work\nSee Help for Increasing Memory"
-							+ memoryerrorstring, "Memory Error");
-			memoryerrorstring = "";
+							+ memoryErrorString, "Memory Error");
+			memoryErrorString = "";
 		}
 
 		public void setClockCursor(JDialog jw) {
@@ -3796,7 +3795,7 @@ public class Jarnal extends JApplet {
 		}
 
 		public void setArrow() {
-			pages.setArrow(markerweight);
+			pages.setArrow(markerWeight);
 		}
 
 		public void stroke(Point2D.Double endL) {
@@ -4257,8 +4256,8 @@ public class Jarnal extends JApplet {
 			offY = r * h;
 			activePage = (r * nc()) + c;
 			delta = activePage - oldAP;
-			if (barjarnal) {
-				parentJarn.gotopage = new Integer(activePage + 1);
+			if (barJarnal) {
+				parentJarn.goToPage = new Integer(activePage + 1);
 				parentJarn.jrnlPane.doAction("GoToPage");
 			}
 			if (delta != 0) {
@@ -4664,7 +4663,7 @@ public class Jarnal extends JApplet {
 			if (selstr.equals("Undo/Redo Stacks")) {
 				manageDelete.setEnabled(false);
 				test = new String[2];
-				String xname = fname;
+				String xname = fName;
 				if (xname.equals(""))
 					xname = "jaj";
 				test[0] = "undostack." + xname;
@@ -4832,7 +4831,7 @@ public class Jarnal extends JApplet {
 		}
 
 		private void netSaveDialog(Point p, Rectangle r) {
-			oldurlencoded = urlencoded;
+			oldURLEncoded = urlEncoded;
 			oldPromptForNetSaveName = promptForNetSaveName;
 			JDialog jw = new JDialog(gJrnlFrame, "Network Save Options");
 			JPanel top = new JPanel(new GridBagLayout());
@@ -4844,7 +4843,7 @@ public class Jarnal extends JApplet {
 			JTextArea options = new JTextArea(netOptions, 10, 30);
 			JScrollPane optionspane = new JScrollPane(options);
 			JTextField server = new JTextField(netServer);
-			JTextField saveName = new JTextField(nname);
+			JTextField saveName = new JTextField(nName);
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			gbc.ipadx = 8;
@@ -4894,7 +4893,7 @@ public class Jarnal extends JApplet {
 			gbc.weightx = 1.0;
 			JCheckBox urle = new JCheckBox();
 			urle.addItemListener(new JrnlDialogBoxListener("urlencoded"));
-			if (urlencoded)
+			if (urlEncoded)
 				urle.setSelected(true);
 			JCheckBox pfnsn = new JCheckBox();
 			pfnsn.addItemListener(new JrnlDialogBoxListener(
@@ -4977,7 +4976,7 @@ public class Jarnal extends JApplet {
 
 		public void documentation() {
 			String est = firefox;
-			est = Tools.replaceAll(est, "%1", homeserver);
+			est = Tools.replaceAll(est, "%1", homeServer);
 			try {
 				Runtime.getRuntime().exec(est);
 			} catch (Exception ex) {
@@ -5019,8 +5018,8 @@ public class Jarnal extends JApplet {
 			s = s + "hTrans=" + jt.hTrans + "\n";
 			s = s + "activePage=" + activePage + "\n";
 			s = s + "thumbs=" + thumbs + "\n";
-			s = s + "threeup=" + threeup + "\n";
-			s = s + "poverlay=" + poverlay + "\n";
+			s = s + "threeup=" + threeUp + "\n";
+			s = s + "poverlay=" + pOverlay + "\n";
 			s = s + "PO=" + PO + "\n";
 			s = s + pages.getDefaultPaper();
 			Dimension d = null;
@@ -5030,8 +5029,8 @@ public class Jarnal extends JApplet {
 				d = frameSize;
 			s = s + "windowHeight=" + d.getHeight() + "\n";
 			s = s + "windowWidth=" + d.getWidth() + "\n";
-			s = s + "divwidth=" + divwidth + "\n";
-			s = s + "outheight=" + outheight + "\n";
+			s = s + "divwidth=" + divWidth + "\n";
+			s = s + "outheight=" + outHeight + "\n";
 			s = s + "obgcolor=" + outline.bgcolor + "\n";
 			s = s + "foffX=" + jrnlPane.foffX + "\n";
 			s = s + "foffY=" + jrnlPane.foffY + "\n";
@@ -5050,8 +5049,8 @@ public class Jarnal extends JApplet {
 			if (saveBookmarks) {
 				if (!netServer.equals(""))
 					s = s + "netServer=" + netServer + "\n";
-				if (!nname.equals("unsaved.jaj"))
-					s = s + "netSaveName=" + nname + "\n";
+				if (!nName.equals("unsaved.jaj"))
+					s = s + "netSaveName=" + nName + "\n";
 				if (!email.equals(""))
 					s = s + "email=" + email + "\n";
 			}
@@ -5075,11 +5074,11 @@ public class Jarnal extends JApplet {
 			s = s + "absoluteScale=" + absoluteScale + "\n";
 			s = s + "showPageNumbers=" + showPageNumbers + "\n";
 			s = s + "withBorders=" + withBorders + "\n";
-			s = s + "URLEncode=" + urlencoded + "\n";
+			s = s + "URLEncode=" + urlEncoded + "\n";
 			s = s + "promptForNetSaveName=" + promptForNetSaveName + "\n";
 			s = s + "stickyRuler=" + stickyRuler + "\n";
-			s = s + "arrowhead=" + arrowhead + "\n";
-			s = s + "markerweight=" + markerweight + "\n";
+			s = s + "arrowhead=" + arrowHead + "\n";
+			s = s + "markerweight=" + markerWeight + "\n";
 			s = s + "middleButton=" + middleButton + "\n";
 			s = s + "rightButton=" + rightButton + "\n";
 			s = s + "\n";
@@ -5196,13 +5195,13 @@ public class Jarnal extends JApplet {
 			}
 			z = Tools.getLine(y, "backgroundFile");
 			if (z != null) {
-				bgfile = z;
+				bgFile = z;
 				// the next line should only be executed only initial program
 				// load
 				// not if we are subsequently resetting the conf
 				// or if we do reset the conf, it should at least be an undoable
 				// operation
-				pages.initOpenBg(new JbgsSource(bgfile, null));
+				pages.initOpenBg(new JbgsSource(bgFile, null));
 			}
 			z = Tools.getLine(y, "highlightLines");
 			if (z != null) {
@@ -5225,17 +5224,17 @@ public class Jarnal extends JApplet {
 			z = Tools.getLine(y, "threeup");
 			if (z != null) {
 				if (z.equals("true"))
-					threeup = true;
+					threeUp = true;
 				else
-					threeup = false;
+					threeUp = false;
 			}
 			z = Tools.getLine(y, "poverlay");
 			if (z != null) {
 				if (z.equals("true")) {
-					poverlay = true;
+					pOverlay = true;
 					pages.PO = PO;
 				} else {
-					poverlay = false;
+					pOverlay = false;
 					pages.PO = 2.0;
 				}
 			}
@@ -5283,21 +5282,21 @@ public class Jarnal extends JApplet {
 			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
-					urlencoded = true;
+					urlEncoded = true;
 				else
-					urlencoded = false;
+					urlEncoded = false;
 			}
 			z = Tools.getLine(y, "markerweight");
 			if (z != null) {
-				markerweight = Integer.parseInt(z);
+				markerWeight = Integer.parseInt(z);
 			}
 			z = Tools.getLine(y, "arrowhead");
 			if (z != null) {
 				if (z.equals("true"))
-					arrowhead = true;
+					arrowHead = true;
 				else
-					arrowhead = false;
-				arcb.setState(arrowhead);
+					arrowHead = false;
+				arcb.setState(arrowHead);
 			}
 			z = Tools.getLine(y, "stickyRuler");
 			if (z != null) {
@@ -5315,7 +5314,7 @@ public class Jarnal extends JApplet {
 				rightButton = z;
 			z = Tools.getLine(y, "netSaveName");
 			if (z != null)
-				nname = z;
+				nName = z;
 			z = Tools.getLine(y, "promptForNetSaveName");
 			if (z != null) {
 				if (z.equals("true"))
@@ -5363,7 +5362,7 @@ public class Jarnal extends JApplet {
 			}
 			z = Tools.getLine(y, "outheight");
 			if (z != null) {
-				outheight = Integer.parseInt(z);
+				outHeight = Integer.parseInt(z);
 			}
 			z = Tools.getLine(y, "showOutline");
 			if (z != null) {
@@ -5371,7 +5370,7 @@ public class Jarnal extends JApplet {
 			}
 			z = Tools.getLine(y, "divwidth");
 			if (z != null) {
-				divwidth = Integer.parseInt(z);
+				divWidth = Integer.parseInt(z);
 			}
 			z = Tools.getLine(y, "showBarJarnal");
 			if (z != null) {
@@ -5528,13 +5527,13 @@ public class Jarnal extends JApplet {
 			}
 			z = Tools.getLine(y, "netSaveName");
 			if (z != null)
-				nname = z;
+				nName = z;
 			z = Tools.getLine(y, "URLEncode");
 			if (z != null) {
 				if (z.equals("true"))
-					urlencoded = true;
+					urlEncoded = true;
 				else
-					urlencoded = false;
+					urlEncoded = false;
 			}
 			z = Tools.getLine(y, "promptForNetSaveName");
 			if (z != null) {
@@ -5568,7 +5567,7 @@ public class Jarnal extends JApplet {
 			}
 			int n = 2;
 			if (dirty)
-				n = (new Jarnbox(gJrnlFrame, "Save " + tttitle + "?")).showSaveExitCancel();
+				n = (new Jarnbox(gJrnlFrame, "Save " + tTTitle + "?")).showSaveExitCancel();
 			// if(dirty) n = JOptionPane.showConfirmDialog(gJrnlFrame,
 			// "All unsaved data will be lost. OK to exit?", "Confirm Exit",
 			// JOptionPane.YES_NO_OPTION);
@@ -5620,18 +5619,18 @@ public class Jarnal extends JApplet {
 					zext = ".pdf";
 				if (type.equals("Save TIFF"))
 					zext = ".tif";
-				if (!fname.equals(""))
-					sug = fname + "." + sug;
+				if (!fName.equals(""))
+					sug = fName + "." + sug;
 				else {
-					bgfile = pages.bgs().getSource().getName();
-					if (bgfile == null)
-						bgfile = "";
-					if (!bgfile.equals(""))
-						sug = bgfile + "." + sug;
+					bgFile = pages.bgs().getSource().getName();
+					if (bgFile == null)
+						bgFile = "";
+					if (!bgFile.equals(""))
+						sug = bgFile + "." + sug;
 				}
 				sug = sug + zext;
-				if (type.equals("Save Text") && (textfile != null))
-					sug = textfile;
+				if (type.equals("Save Text") && (textFile != null))
+					sug = textFile;
 				//if (pencentric) {
 					//String ans = (new Jarnbox(gJrnlFrame, "Save Name", jarn,
 							//true)).getString(sug);
@@ -5813,7 +5812,7 @@ public class Jarnal extends JApplet {
 				outline.setFullScreen(true);
 				tpanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpa, this);
 				tpanel.setDividerSize(1);
-				tpanel.setDividerLocation(outheight);
+				tpanel.setDividerLocation(outHeight);
 				container.add(tpanel, BorderLayout.CENTER);
 			} else
 				container.add(this, BorderLayout.CENTER);
@@ -5849,7 +5848,7 @@ public class Jarnal extends JApplet {
 				outline.initOut(jpa);
 				outline.setFullScreen(false);
 				tpanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpa, sp);
-				tpanel.setDividerLocation(outheight);
+				tpanel.setDividerLocation(outHeight);
 				cp.add(tpanel, BorderLayout.CENTER);
 			}
 			offX = 0;
@@ -5861,11 +5860,11 @@ public class Jarnal extends JApplet {
 			String instr = "";
 			try {
 				FileInputStream fis = new FileInputStream(cwd + File.separator
-						+ textfile);
+						+ textFile);
 				instr = new String(pages.streamToByteArray(fis));
 				fis.close();
 			} catch (Exception ex) {
-				System.out.println("File: " + textfile + " not found");
+				System.out.println("File: " + textFile + " not found");
 				return;
 			}
 			pages.setStartMark();
@@ -5887,14 +5886,14 @@ public class Jarnal extends JApplet {
 		}
 
 		public void open() {
-			String obgfile = bgfile;
+			String obgfile = bgFile;
 			boolean setSizeToBg = false;
-			if (!openfile.equals("")) {
-				File temp = new File(openfile);
+			if (!openFile.equals("")) {
+				File temp = new File(openFile);
 				if (template)
-					templateFile = openfile;
+					templateFile = openFile;
 				if (!template) {
-					fname = temp.getName();
+					fName = temp.getName();
 					cwd = temp.getParent();
 				}
 				boolean doOpen = true;
@@ -5902,9 +5901,9 @@ public class Jarnal extends JApplet {
 					doOpen = temp.exists();
 				}
 				if (doOpen) {
-					setConf(pages.open(openfile));
+					setConf(pages.open(openFile));
 					if(obgfile.equals("") && !template)
-						addBookmarkAll(openfile);
+						addBookmarkAll(openFile);
 					if (pages.recordingOn())
 						recbox.setState(true);
 					// new fitwidth: keep the scale on an existing file
@@ -5914,7 +5913,7 @@ public class Jarnal extends JApplet {
 				setSizeToBg = true;
 			if (template && (pages.getPages() == 1))
 				setSizeToBg = true;
-			openfile = "";
+			openFile = "";
 			if (!obgfile.equals("")) {
 				pages.openBg(new JbgsSource(obgfile, null));
 				addBookmarkAll("BG: " + obgfile + "::" + templateFile);
@@ -5923,30 +5922,30 @@ public class Jarnal extends JApplet {
 				// background size
 				fitWidth = true;
 			}
-			if (!opentextfile.equals("")) {
-				File temp = new File(opentextfile);
-				textfile = temp.getName();
+			if (!openTextFile.equals("")) {
+				File temp = new File(openTextFile);
+				textFile = temp.getName();
 				cwd = temp.getParent();
 			}
 			pages.openLoad(loadFiles);
 			loadFiles = new LinkedList();
 			template = false;
-			if (!savefile.equals("")) {
-				File temp = new File(savefile);
-				fname = temp.getName();
+			if (!saveFile.equals("")) {
+				File temp = new File(saveFile);
+				fName = temp.getName();
 				cwd = temp.getParent();
-				savefile = "";
+				saveFile = "";
 			}
 		}
 
 		public void getNetSaveName() {
-			String sugname = nname;
+			String sugname = nName;
 			if (sugname.equals("unsaved.jaj"))
 				sugname = suggestName();
 			String ans = (new Jarnbox(gJrnlFrame, "Network Save Name", jarn,
 					true)).getString(sugname);
 			if (ans != null)
-				nname = ans;
+				nName = ans;
 		}
 
 		public Jarnal openName(String cwdt, String temp) {
@@ -5958,21 +5957,21 @@ public class Jarnal extends JApplet {
 					cwdt = cwdt.substring(4);
 					int ncolon = cwdt.indexOf("::");
 					if(ncolon > 0){
-						openfile = cwdt.substring(ncolon + 2) + File.separator + temp;
+						openFile = cwdt.substring(ncolon + 2) + File.separator + temp;
 						cwdt = cwdt.substring(0,ncolon);
 						File ftemp = new File(cwdt);
 						cwdt = ftemp.getParent();
 						temp = ftemp.getName();
-						openbgfile = cwdt + File.separator + temp;
+						openBGFile = cwdt + File.separator + temp;
 						template = true;
 					}
 					else {
-						openbgfile = cwdt + File.separator + temp;
-						openfile = "";
+						openBGFile = cwdt + File.separator + temp;
+						openFile = "";
 					}
 				}
-				else openfile = cwdt + File.separator + temp;
-				ttitle = temp;
+				else openFile = cwdt + File.separator + temp;
+				tTitle = temp;
 				if(beginServer){
 					if (pages.communicator != null) {
 						pages.communicator.disconnect();
@@ -5980,7 +5979,7 @@ public class Jarnal extends JApplet {
 					}
 				}
 				Jarnal newJ = newJarnal("Jarnal - " + temp);
-				if ((fname == "") && !dirty) {
+				if ((fName == "") && !dirty) {
 					if(!tabs){
 						newJ.gJrnlFrame.setLocation(gJrnlFrame.getLocation());
 						newJ.gJrnlFrame.setSize(gJrnlFrame.getSize());
@@ -6244,12 +6243,12 @@ public class Jarnal extends JApplet {
 				// "GoToPage")).getInt(cp,1000);
 			}
 			if (action.equals("GoToPage")) {
-				if (gotopage != null) {
+				if (goToPage != null) {
 					int cp = pages.getPage();
 					// if(test != null) {
 					// pageChange = test.intValue() - cp;
 					// }
-					pageChange = gotopage.intValue() - cp;
+					pageChange = goToPage.intValue() - cp;
 				}
 			}
 			if (pageChange != 0) {
@@ -6282,11 +6281,11 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("Overlay Pages")) {
 				dirty = true;
-				if (poverlay) {
-					poverlay = false;
+				if (pOverlay) {
+					pOverlay = false;
 					pages.PO = 2.0;
 				} else {
-					poverlay = true;
+					pOverlay = true;
 					pages.PO = PO;
 				}
 				if (!locked)
@@ -6298,7 +6297,7 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Thumbs")) {
 				dirty = true;
-				if (thumbs && !threeup) {
+				if (thumbs && !threeUp) {
 					thumbs = false;
 					if (!locked)
 						dragOp = 0;
@@ -6309,8 +6308,8 @@ public class Jarnal extends JApplet {
 					thumbs = true;
 					pages.invalidateGraphics();
 					pages.setScale(pages.getScale() / 2);
-					if (threeup) {
-						threeup = false;
+					if (threeUp) {
+						threeUp = false;
 					}
 					activePage = pages.getPage() - 1;
 				}
@@ -6319,10 +6318,10 @@ public class Jarnal extends JApplet {
 
 			if (action.equals("Continuous")) {
 				dirty = true;
-				if (threeup) {
+				if (threeUp) {
 					thumbs = false;
-					threeup = false;
-					poverlay = false;
+					threeUp = false;
+					pOverlay = false;
 					pages.PO = 2.0;
 					if (!locked)
 						dragOp = 0;
@@ -6333,7 +6332,7 @@ public class Jarnal extends JApplet {
 						pages.setScale(2 * pages.getScale());
 					}
 					thumbs = true;
-					threeup = true;
+					threeUp = true;
 					activePage = pages.getPage() - 1;
 				}
 				setup();
@@ -6623,7 +6622,7 @@ public class Jarnal extends JApplet {
 				return;
 			}
 
-			if (action.equals("Print") && printaround)
+			if (action.equals("Print") && printAround)
 				action = "Print via PDF";
 
 			if (action.equals("Print Background")) {
@@ -6633,7 +6632,7 @@ public class Jarnal extends JApplet {
 					return;
 				if (src.equals(""))
 					return;
-				String est = printpdf;
+				String est = printPDF;
 				try {
 					est = Tools.replaceAll(est, "%1", Tools.cmdQuote(src));
 					System.out.println(est);
@@ -6722,7 +6721,7 @@ public class Jarnal extends JApplet {
 				if (pdfFile.equals("-")) {
 					if (cwd == null)
 						cwd = ".";
-					pdfFile = cwd + File.separator + fname;
+					pdfFile = cwd + File.separator + fName;
 					pdfFile = pdfFile.substring(0, pdfFile.length() - 3)
 							+ "pdf";
 				}
@@ -6803,7 +6802,7 @@ public class Jarnal extends JApplet {
 				}
 
 				if (action.equals("zPrint via PDF")) {
-					String est = printpdf;
+					String est = printPDF;
 					try {
 						est = Tools.replaceAll(est, "%1", pdfFile);
 						System.out.println(est);
@@ -6868,10 +6867,10 @@ public class Jarnal extends JApplet {
 					activePage = 0;
 					offX = foffX;
 					offY = foffY;
-					if (thumbs && !threeup)
+					if (thumbs && !threeUp)
 						pages.setScale(2 * pages.getScale());
 					thumbs = false;
-					threeup = false;
+					threeUp = false;
 					textMode = false;
 					pages.invalidateGraphics();
 					toFullScreen();
@@ -6892,7 +6891,7 @@ public class Jarnal extends JApplet {
 				cwd = oldcwd;
 				if (temp == null)
 					return;
-				bgfile = bwd + File.separator + temp;
+				bgFile = bwd + File.separator + temp;
 				action = "New";
 				onBackground = true;
 			}
@@ -6907,14 +6906,14 @@ public class Jarnal extends JApplet {
 				pp.setConf(spp);
 				pp.bgid = "none";
 				jrnl.jrnlPane.pages.setPaperConf(pp.getConf());
-				jrnl.nname = "unsaved.jaj";
+				jrnl.nName = "unsaved.jaj";
 				jrnl.saveBookmarks = false;
 				jrnl.sbmk.setState(false);
 				jrnl.cwd = cwd;
 				jrnl.iwd = iwd;
 				jrnl.bwd = bwd;
 				if (onBackground) {
-					jrnl.jrnlPane.pages.openBg(new JbgsSource(bgfile, null));
+					jrnl.jrnlPane.pages.openBg(new JbgsSource(bgFile, null));
 					;
 					jrnl.fitWidth = true;
 					jrnl.jrnlPane.resize();
@@ -6942,10 +6941,10 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Network Save")) {
-				if (promptForNetSaveName && nname.equals("unsaved.jaj"))
+				if (promptForNetSaveName && nName.equals("unsaved.jaj"))
 					getNetSaveName();
 				Hashtable ht = new Hashtable();
-				String tfname = fname;
+				String tfname = fName;
 				if (tfname.equals(""))
 					tfname = "unsaved.jaj";
 				ht.put("$f", tfname);
@@ -6955,9 +6954,9 @@ public class Jarnal extends JApplet {
 					uniqueID = suggestName()
 							+ Long.toString((new Random()).nextLong(), 36);
 				ht.put("$u", uniqueID);
-				ht.put("$g", nname);
+				ht.put("$g", nName);
 				HtmlPost hp = new HtmlPost(netServer, netOptions, pages, ht,
-						getConf(), urlencoded);
+						getConf(), urlEncoded);
 				hp.setJarnal(jarn);
 				hp.withBorders = withBorders;
 				hp.post();
@@ -6985,7 +6984,7 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Savex")) {
-				if (fname.equals("")) {
+				if (fName.equals("")) {
 					String temp = getFile("Save", true);
 					if (temp == null)
 						return;
@@ -6997,8 +6996,8 @@ public class Jarnal extends JApplet {
 						if (n == JOptionPane.NO_OPTION)
 							return;
 					}
-					fname = temp;
-					addBookmarkAll(cwd + File.separator + fname);
+					fName = temp;
+					addBookmarkAll(cwd + File.separator + fName);
 				}
 				action = "Save";
 			}
@@ -7010,9 +7009,9 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Save")) {
-				if (fname.equals("") && noDialog)
+				if (fName.equals("") && noDialog)
 					return;
-				if (fname.equals("")) {
+				if (fName.equals("")) {
 					// doAction("Save With Options");
 					saveOptionsListener fooster = new saveOptionsListener();
 					fooster.showDialog(gJrnlFrame, jarn);
@@ -7022,16 +7021,16 @@ public class Jarnal extends JApplet {
 				}
 				if (cwd == null)
 					cwd = ".";
-				boolean isSaved = pages.save(cwd + File.separator + fname,
+				boolean isSaved = pages.save(cwd + File.separator + fName,
 						getConf());
 				if (!embed){
-					tttitle = fname;
-					gJrnlFrame.setTitle("Jarnal - " + fname);
+					tTTitle = fName;
+					gJrnlFrame.setTitle("Jarnal - " + fName);
 				}
 				if (!isNetSave)
 					dirty = !isSaved;
 				if (isSaved && saveSelfexecuting)
-					Selfexec.pack("jarnal.jar", cwd, fname);
+					Selfexec.pack("jarnal.jar", cwd, fName);
 				setSave(false);
 				if (thenExit)
 					action = "Close";
@@ -7052,18 +7051,18 @@ public class Jarnal extends JApplet {
 					}
 					uniqueID = suggestName()
 							+ Long.toString((new Random()).nextLong(), 36);
-					fname = temp;
-					addBookmarkAll(cwd + File.separator + fname);
-					dirty = !pages.save(cwd + File.separator + fname,
+					fName = temp;
+					addBookmarkAll(cwd + File.separator + fName);
+					dirty = !pages.save(cwd + File.separator + fName,
 							getConf());
 					if (!dirty)
 						internalName = "";
 					if (!embed){
-						gJrnlFrame.setTitle("Jarnal - " + fname);
-						tttitle = fname;
+						gJrnlFrame.setTitle("Jarnal - " + fName);
+						tTTitle = fName;
 					}
 					if (saveSelfexecuting)
-						Selfexec.pack("jarnal.jar", cwd, fname);
+						Selfexec.pack("jarnal.jar", cwd, fName);
 					setSave(false);
 				}
 				return;
@@ -7081,7 +7080,7 @@ public class Jarnal extends JApplet {
 				byte bav[][] = new byte[1][];
 				bav[0] = ba;
 				SendMail jsm = new SendMail();
-				String sendname = fname;
+				String sendname = fName;
 				if (sendname.equals(""))
 					sendname = "temp.jaj";
 				String sn[] = new String[1];
@@ -7114,11 +7113,11 @@ public class Jarnal extends JApplet {
 				byte bav[][] = new byte[1][];
 				bav[0] = ba;
 				SendMail jsm = new SendMail();
-				String sendname = fname;
+				String sendname = fName;
 				if (sendname.equals(""))
 					sendname = "temp.pdf";
 				else
-					sendname = fname + ".pdf";
+					sendname = fName + ".pdf";
 				String sn[] = new String[1];
 				sn[0] = sendname;
 				String an[] = new String[1];
@@ -7131,7 +7130,7 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Save Text")) {
-				if (textfile == null)
+				if (textFile == null)
 					action = "Save Text As";
 				else
 					action = "save text";
@@ -7140,7 +7139,7 @@ public class Jarnal extends JApplet {
 				String temp = getFile("Save Text", false);
 				if (temp == null)
 					return;
-				textfile = temp;
+				textFile = temp;
 				action = "save text";
 			}
 			String alltext = "";
@@ -7148,7 +7147,7 @@ public class Jarnal extends JApplet {
 				String temp = getFile("Save Html", false);
 				if (temp == null)
 					return;
-				textfile = temp;
+				textFile = temp;
 				action = "save all text";
 				alltext = pages.copyAllHtml();
 			}
@@ -7159,12 +7158,12 @@ public class Jarnal extends JApplet {
 			if (action.equals("save all text")) {
 				try {
 					FileOutputStream out = new FileOutputStream(cwd
-							+ File.separator + textfile);
+							+ File.separator + textFile);
 					out.write(alltext.getBytes());
 					out.close();
 				} catch (Exception ex) {
 					System.err.println("file write error writing textfile "
-							+ textfile + "\n" + ex);
+							+ textFile + "\n" + ex);
 				}
 				dirty = true;
 				setStatus("");
@@ -7321,7 +7320,7 @@ public class Jarnal extends JApplet {
 						outline.synchPage(1);
 						tpanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpa, sp);
 						tpanel.setDividerSize(1);
-						tpanel.setDividerLocation(outheight);
+						tpanel.setDividerLocation(outHeight);
 						cp.add(tpanel, BorderLayout.CENTER);
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -7380,7 +7379,7 @@ public class Jarnal extends JApplet {
 								toolkit);
 						tpanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mj.sp, sp);
 						// tpanel.setOneTouchExpandable(true);
-						tpanel.setDividerLocation(divwidth);
+						tpanel.setDividerLocation(divWidth);
 						cp.add(tpanel, BorderLayout.CENTER);
 						mj.jrnlPane.tpanel = tpanel;
 						mj.jrnlPane.doAction("Fit Width");
@@ -7398,7 +7397,7 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Internal mini Jarnal")) {
-				if (barjarnal)
+				if (barJarnal)
 					return;
 				Container cp = gJrnlFrame.getContentPane();
 				// if(tpanel != null){
@@ -7612,8 +7611,8 @@ public class Jarnal extends JApplet {
 				cwd = oldcwd;
 				if (temp == null)
 					return;
-				bgfile = bwd + File.separator + temp;
-				pages.insertBg(new JbgsSource(bgfile, null), action);
+				bgFile = bwd + File.separator + temp;
+				pages.insertBg(new JbgsSource(bgFile, null), action);
 				fitWidth = true;
 				resize();
 				dirty = true;
@@ -7628,8 +7627,8 @@ public class Jarnal extends JApplet {
 				cwd = oldcwd;
 				if (temp == null)
 					return;
-				bgfile = bwd + File.separator + temp;
-				pages.openBg(new JbgsSource(bgfile, null));
+				bgFile = bwd + File.separator + temp;
+				pages.openBg(new JbgsSource(bgFile, null));
 				fitWidth = true;
 				resize();
 				dirty = true;
@@ -7641,14 +7640,14 @@ public class Jarnal extends JApplet {
 				String temp = getFile("Open Text", false);
 				if (temp == null)
 					return;
-				textfile = temp;
+				textFile = temp;
 				String instr = null;
 				opentext();
 				setup();
 			}
 
 			if (action.equals("Remove Background")) {
-				bgfile = "";
+				bgFile = "";
 				pages.removeBg();
 				dirty = true;
 				setup();
@@ -7822,7 +7821,7 @@ public class Jarnal extends JApplet {
 						.showDialog(gJrnlFrame, jt, jarn);
 
 			if (action.equals("Arrow Weight")) {
-				pages.applyArrow(markerweight);
+				pages.applyArrow(markerWeight);
 				dirty = true;
 			}
 
@@ -8119,16 +8118,16 @@ public class Jarnal extends JApplet {
 			}
 
 			if (action.equals("Draw Arrow")) {
-				arrowhead = true;
-				temparrow = true;
+				arrowHead = true;
+				tempArrow = true;
 				arcb.setState(false);
 				action = "Ruler";
 			}
 
 			if (action.equals("Arrow")) {
-				arrowhead = !arrowhead;
-				temparrow = false;
-				arcb.setState(arrowhead);
+				arrowHead = !arrowHead;
+				tempArrow = false;
+				arcb.setState(arrowHead);
 				action = "Ruler";
 			}
 
@@ -8213,11 +8212,11 @@ public class Jarnal extends JApplet {
 					offX = foffX;
 					offY = foffY;
 				}
-				if (thumbs && !threeup)
+				if (thumbs && !threeUp)
 					pages.setScale(2 * pages.getScale());
 				thumbs = false;
-				threeup = false;
-				poverlay = false;
+				threeUp = false;
+				pOverlay = false;
 				pages.PO = 2.0;
 				pages.invalidateGraphics();
 				// dragOp = 13;
@@ -8369,9 +8368,9 @@ public class Jarnal extends JApplet {
 
 			// this next doesn't exist anymore
 			if (action.equals("Train Recognition")) {
-				trainrecog = !trainrecog;
-				train1.setState(trainrecog);
-				train2.setState(trainrecog);
+				trainRecog = !trainRecog;
+				train1.setState(trainRecog);
+				train2.setState(trainRecog);
 				// Janalyze.train = trainrecog;
 				return;
 			}
@@ -8392,8 +8391,8 @@ public class Jarnal extends JApplet {
 			boolean penChanged = false;
 			if ((jt.transparency == 255) && !jt.highlighter
 					&& !(jt.color.equals("white") && jt.type.equals("Fat"))) {
-				old_color = jt.color;
-				old_width = jt.width;
+				oldColor = jt.color;
+				oldWidth = jt.width;
 			}
 
 			if (action.equals("Choose Instrument Color")) {
@@ -8508,38 +8507,38 @@ public class Jarnal extends JApplet {
 				jt.setOpaque();
 				jt.color = action.toLowerCase();
 				if (isHigh) {
-					if (old_width == 1.0f)
+					if (oldWidth == 1.0f)
 						jt.width = jtd.width;
 					else
-						jt.width = old_width;
+						jt.width = oldWidth;
 				}
 				penChanged = true;
 			}
 			if (action.equals("Fine")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Fine");
 				penChanged = true;
 			}
 			if (action.equals("Medium")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Medium");
 				penChanged = true;
 			}
 			if (action.equals("Heavy")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Heavy");
 				penChanged = true;
 			}
 			if (action.equals("Fat")) {
 				jt.highlighter = false;
 				jt.setOpaque();
-				jt.color = old_color;
+				jt.color = oldColor;
 				setWidth("Fat");
 				penChanged = true;
 			}
@@ -8569,7 +8568,7 @@ public class Jarnal extends JApplet {
 			}
 			if (action.equals("White Out")) {
 				if (!jt.highlighter)
-					old_color = jt.color;
+					oldColor = jt.color;
 				jt.highlighter = false;
 				jt.setOpaque();
 				jt.color = "white";
@@ -8618,7 +8617,7 @@ public class Jarnal extends JApplet {
 			}
 			if ((jt.transparency == 255) && !jt.highlighter
 					&& !(jt.color.equals("white") && jt.type.equals("Fat")))
-				old_color = jt.color;
+				oldColor = jt.color;
 			if (penChanged) {
 				textMode = false;
 				setStatus("");
@@ -8975,7 +8974,7 @@ public class Jarnal extends JApplet {
 			if (qck)
 				return;
 			boolean sbse = dirty;
-			if (!isNetSave && fname.equals(""))
+			if (!isNetSave && fName.equals(""))
 				sbse = dirty || true;
 			if (isNetSave && netServer.equals(""))
 				sbse = false;
@@ -9130,14 +9129,14 @@ public class Jarnal extends JApplet {
 		public void resize() {
 			float oldscale = pages.getScale();
 			Dimension d = null;
-			if (barjarnal)
+			if (barJarnal)
 				d = new Dimension(tpanel.getDividerLocation(), tpanel.getHeight());
 			else
 				d = gJrnlFrame.getSize();
 			if (embed)
 				d = jarn.getSize();
 			float dw = (float) (d.getWidth() - (2 * sbarSize));
-			if (barjarnal)
+			if (barJarnal)
 				dw = dw + (float) sbarSize;
 			else if ((tpanel != null) && !showOutline)
 				dw = dw - (float) tpanel.getDividerLocation();
@@ -9154,7 +9153,7 @@ public class Jarnal extends JApplet {
 					if(!tb3.trim().equals(""))
 						dw = (float) (dw - jtb1.getHeight());
 					if (showOutline)
-						dw = dw - (float) outheight - (float) foffX;
+						dw = dw - (float) outHeight - (float) foffX;
 				}
 				float tscale = (float) (dw / pages.getBaseHeight());
 				if (tscale < scale)
@@ -9192,7 +9191,7 @@ public class Jarnal extends JApplet {
 				w = gcb.width;
 				h = gcb.height - jtb1.getHeight();
 				if (showOutline)
-					h = h - outheight;
+					h = h - outHeight;
 			}
 			Dimension canvasSize = new Dimension(w, h);
 			setSize(canvasSize);
@@ -9274,13 +9273,13 @@ public class Jarnal extends JApplet {
 		private int nr() {
 			if (!thumbs)
 				return 1;
-			if (thumbs && threeup)
+			if (thumbs && threeUp)
 				return pages.getPages();
 			return (pages.getPages() + 1) / 2;
 		}
 
 		private int nc() {
-			if (thumbs && !threeup)
+			if (thumbs && !threeUp)
 				return 2;
 			return 1;
 		}
@@ -9376,7 +9375,7 @@ public class Jarnal extends JApplet {
 				try {
 					hmg = (BufferedImage) createImage(w, h);
 				} catch (Error er) {
-					memoryerrorstring = "\n" + mymemory();
+					memoryErrorString = "\n" + mymemory();
 					pages.setScale(pages.getScale() / 2);
 					hmg = (BufferedImage) createImage(1, 1);
 					jtm.setMemoryError();
